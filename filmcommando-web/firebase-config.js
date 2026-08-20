@@ -4,7 +4,7 @@ import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-aut
 import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAPYrNtF8hTbsBJ2DEtKqYCSXfG9vg8X-U",
+  apiKey: "AIzaSyAPYrNtF0hTbsBJ2DEtKqYCSXfG9vg8X-U",
   authDomain: "filmcommando-f28bd.firebaseapp.com",
   projectId: "filmcommando-f28bd",
   storageBucket: "filmcommando-f28bd.firebasestorage.app",
