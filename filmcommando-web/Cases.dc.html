@@ -19,20 +19,54 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Cases 반응형 */
+  @media (max-width:768px) {
+    .fc-cases-wrap {
+      min-width:0 !important;
+      padding:40px 20px 80px !important;
+    }
+    .fc-cases-hero {
+      grid-template-columns:1fr !important;
+    }
+    .fc-cases-filter {
+      grid-template-columns:1fr !important;
+    }
+    .fc-cases-grid {
+      grid-template-columns:1fr !important;
+    }
+    .fc-cases-compare {
+      grid-template-columns:1fr !important;
+    }
+    .fc-cases-summary {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-cases-img {
+      height:200px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-cases-summary {
+      grid-template-columns:1fr !important;
+    }
+    .fc-cases-img {
+      height:180px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-cases-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-cases-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 사례</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">준공한 집을<br>공정과 함께 적었습니다</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">범위 · 지역 · 평형으로 찾아보실 수 있습니다. 사진은 촬영 동의를 받은 현장만 공개합니다.</p>
   </section>
 
-  <section style="padding:28px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:110px minmax(0,1fr); gap:28px; align-items:center">
+  <section class="fc-cases-filter" style="padding:28px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:110px minmax(0,1fr); gap:28px; align-items:center">
     <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80">범위</div>
     <div style="display:flex; gap:8px; flex-wrap:wrap">
       <sc-for list="{{ scopes }}" as="f" hint-placeholder-count="5">
@@ -41,7 +75,7 @@
     </div>
   </section>
 
-  <section style="padding:20px 56px 24px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:110px minmax(0,1fr); gap:28px; align-items:center">
+  <section class="fc-cases-filter" style="padding:20px 56px 24px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:110px minmax(0,1fr); gap:28px; align-items:center">
     <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80">지역</div>
     <div style="display:flex; justify-content:space-between; align-items:center; gap:30px">
       <div style="display:flex; gap:8px; flex-wrap:wrap">
@@ -54,18 +88,18 @@
   </section>
 
   <section style="padding:56px 56px 40px">
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px 36px">
+    <div class="fc-cases-grid" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px 36px">
       <sc-for list="{{ cases }}" as="c" hint-placeholder-count="9">
         <a href="./CaseDetail.dc.html" style="display:block">
-          <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:6px">
+          <div class="fc-cases-compare" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:6px">
             <figure style="margin:0">
-              <div style="position:relative; height:230px">
+              <div class="fc-cases-img" style="position:relative; height:230px">
                 <image-slot id="{{ c.slotBefore }}" shape="rect" fit="cover" placeholder="{{ c.phBefore }}"></image-slot>
               </div>
               <figcaption style="font-size:11px; letter-spacing:0.18em; color:#9A8F80; padding-top:9px">시공 전</figcaption>
             </figure>
             <figure style="margin:0">
-              <div style="position:relative; height:230px">
+              <div class="fc-cases-img" style="position:relative; height:230px">
                 <image-slot id="{{ c.slotAfter }}" shape="rect" fit="cover" placeholder="{{ c.phAfter }}"></image-slot>
               </div>
               <figcaption style="font-size:11px; letter-spacing:0.18em; color:#A2543A; padding-top:9px">시공 후</figcaption>
@@ -100,7 +134,7 @@
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
     <div style="padding:64px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">사례 요약</div>
-      <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:40px">
+      <div class="fc-cases-summary" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:40px">
         <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
           <div>
             <div style="font-family:'Nanum Myeongjo',serif; font-size:30px; font-weight:800; letter-spacing:-0.04em">{{ s.v }}</div>
