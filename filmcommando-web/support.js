@@ -1909,3 +1909,19 @@
     throw err;
   });
 })();
+
+// 페이지 진입 슬라이드 애니메이션 — page-transition.js의 키프레임을 재사용하되
+// 스크립트 로드 순서에 의존하지 않도록 동일 규칙을 여기서도 멱등하게 보장한다.
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.getElementById("fc-slide-in-style")) {
+    var fcSlideStyle = document.createElement("style");
+    fcSlideStyle.id = "fc-slide-in-style";
+    fcSlideStyle.textContent = "@keyframes slideInRight{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}" +
+      ".fc-slide-in{animation:slideInRight 0.28s cubic-bezier(0.4,0,0.2,1) forwards}";
+    document.head.appendChild(fcSlideStyle);
+  }
+  document.body.classList.add("fc-slide-in");
+  setTimeout(function () {
+    document.body.classList.remove("fc-slide-in");
+  }, 280);
+});
