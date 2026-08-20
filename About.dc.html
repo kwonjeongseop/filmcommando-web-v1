@@ -19,20 +19,71 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* About 반응형 */
+  @media (max-width:768px) {
+    .fc-about-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-about-hero {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-about-intro {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-about-stats {
+      grid-template-columns:1fr 1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-about-values-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-about-values-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-about-history-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-about-contact-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-about-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+      padding:40px 20px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-about-stats {
+      grid-template-columns:1fr !important;
+    }
+    .fc-about-history-item {
+      grid-template-columns:1fr !important;
+    }
+    .fc-about-contact-item {
+      grid-template-columns:1fr !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-about-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-about-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">회사소개</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">설계부터 준공까지<br>한 팀이 맡습니다</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">2014년 필름 시공으로 시작해, 지금은 철거부터 입주까지 열두 공정을 직접 시공합니다. 아파트 · 연립 · 주택과 상가를 함께 다룹니다.</p>
   </section>
 
-  <section style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+  <section class="fc-about-intro" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
     <div style="padding:80px 56px 80px; display:flex; flex-direction:column; gap:26px">
       <p style="font-family:'Nanum Myeongjo',serif; font-size:23px; line-height:1.85; letter-spacing:-0.025em; margin:0; text-wrap:pretty">리모델링에서 가장 흔한 사고는 자재가 아니라 공정 사이의 빈틈에서 생깁니다.</p>
       <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0; text-wrap:pretty">설비가 마감 위치를 모른 채 배관을 잡고, 목공이 타일 두께를 모른 채 문틀을 세우면 뒤에서 비용이 발생합니다. 필름특공대는 설계 담당자가 실측에 함께 들어가 도면을 만들고, 열두 공정을 자사 팀과 전속 기공이 순서대로 진행합니다. 공정을 외부에 재하도급하지 않습니다.</p>
@@ -44,7 +95,7 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:56px 56px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:40px">
+    <div class="fc-about-stats" style="padding:56px 56px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:40px">
       <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
         <div>
           <div style="font-family:'Nanum Myeongjo',serif; font-size:36px; font-weight:800; letter-spacing:-0.04em; line-height:1">{{ s.v }}</div>
@@ -54,9 +105,9 @@
     </div>
   </section>
 
-  <section style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-about-values-wrap" style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:8px">일하는 방식</div>
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+    <div class="fc-about-values-cards" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
       <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
         <div style="border-top:1px solid #1F1B16; padding-top:22px">
           <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ v.title }}</h3>
@@ -67,11 +118,11 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6">
-    <div style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div class="fc-about-history-wrap" style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:8px">연혁</div>
       <div>
         <sc-for list="{{ history }}" as="h" hint-placeholder-count="6">
-          <div style="display:grid; grid-template-columns:110px minmax(0,1fr); gap:32px; padding:20px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div class="fc-about-history-item" style="display:grid; grid-template-columns:110px minmax(0,1fr); gap:32px; padding:20px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
             <div style="font-family:'Nanum Myeongjo',serif; font-size:17px; color:#A2543A">{{ h.year }}</div>
             <div style="font-size:15px; line-height:1.85; color:#3E362C">{{ h.body }}</div>
           </div>
@@ -80,12 +131,12 @@
     </div>
   </section>
 
-  <section style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+  <section class="fc-about-contact-wrap" style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:8px">오시는 길</div>
     <div>
       <h2 style="font-family:'Nanum Myeongjo',serif; font-size:28px; font-weight:700; letter-spacing:-0.03em; margin:0 0 26px">사무실 · 자재 창고</h2>
       <sc-for list="{{ contact }}" as="c" hint-placeholder-count="4">
-        <div style="display:grid; grid-template-columns:110px minmax(0,1fr); gap:24px; padding:15px 0; border-bottom:1px solid #DCD4C6">
+        <div class="fc-about-contact-item" style="display:grid; grid-template-columns:110px minmax(0,1fr); gap:24px; padding:15px 0; border-bottom:1px solid #DCD4C6">
           <div style="font-size:13px; color:#9A8F80; letter-spacing:0.04em">{{ c.k }}</div>
           <div style="font-size:15px; color:#3E362C; line-height:1.7">{{ c.v }}</div>
         </div>
@@ -97,7 +148,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-about-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">방문실측은 무료입니다</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">집 상태와 부위를 확인한 뒤 견적서를 드립니다. 받아보시고 결정하셔도 됩니다.</p>
