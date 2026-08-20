@@ -19,21 +19,49 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Review 반응형 */
+  @media (max-width:768px) {
+    .fc-review-wrap {
+      min-width:0 !important;
+      padding:40px 20px 80px !important;
+    }
+    .fc-review-hero {
+      grid-template-columns:1fr !important;
+    }
+    .fc-review-score {
+      grid-template-columns:1fr !important;
+    }
+    .fc-review-item {
+      grid-template-columns:1fr !important;
+    }
+    .fc-review-card {
+      grid-template-columns:1fr !important;
+    }
+    .fc-review-img {
+      height:180px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-review-wrap {
+      padding:32px 16px 64px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-review-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-review-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">고객 후기</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">시공을 마친 집에서<br>남겨주신 말</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">시공 완료 후 문자로 받은 후기를 동의를 얻어 옮겼습니다. 내용은 수정하지 않습니다.</p>
   </section>
 
   <section style="border-bottom:1px solid #DCD4C6">
-    <div style="padding:56px; display:grid; grid-template-columns:minmax(0,280px) minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:center">
+    <div class="fc-review-score" style="padding:56px; display:grid; grid-template-columns:minmax(0,280px) minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:center">
       <div>
         <div style="display:flex; align-items:flex-end; gap:14px">
           <div style="font-family:'Nanum Myeongjo',serif; font-size:64px; font-weight:800; letter-spacing:-0.05em; line-height:1">4.9</div>
@@ -63,7 +91,7 @@
     </div>
   </section>
 
-  <section style="padding:56px 56px 40px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-review-item" style="padding:56px 56px 40px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="position:sticky; top:100px; align-self:start">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:20px">범위</div>
       <div style="display:flex; flex-direction:column; gap:11px; font-size:14px">
@@ -74,7 +102,7 @@
     </div>
     <div>
       <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="6">
-        <div style="display:grid; grid-template-columns:minmax(0,1fr) 200px; gap:48px; align-items:start; padding:38px 0; border-top:1px solid #DCD4C6">
+        <div class="fc-review-card" style="display:grid; grid-template-columns:minmax(0,1fr) 200px; gap:48px; align-items:start; padding:38px 0; border-top:1px solid #DCD4C6">
           <div>
             <p style="font-family:'Nanum Myeongjo',serif; font-size:20px; line-height:1.9; letter-spacing:-0.02em; margin:0 0 18px; text-wrap:pretty">{{ r.body }}</p>
             <div style="display:flex; gap:8px; flex-wrap:wrap">
@@ -111,7 +139,7 @@
         <h2 style="font-family:'Nanum Myeongjo',serif; font-size:26px; font-weight:700; letter-spacing:-0.03em; margin:0 0 14px">시공을 받으셨다면 한 줄 남겨주십시오</h2>
         <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">시공 완료 후 보내드리는 문자 링크로 작성하실 수 있습니다. 게시 전 동의 여부를 다시 확인하며, 주소는 구 단위까지만 표기합니다.</p>
       </div>
-      <div style="position:relative; height:220px">
+      <div class="fc-review-img" style="position:relative; height:220px">
         <image-slot id="rv-1" shape="rect" fit="cover" placeholder="시공 완료 사진"></image-slot>
       </div>
     </div>
