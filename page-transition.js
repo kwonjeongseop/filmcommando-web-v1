@@ -50,6 +50,11 @@
     var href = a.getAttribute("href");
     var target = nameOf(href);
     if (!target || ORDER.indexOf(target) < 0 || target === current) return;
+    if (target === "Booking") {
+      var loggedIn = false;
+      try { loggedIn = !!localStorage.getItem("fc_user"); } catch (guardErr) {}
+      if (!loggedIn) { e.preventDefault(); location.href = "./Login.dc.html"; return; }
+    }
     e.preventDefault();
     var forward = ORDER.indexOf(target) > ORDER.indexOf(current);
     try { sessionStorage.setItem("pt-dir", forward ? "forward" : "back"); } catch (err) {}
