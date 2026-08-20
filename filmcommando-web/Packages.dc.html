@@ -18,21 +18,62 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Packages 반응형 */
+  @media (max-width:768px) {
+    .fc-pkg-wrap {
+      min-width:0 !important;
+      padding:40px 20px 80px !important;
+    }
+    .fc-pkg-hero {
+      grid-template-columns:1fr !important;
+    }
+    .fc-pkg-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-pkg-price-header {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-pkg-price-row {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-pkg-options {
+      grid-template-columns:1fr !important;
+    }
+    .fc-pkg-payment {
+      grid-template-columns:1fr !important;
+    }
+    .fc-pkg-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-pkg-wrap {
+      padding:32px 16px 64px !important;
+    }
+    .fc-pkg-price-header {
+      grid-template-columns:1fr !important;
+    }
+    .fc-pkg-price-row {
+      grid-template-columns:1fr !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-pkg-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-pkg-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">패키지 상품</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">포함 공정과 가격을<br>먼저 적어둡니다</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">24평 아파트 기준 정찰 금액입니다. 평형과 자재 등급, 구조 변경 여부에 따라 실측 후 조정합니다. 부가세 별도.</p>
   </section>
 
   <section style="padding:64px 56px 40px">
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:#DCD4C6; border:1px solid #DCD4C6">
+    <div class="fc-pkg-cards" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:#DCD4C6; border:1px solid #DCD4C6">
       <sc-for list="{{ packages }}" as="p" hint-placeholder-count="3">
         <div style="background:#F4F1EA; padding:38px 34px 40px; display:flex; flex-direction:column">
           <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:20px">
@@ -68,11 +109,11 @@
   <section style="padding:60px 56px 76px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">평형별 금액</div>
     <div>
-      <div style="display:grid; grid-template-columns:130px repeat(3,minmax(0,1fr)); gap:28px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
+      <div class="fc-pkg-price-header" style="display:grid; grid-template-columns:130px repeat(3,minmax(0,1fr)); gap:28px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
         <div>평형</div><div>필름 단독</div><div>부분 시공 (주방+욕실)</div><div>전예 리모델링</div>
       </div>
       <sc-for list="{{ table }}" as="t" hint-placeholder-count="5">
-        <div style="display:grid; grid-template-columns:130px repeat(3,minmax(0,1fr)); gap:28px; padding:20px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+        <div class="fc-pkg-price-row" style="display:grid; grid-template-columns:130px repeat(3,minmax(0,1fr)); gap:28px; padding:20px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
           <div style="font-family:'Nanum Myeongjo',serif; font-size:18px; letter-spacing:-0.02em">{{ t.size }}</div>
           <div style="font-size:15px; color:#3E362C">{{ t.film }}</div>
           <div style="font-size:15px; color:#3E362C">{{ t.partial }}</div>
@@ -86,7 +127,7 @@
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
     <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">선택 추가</div>
-      <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
+      <div class="fc-pkg-options" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
         <sc-for list="{{ options }}" as="o" hint-placeholder-count="8">
           <div style="display:grid; grid-template-columns:minmax(0,1fr) 150px; gap:20px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
             <div style="font-size:15px; color:#3E362C">{{ o.title }}</div>
@@ -99,7 +140,7 @@
 
   <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">결제 · 계약</div>
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+    <div class="fc-pkg-payment" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
       <sc-for list="{{ terms }}" as="t" hint-placeholder-count="3">
         <div style="border-top:1px solid #1F1B16; padding-top:22px">
           <h3 style="font-family:'Nanum Myeongjo',serif; font-size:20px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
@@ -110,7 +151,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-pkg-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">우리 집 금액은 계산기로 먼저</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">평형과 공정을 고르면 예상 금액대가 바로 나옵니다. 확정 견적은 실측 후 드립니다.</p>
