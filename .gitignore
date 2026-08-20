@@ -9,3 +9,4 @@ tools/__pycache__/
 tools/*.spec
 tools/.env
 tools/certs/
+tools/gabia_dns_filmcommando.xls
