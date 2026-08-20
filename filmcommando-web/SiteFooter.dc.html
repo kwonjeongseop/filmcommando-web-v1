@@ -13,10 +13,22 @@
 <style>
   a { color:#4A4136; text-decoration:none; }
   a:hover { color:#A2543A; }
+
+  @media (max-width: 768px) {
+    .fc-footer-grid {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 32px 20px !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .fc-footer-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
 </style>
 </helmet>
 <footer style="font-family:'Gowun Dodum',sans-serif; background:#F4F1EA; color:#1F1B16; border-top:1px solid #DCD4C6">
-  <div style="padding:72px 56px 44px; display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:44px">
+  <div class="fc-footer-grid" style="padding:72px 56px 44px; display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:44px">
     <div>
       <div style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:20px; margin-bottom:8px">필름특공대</div>
       <div style="font-size:12px; letter-spacing:0.16em; color:#9A8F80; margin-bottom:20px">REMODELING</div>
