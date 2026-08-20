@@ -19,14 +19,49 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Process 반응형 */
+  @media (max-width:768px) {
+    .fc-prc-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-prc-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-prc-step {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:20px 20px !important;
+    }
+    .fc-prc-day-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-prc-day-img {
+      height:200px !important;
+    }
+    .fc-prc-as-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-prc-as-cards {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-prc-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+      padding:40px 20px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-prc-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-prc-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 절차</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">접수부터 A/S까지<br>다섯 단계</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">각 단계에서 무엇을 하고 고객이 무엇을 확인하면 되는지 적었습니다. 실측 후 견적서를 받고 결정하셔도 됩니다.</p>
@@ -34,7 +69,7 @@
 
   <section style="padding:76px 56px 40px">
     <sc-for list="{{ steps }}" as="p" hint-placeholder-count="5">
-      <div style="display:grid; grid-template-columns:190px minmax(0,1.1fr) minmax(0,1fr) 170px; gap:56px; padding:40px 0; border-top:1px solid #DCD4C6; align-items:start">
+      <div class="fc-prc-step" style="display:grid; grid-template-columns:190px minmax(0,1.1fr) minmax(0,1fr) 170px; gap:56px; padding:40px 0; border-top:1px solid #DCD4C6; align-items:start">
         <div>
           <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px">
             <span style="width:7px; height:7px; background:#A2543A; border-radius:999px; flex:none"></span>
@@ -64,7 +99,7 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,420px); gap:56px">
+    <div class="fc-prc-day-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,420px); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 당일</div>
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-size:28px; font-weight:700; letter-spacing:-0.03em; margin:0 0 26px">당일 진행 순서</h2>
@@ -75,15 +110,15 @@
           </div>
         </sc-for>
       </div>
-      <div style="position:relative; height:340px">
+      <div class="fc-prc-day-img" style="position:relative; height:340px">
         <image-slot id="pr-1" shape="rect" fit="cover" placeholder="현장 보양 · 양생 작업 사진"></image-slot>
       </div>
     </div>
   </section>
 
-  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-prc-as-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">A/S 정책</div>
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+    <div class="fc-prc-as-cards" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
       <sc-for list="{{ as }}" as="a" hint-placeholder-count="3">
         <div style="border-top:1px solid #1F1B16; padding-top:22px">
           <h3 style="font-family:'Nanum Myeongjo',serif; font-size:20px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ a.title }}</h3>
@@ -94,7 +129,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-prc-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">실측 일정부터 잡으시면 됩니다</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">접수 후 영업일 기준 1일 내 연락드리고, 희망 시간대에 방문합니다.</p>
