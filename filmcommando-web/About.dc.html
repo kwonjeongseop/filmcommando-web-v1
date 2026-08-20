@@ -27,8 +27,11 @@
       padding:0 0 80px !important;
     }
     .fc-about-hero {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
       padding:40px 20px !important;
+    }
+    .fc-about-hero > * {
+      min-width:0 !important;
     }
     .fc-about-intro {
       grid-template-columns:minmax(0,1fr) !important;
@@ -38,23 +41,32 @@
       min-width:0 !important;
     }
     .fc-about-stats {
-      grid-template-columns:1fr 1fr !important;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
       padding:40px 20px !important;
     }
     .fc-about-values-wrap {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
       padding:40px 20px !important;
+    }
+    .fc-about-values-wrap > * {
+      min-width:0 !important;
     }
     .fc-about-values-cards {
       grid-template-columns:1fr !important;
     }
     .fc-about-history-wrap {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
       padding:40px 20px !important;
     }
+    .fc-about-history-wrap > * {
+      min-width:0 !important;
+    }
     .fc-about-contact-wrap {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
       padding:40px 20px !important;
+    }
+    .fc-about-contact-wrap > * {
+      min-width:0 !important;
     }
     .fc-about-cta {
       flex-direction:column !important;
@@ -64,13 +76,13 @@
   }
   @media (max-width:480px) {
     .fc-about-stats {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
     }
     .fc-about-history-item {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
     }
     .fc-about-contact-item {
-      grid-template-columns:1fr !important;
+      grid-template-columns:minmax(0,1fr) !important;
     }
   }
 </style>
