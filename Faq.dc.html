@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">자주 묻는 질문</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">실측 전에<br>많이 물으시는 것들</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">여기에 없는 질문은 전화로 물어보셔도 됩니다. 사진을 보내주시면 더 정확하게 답할 수 있습니다.</p>
+  </section>
+
+  <section style="padding:56px 56px 80px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="position:sticky; top:100px; align-self:start">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:20px">분류</div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:14px">
+        <a href="#q-1" style="color:#1F1B16; border-bottom:1px solid #1F1B16; padding-bottom:10px">시공 · 일정</a>
+        <a href="#q-2" style="color:#5D5346; border-bottom:1px solid #E6DFD2; padding-bottom:10px">견적 · 비용</a>
+        <a href="#q-3" style="color:#5D5346; border-bottom:1px solid #E6DFD2; padding-bottom:10px">자재 · 관리</a>
+        <a href="#q-4" style="color:#5D5346; padding-bottom:10px">A/S · 보증</a>
+      </div>
+      <a href="./Quote.dc.html" style="display:inline-block; margin-top:34px; font-size:14px; color:#A2543A; border-bottom:1px solid #D8C3B4; padding-bottom:4px">견적 접수하기</a>
+    </div>
+    <div>
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+        <div id="{{ g.id }}" style="margin-bottom:56px">
+          <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:16px; border-bottom:1px solid #1F1B16; margin-bottom:8px">
+            <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">{{ g.n }}</span>
+            <h2 style="font-family:'Nanum Myeongjo',serif; font-size:24px; font-weight:700; letter-spacing:-0.03em; margin:0">{{ g.title }}</h2>
+          </div>
+          <sc-for list="{{ g.qs }}" as="q" hint-placeholder-count="3">
+            <div style="padding:28px 0; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:30px minmax(0,1fr); gap:20px">
+              <span style="font-family:'Nanum Myeongjo',serif; font-size:17px; color:#B0A595">Q</span>
+              <div>
+                <h3 style="font-size:18px; font-weight:400; margin:0 0 14px; color:#1F1B16; letter-spacing:-0.01em">{{ q.q }}</h3>
+                <p style="font-size:15px; line-height:2.05; color:#5D5346; margin:0; max-width:760px; text-wrap:pretty">{{ q.a }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">답이 없는 질문은 전화로 물어보십시오</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">0000-0000 · 평일 · 주말 09:00 – 19:00</p>
+      </div>
+      <a href="./Quote.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 36px; letter-spacing:0.02em; flex:none" style-hover="background:#A2543A; color:#F7F3EA">견적 접수하기</a>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      groups: [
+        { id: "q-1", n: "01", title: "시공 · 일정", qs: [
+          { q: "살면서 공사할 수 있나요?", a: "필름, 도배, 바닥, 조명 같은 마감 공정은 거주하며 진행할 수 있습니다. 철거 · 목공 · 설비가 들어가는 전예 리모델링은 집을 비우셔야 합니다. 주방이나 욕실 단위 부분 시공은 사용 가능한 공간을 남기고 순차로 진행합니다." },
+          { q: "며칠 걸리나요?", a: "범위에 따라 다릅니다. 필름 단독은 반일 ~ 3일, 주방이나 욕실 단위 부분 시공은 1 ~ 2주, 전예 리모델링은 24평 기준 5주가 표준입니다. 실측 후 주차별 일정표를 드립니다." },
+          { q: "관리사무소 신고는 누가 하나요?", a: "공사 신고, 입주민 동의서, 엘리베이터 사용 협의는 저희가 대행합니다. 예치금은 단지 규정에 따라 고객 명의로 납부합니다." },
+          { q: "냄새나 먼지가 많이 나나요?", a: "도배나 페인트 공사보다 적습니다. 하지 처리에 샌딩이 필요한 경우에만 부분적으로 먼지가 발생하며, 그 구역만 양생 후 진행합니다." },
+        ] },
+        { id: "q-2", n: "02", title: "견적 · 비용", qs: [
+          { q: "견적은 어떻게 산정되나요?", a: "부위별 수량(면적, 문 개수, 창 개수)과 자재 등급, 하지 처리 여부로 산정합니다. 견적서에 항목별 단가를 적어 드리고, 시공 중 추가 청구는 하지 않습니다." },
+          { q: "실측 비용이 따로 있나요?", a: "없습니다. 방문실측은 무료이며, 견적서를 받아보시고 진행하지 않으셔도 비용은 발생하지 않습니다." },
+          { q: "공정을 나누어 진행할 수 있나요?", a: "가능합니다. 다만 배관과 전선은 한 번에 잡는 편이 낫습니다. 마감 공정은 예산에 맞춰 해를 나누어 진행하는 경우도 많습니다." },
+        ] },
+        { id: "q-3", n: "03", title: "자재 · 관리", qs: [
+          { q: "물걸레로 닦아도 되나요?", a: "됩니다. 접착 후 24시간이 지나면 물걸레 청소가 가능합니다. 시너나 아세톤 같은 유기용제는 사용하지 마십시오." },
+          { q: "구조 변경이나 확장이 가능한가요?", a: "내력벽은 철거할 수 없습니다. 비내력 가벽 정리와 붙박이 위치 조정으로 사용 면적을 확보하는 방법을 먼저 검토합니다. 확장은 관리 규약과 구조 검토가 필요합니다." },
+          { q: "색은 어떻게 고르나요?", a: "실측 때 자재 샘플을 가져갑니다. 집 조명 아래에서 벽에 대어 비교하시는 편이 정확합니다. 기존 몰딩이나 바닥 색과 맞춰 추천도 드립니다." },
+        ] },
+        { id: "q-4", n: "04", title: "A/S · 보증", qs: [
+          { q: "보증 기간은 얼마인가요?", a: "시공 완료일로부터 2년입니다. 들뜸, 박리, 이음선 벌어짐은 무상으로 보수합니다." },
+          { q: "A/S는 어떻게 접수하나요?", a: "0000-0000으로 전화해 시공일과 주소를 말씀해 주시면 보증 내역을 조회합니다. 접수 후 영업일 기준 3일 안에 방문합니다." },
+          { q: "보증에서 제외되는 경우가 있나요?", a: "칼자국, 강한 충격에 의한 찢김, 임의 도색이나 타업체 재시공 부위는 제외됩니다. 이 경우에도 부분 보수 견적을 드립니다." },
+        ] },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

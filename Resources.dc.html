@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">자료실</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">계약 전에<br>확인하실 것들</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">사전 점검 체크리스트와 관리사무소 제출 서식을 정리했습니다. 저희와 계약하지 않으셔도 쓰실 수 있습니다.</p>
+  </section>
+
+  <section style="padding:56px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">내려받기</div>
+    <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
+      <sc-for list="{{ files }}" as="f" hint-placeholder-count="6">
+        <a href="#" style="display:grid; grid-template-columns:minmax(0,1fr) 110px; gap:20px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:center" style-hover="background:#EFEADF">
+          <div>
+            <div style="font-size:16px; color:#1F1B16; margin-bottom:7px">{{ f.title }}</div>
+            <div style="font-size:13px; color:#8C8071; line-height:1.7">{{ f.body }}</div>
+          </div>
+          <div style="font-size:13px; color:#A2543A; text-align:right">{{ f.meta }}</div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:72px 56px 40px">
+    <sc-for list="{{ lists }}" as="l" hint-placeholder-count="4">
+      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
+        <div>
+          <div style="font-size:12px; letter-spacing:0.16em; color:#A2543A; margin-bottom:12px">{{ l.n }}</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:23px; font-weight:700; letter-spacing:-0.025em; margin-bottom:12px">{{ l.title }}</div>
+          <p style="font-size:14px; line-height:1.9; color:#8C8071; margin:0">{{ l.body }}</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 56px">
+          <sc-for list="{{ l.items }}" as="i" hint-placeholder-count="8">
+            <label style="display:grid; grid-template-columns:16px minmax(0,1fr); gap:14px; padding:14px 0; border-bottom:1px solid #E6DFD2; cursor:pointer; align-items:start">
+              <span style="width:14px; height:14px; border:1px solid #A79C8C; display:block; margin-top:4px"></span>
+              <span style="font-size:15px; line-height:1.8; color:#3E362C">{{ i }}</span>
+            </label>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+    <div style="border-top:1px solid #1F1B16"></div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">용어 정리</div>
+      <div>
+        <sc-for list="{{ termsA }}" as="t" hint-placeholder-count="5">
+          <div style="padding:17px 0; border-bottom:1px solid #DCD4C6">
+            <div style="font-size:15.5px; color:#1F1B16; margin-bottom:7px">{{ t.k }}</div>
+            <div style="font-size:14.5px; line-height:1.85; color:#5D5346">{{ t.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div>
+        <sc-for list="{{ termsB }}" as="t" hint-placeholder-count="5">
+          <div style="padding:17px 0; border-bottom:1px solid #DCD4C6">
+            <div style="font-size:15.5px; color:#1F1B16; margin-bottom:7px">{{ t.k }}</div>
+            <div style="font-size:14.5px; line-height:1.85; color:#5D5346">{{ t.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">체크리스트를 들고 실측을 받아보십시오</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">항목마다 답을 드립니다. 답하기 어려운 업체라면 견적서를 다시 보셔야 합니다.</p>
+      </div>
+      <a href="./Booking.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 36px; flex:none" style-hover="background:#A2543A; color:#F7F3EA">상담 예약</a>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      files: [
+        { title: "리모델링 사전 점검 체크리스트", body: "계약 전 확인 항목 32개 · 인쇄용 A4 2장", meta: "PDF · 0.4MB" },
+        { title: "견적서 비교표 서식", body: "업체별 공정 · 단가 · 포함 여부를 나란히 적는 표", meta: "XLSX · 0.1MB" },
+        { title: "관리사무소 공사 신고 서식 예시", body: "동의서 · 공사 계획서 · 예치금 안내 예시", meta: "PDF · 0.3MB" },
+        { title: "5주 공정 일정표 (빈 서식)", body: "주차별 공정과 방문 일정을 적는 표", meta: "PDF · 0.2MB" },
+        { title: "준공 검수 체크리스트", body: "공정별 검수 항목과 하자 기록란", meta: "PDF · 0.3MB" },
+        { title: "자재 선택 기록표", body: "부위별 제품명 · 색상 · 수량을 남기는 표", meta: "XLSX · 0.1MB" },
+      ],
+      lists: [
+        { n: "체크리스트 01", title: "계약 전", body: "여기서 걸러지지 않는 문제는 대부분 시공 중에 비용으로 돌아옵니다.", items: [
+          "공정별 수량과 단가가 적힌 견적서를 받았는가",
+          "자재 제품명과 등급이 명시되어 있는가",
+          "포함되지 않는 항목이 목록으로 적혀 있는가",
+          "준공 예정일과 주차별 일정이 있는가",
+          "하자 보증 기간과 범위가 계약서에 있는가",
+          "대금 지급 시점이 공정 진행과 연동되어 있는가",
+          "실내건축공사업 등록 여부를 확인했는가",
+          "현장 담당자와 연락 방법이 정해졌는가",
+        ] },
+        { n: "체크리스트 02", title: "착공 전", body: "관리사무소 절차는 단지마다 다릅니다. 최소 1주 전에 확인하십시오.", items: [
+          "관리사무소 공사 신고와 입주민 동의를 마쳤는가",
+          "예치금과 엘리베이터 사용료를 확인했는가",
+          "작업 가능 시간과 소음 공정 제한을 확인했는가",
+          "공용부 보양 범위를 협의했는가",
+          "이웃 세대에 공사 기간을 알렸는가",
+          "귀중품과 개인 물품을 반출했는가",
+          "창호와 가구 발주가 완료되었는가",
+          "임시 거주와 이사 일정이 정해졌는가",
+        ] },
+        { n: "체크리스트 03", title: "시공 중", body: "숨는 공정은 덮이기 전에 사진으로 남겨두는 편이 안전합니다.", items: [
+          "설비 · 전기 배선을 매립 전에 사진으로 남겼는가",
+          "방수 시공 후 담수 시험을 확인했는가",
+          "타일 줄눈 색과 패턴이 협의한 대로인가",
+          "필름 색상이 샘플과 같은지 확인했는가",
+          "조명 위치와 색온도를 점등해 확인했는가",
+          "변경 사항이 서면으로 정리되었는가",
+          "폐기물이 매일 정리되고 있는가",
+          "다음 날 작업 범위를 안내받았는가",
+        ] },
+        { n: "체크리스트 04", title: "준공 · 입주 후", body: "하자는 초기에 접수하는 편이 처리가 빠릅니다.", items: [
+          "문과 창의 개폐, 잠금 상태를 확인했는가",
+          "수압과 배수, 누수 여부를 확인했는가",
+          "타일 들뜸음과 줄눈 상태를 확인했는가",
+          "도배 이음선과 필름 모서리를 확인했는가",
+          "콘센트와 스위치가 모두 작동하는가",
+          "하자 목록을 작성하고 서명했는가",
+          "보증서와 자재 내역을 받았는가",
+          "A/S 접수 방법을 안내받았는가",
+        ] },
+      ],
+      termsA: [
+        { k: "하지 처리", v: "마감재를 붙이기 전 면을 고르게 만드는 작업. 퍼티, 샌딩, 방균 처리가 포함됩니다." },
+        { k: "양생", v: "방수나 도장이 굳는 데 필요한 시간. 단축하면 균열과 박리의 원인이 됩니다." },
+        { k: "보양", v: "완성된 면과 공용부를 보호재로 덮어 손상을 막는 작업." },
+        { k: "매립", v: "배관이나 배선을 벽 · 바닥 속에 넣는 것. 덮이기 전에 위치를 확인해야 합니다." },
+        { k: "탄성코트", v: "발코니 벽면에 도포하는 탄성 도막. 결로와 곰팡이를 줄입니다." },
+      ],
+      termsB: [
+        { k: "정배 · 초배", v: "도배에서 마감 벽지를 붙이는 것이 정배, 그 아래 바탕을 만드는 것이 초배입니다." },
+        { k: "히든 도어", v: "벽면과 같은 마감으로 처리해 문틀이 드러나지 않는 문." },
+        { k: "포세린 타일", v: "흡수율이 낮고 강도가 높은 타일. 바닥과 물 쓰는 공간에 적합합니다." },
+        { k: "내력벽", v: "건물 하중을 받는 벽. 철거가 불가능하며 구조 변경의 한계가 됩니다." },
+        { k: "준공 청소", v: "시공 잔재와 먼지를 제거하는 청소. 입주 청소와는 범위가 다릅니다." },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

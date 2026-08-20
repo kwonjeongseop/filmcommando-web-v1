@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F7F5F1; }
+  * { box-sizing: border-box; }
+  a { color:#1B2A41; text-decoration:none; }
+  a:hover { color:#7A5C33; }
+  ::selection { background:#1B2A41; color:#fff; }
+</style>
+</helmet>
+
+<div style="font-family:'IBM Plex Sans KR',sans-serif; color:#14181D; background:#F7F5F1; min-width:1180px; overflow-x:hidden">
+
+  <div style="background:#1B2A41; color:#C9D3E0; font-size:13px; letter-spacing:0.02em">
+    <div style="max-width:1240px; margin:0 auto; padding:9px 40px; display:flex; justify-content:space-between; align-items:center">
+      <span>아파트 · 연립 · 주택 주거공간 인테리어 필름 전문 시공</span>
+      <div style="display:flex; gap:22px; align-items:center">
+        <span>상담 09:00 – 19:00</span>
+        <span style="color:#fff; font-weight:600; letter-spacing:0.04em">0000 - 0000</span>
+      </div>
+    </div>
+  </div>
+
+  <header style="position:sticky; top:0; z-index:20; background:rgba(247,245,241,0.94); backdrop-filter:blur(8px); border-bottom:1px solid #E2DDD4">
+    <div style="max-width:1240px; margin:0 auto; padding:0 40px; height:76px; display:flex; align-items:center; justify-content:space-between">
+      <a href="#" style="display:flex; align-items:baseline; gap:10px">
+        <span style="font-family:'Noto Serif KR',serif; font-weight:700; font-size:23px; letter-spacing:-0.02em; color:#14181D">필름특공대</span>
+        <span style="font-size:11px; letter-spacing:0.22em; color:#8C8578; padding-bottom:2px">FILM UNIT</span>
+      </a>
+      <nav style="display:flex; gap:30px; align-items:center; font-size:15px; font-weight:500">
+        <a href="#about">회사소개</a>
+        <a href="#service">시공서비스</a>
+        <a href="#case">시공사례</a>
+        <a href="#process">시공절차</a>
+        <a href="#review">고객후기</a>
+        <a href="#notice">공지사항</a>
+        <a href="#quote" style="background:#1B2A41; color:#fff; padding:11px 20px; font-weight:600" style-hover="background:#14181D">견적 접수</a>
+      </nav>
+    </div>
+  </header>
+
+  <section style="max-width:1240px; margin:0 auto; padding:0 40px">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; padding:88px 0 76px; align-items:center">
+      <div>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:30px">
+          <span style="width:34px; height:1px; background:#7A5C33"></span>
+          <span style="font-size:13px; letter-spacing:0.16em; color:#7A5C33; font-weight:600">도배 대신 필름</span>
+        </div>
+        <h1 style="font-family:'Noto Serif KR',serif; font-weight:700; font-size:56px; line-height:1.28; letter-spacing:-0.035em; margin:0 0 26px; text-wrap:balance">
+          살던 집 그대로,<br>벽면만 바꿉니다.
+        </h1>
+        <p style="font-size:17px; line-height:1.85; color:#4A5058; margin:0 0 40px; max-width:470px; text-wrap:pretty">
+          도배를 걷어내는 대신 인테리어 필름으로 마감합니다. 이사 없이 하루에서 사흘, 생활 오염과 습기에 강한 표면으로 정리됩니다.
+        </p>
+        <div style="display:flex; gap:14px; margin-bottom:44px">
+          <a href="#quote" style="background:#1B2A41; color:#fff; font-size:16px; font-weight:600; padding:17px 34px">무료 방문실측 신청</a>
+          <a href="#case" style="border:1px solid #C9C2B6; color:#14181D; font-size:16px; font-weight:500; padding:17px 30px" style-hover="border-color:#1B2A41">시공사례 보기</a>
+        </div>
+        <div style="display:flex; gap:44px; border-top:1px solid #E2DDD4; padding-top:26px">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+            <div>
+              <div style="font-family:'Noto Serif KR',serif; font-size:27px; font-weight:600; letter-spacing:-0.02em">{{ s.v }}</div>
+              <div style="font-size:13px; color:#8C8578; margin-top:5px">{{ s.k }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="position:relative; height:560px">
+        <image-slot id="a-hero" shape="rect" fit="cover" placeholder="메인 시공 사진 (거실 벽면 필름)"></image-slot>
+        <div style="position:absolute; left:-28px; bottom:34px; background:#F7F5F1; border-left:3px solid #7A5C33; padding:18px 24px; max-width:250px; pointer-events:none">
+          <div style="font-size:13px; color:#7A5C33; font-weight:600; margin-bottom:6px">A/S 보증</div>
+          <div style="font-size:15px; line-height:1.6; color:#14181D">시공 후 2년간 들뜸·박리 무상 보수</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" style="background:#EFEBE4; border-top:1px solid #E2DDD4; border-bottom:1px solid #E2DDD4">
+    <div style="max-width:1240px; margin:0 auto; padding:0 40px">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr)">
+        <sc-for list="{{ trust }}" as="t" hint-placeholder-count="3">
+          <div style="padding:52px 40px 52px 0; border-right:1px solid #E2DDD4">
+            <div style="font-size:12px; letter-spacing:0.14em; color:#8C8578; margin-bottom:16px">0{{ t.n }}</div>
+            <h3 style="font-family:'Noto Serif KR',serif; font-size:22px; font-weight:600; margin:0 0 12px; letter-spacing:-0.02em">{{ t.title }}</h3>
+            <p style="font-size:15px; line-height:1.8; color:#4A5058; margin:0; text-wrap:pretty">{{ t.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="service" style="max-width:1240px; margin:0 auto; padding:96px 40px">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:52px">
+      <div>
+        <div style="font-size:13px; letter-spacing:0.16em; color:#7A5C33; font-weight:600; margin-bottom:16px">SERVICE</div>
+        <h2 style="font-family:'Noto Serif KR',serif; font-size:40px; font-weight:700; letter-spacing:-0.03em; margin:0">시공 서비스 안내</h2>
+      </div>
+      <p style="font-size:15px; line-height:1.8; color:#4A5058; max-width:380px; margin:0; text-wrap:pretty">거주 중인 집에서 부위별로 나누어 진행합니다. 필요한 곳만 골라 시공할 수 있습니다.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid #14181D">
+      <sc-for list="{{ services }}" as="sv" hint-placeholder-count="6">
+        <div style="padding:34px 34px 40px 0; border-bottom:1px solid #E2DDD4">
+          <div style="display:flex; align-items:baseline; gap:14px; margin-bottom:14px">
+            <span style="font-size:12px; color:#8C8578; letter-spacing:0.1em">{{ sv.n }}</span>
+            <h3 style="font-size:20px; font-weight:600; margin:0; letter-spacing:-0.02em">{{ sv.title }}</h3>
+          </div>
+          <p style="font-size:15px; line-height:1.8; color:#4A5058; margin:0 0 16px; text-wrap:pretty">{{ sv.body }}</p>
+          <div style="font-size:13px; color:#7A5C33">{{ sv.meta }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="case" style="background:#1B2A41; color:#F7F5F1">
+    <div style="max-width:1240px; margin:0 auto; padding:96px 40px">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px">
+        <div>
+          <div style="font-size:13px; letter-spacing:0.16em; color:#9FB0C4; font-weight:600; margin-bottom:16px">PORTFOLIO</div>
+          <h2 style="font-family:'Noto Serif KR',serif; font-size:40px; font-weight:700; letter-spacing:-0.03em; margin:0; color:#fff">시공 사례</h2>
+        </div>
+        <a href="#" style="color:#C9D3E0; font-size:15px; border-bottom:1px solid #4A5E7A; padding-bottom:4px">전체 사례 보기</a>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px">
+        <sc-for list="{{ cases }}" as="c" hint-placeholder-count="3">
+          <div>
+            <div style="position:relative; height:300px; margin-bottom:20px">
+              <image-slot id="{{ c.slot }}" shape="rect" fit="cover" placeholder="{{ c.ph }}"></image-slot>
+            </div>
+            <div style="font-size:13px; color:#9FB0C4; margin-bottom:8px">{{ c.tag }}</div>
+            <h3 style="font-size:20px; font-weight:600; margin:0 0 8px; color:#fff; letter-spacing:-0.02em">{{ c.title }}</h3>
+            <p style="font-size:14px; line-height:1.75; color:#C9D3E0; margin:0">{{ c.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" style="max-width:1240px; margin:0 auto; padding:96px 40px">
+    <div style="font-size:13px; letter-spacing:0.16em; color:#7A5C33; font-weight:600; margin-bottom:16px">PROCESS</div>
+    <h2 style="font-family:'Noto Serif KR',serif; font-size:40px; font-weight:700; letter-spacing:-0.03em; margin:0 0 56px">시공 절차</h2>
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:24px">
+      <sc-for list="{{ steps }}" as="p" hint-placeholder-count="5">
+        <div style="border-top:2px solid #14181D; padding-top:20px">
+          <div style="font-family:'Noto Serif KR',serif; font-size:15px; font-weight:600; color:#7A5C33; margin-bottom:14px">STEP {{ p.n }}</div>
+          <h3 style="font-size:18px; font-weight:600; margin:0 0 10px; letter-spacing:-0.02em">{{ p.title }}</h3>
+          <p style="font-size:14px; line-height:1.75; color:#4A5058; margin:0; text-wrap:pretty">{{ p.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="review" style="background:#EFEBE4; border-top:1px solid #E2DDD4">
+    <div style="max-width:1240px; margin:0 auto; padding:88px 40px">
+      <div style="display:flex; align-items:baseline; gap:20px; margin-bottom:44px">
+        <h2 style="font-family:'Noto Serif KR',serif; font-size:34px; font-weight:700; letter-spacing:-0.03em; margin:0">고객 후기</h2>
+        <span style="font-size:15px; color:#4A5058">평점 4.9 / 5.0 · 후기 312건</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:30px">
+        <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+          <div style="background:#F7F5F1; padding:32px 30px; border-top:2px solid #1B2A41">
+            <div style="font-size:14px; color:#7A5C33; letter-spacing:0.14em; margin-bottom:16px">★★★★★</div>
+            <p style="font-size:16px; line-height:1.85; color:#14181D; margin:0 0 22px; text-wrap:pretty">{{ r.body }}</p>
+            <div style="font-size:13px; color:#8C8578">{{ r.who }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="quote" style="background:#14181D; color:#fff">
+    <div style="max-width:1240px; margin:0 auto; padding:80px 40px; display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center">
+      <div>
+        <h2 style="font-family:'Noto Serif KR',serif; font-size:38px; font-weight:700; letter-spacing:-0.03em; margin:0 0 18px; color:#fff">방문실측은 무료입니다</h2>
+        <p style="font-size:16px; line-height:1.85; color:#B9BEC5; margin:0 0 30px; max-width:420px; text-wrap:pretty">집 상태와 부위를 확인한 뒤 견적을 드립니다. 실측 후 견적서를 받고 결정하셔도 됩니다.</p>
+        <div style="display:flex; gap:36px; font-size:15px; color:#B9BEC5">
+          <div>
+            <div style="font-size:12px; letter-spacing:0.12em; color:#7A8290; margin-bottom:6px">전화 상담</div>
+            <div style="font-size:22px; color:#fff; font-weight:600; letter-spacing:0.02em">0000 - 0000</div>
+          </div>
+          <div>
+            <div style="font-size:12px; letter-spacing:0.12em; color:#7A8290; margin-bottom:6px">상담 시간</div>
+            <div style="font-size:22px; color:#fff; font-weight:600">09:00 – 19:00</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#F7F5F1; padding:34px 32px">
+        <div style="font-size:17px; font-weight:600; color:#14181D; margin-bottom:22px">견적 접수</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px">
+          <input placeholder="이름" style="border:1px solid #D6D0C5; background:#fff; padding:14px 14px; font-size:15px; font-family:inherit; color:#14181D">
+          <input placeholder="연락처" style="border:1px solid #D6D0C5; background:#fff; padding:14px 14px; font-size:15px; font-family:inherit; color:#14181D">
+          <input placeholder="주소 / 지역" style="border:1px solid #D6D0C5; background:#fff; padding:14px 14px; font-size:15px; font-family:inherit; color:#14181D">
+          <select style="border:1px solid #D6D0C5; background:#fff; padding:14px 12px; font-size:15px; font-family:inherit; color:#4A5058">
+            <option>건물 유형 선택</option>
+            <option>아파트</option>
+            <option>연립 · 다세대</option>
+            <option>단독주택</option>
+          </select>
+        </div>
+        <textarea placeholder="시공 희망 품목, 면적 또는 창 개수, 희망 시공일" style="width:100%; border:1px solid #D6D0C5; background:#fff; padding:14px; font-size:15px; font-family:inherit; height:96px; resize:none; color:#14181D; margin-bottom:14px"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <span style="font-size:13px; color:#8C8578">사진 첨부 가능 · 개인정보 수집 동의</span>
+          <button style="background:#1B2A41; color:#fff; border:0; padding:15px 30px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer" style-hover="background:#14181D">접수하기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="notice" style="background:#F7F5F1; border-top:1px solid #E2DDD4">
+    <div style="max-width:1240px; margin:0 auto; padding:60px 40px 40px; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:50px">
+      <div>
+        <div style="font-family:'Noto Serif KR',serif; font-weight:700; font-size:21px; margin-bottom:14px">필름특공대</div>
+        <p style="font-size:14px; line-height:1.85; color:#8C8578; margin:0">주거공간 인테리어 필름 시공<br>대표 000 · 사업자등록번호 000-00-00000<br>주소 (나중에 수정)</p>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:600; letter-spacing:0.1em; color:#14181D; margin-bottom:16px">공지사항</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:#4A5058">
+          <a href="#">2026년 하계 시공 일정 안내</a>
+          <a href="#">자재 단가 조정 안내 (8월)</a>
+          <a href="#">A/S 접수 절차 변경 안내</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:600; letter-spacing:0.1em; color:#14181D; margin-bottom:16px">문의</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px; color:#4A5058">
+          <a href="#quote">견적 · 접수</a>
+          <a href="#">제휴 · 협력 문의</a>
+          <a href="#">자주 묻는 질문</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1240px; margin:0 auto; padding:22px 40px 40px; border-top:1px solid #E2DDD4; font-size:13px; color:#A29B8E">© 2026 필름특공대. All rights reserved.</div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      stats: [
+        { v: "12년", k: "주거공간 시공 경력" },
+        { v: "4,800세대", k: "누적 시공" },
+        { v: "2년", k: "A/S 보증기간" },
+      ],
+      trust: [
+        { n: 1, title: "무료 방문실측", body: "전화나 온라인으로 접수하시면 방문해 벽면 상태와 부위를 확인하고 견적을 산출합니다. 실측 비용은 받지 않습니다." },
+        { n: 2, title: "2년 A/S 보증", body: "시공 후 2년간 들뜸, 박리, 이음선 벌어짐은 무상으로 보수합니다. 보증 내역은 시공 완료 시 등록됩니다." },
+        { n: 3, title: "거주 중 시공", body: "이사나 짐 정리 없이 부위별로 나누어 진행합니다. 하루 단위 마감이 가능해 생활 불편을 최소화합니다." },
+      ],
+      services: [
+        { n: "01", title: "벽면 · 천장 필름", body: "도배 대신 필름으로 마감합니다. 물걸레 청소가 가능하고 곰팡이와 오염에 강합니다.", meta: "1~3일 · 평형별 견적" },
+        { n: "02", title: "몰딩 · 걸레받이", body: "누렇게 변색된 몰딩과 걸레받이를 벽면 색과 맞춰 정리합니다.", meta: "반일~1일" },
+        { n: "03", title: "현관문 · 방문 · 문틀", body: "문짝과 문틀을 같은 톤으로 시공해 교체 없이 새 문의 느낌을 냅니다.", meta: "문 1개당 견적" },
+        { n: "04", title: "창틀 · 샷시", body: "낡은 샷시 프레임에 내후성 필름을 적용합니다.", meta: "창 개수별 견적" },
+        { n: "05", title: "주방 상하부장", body: "싱크대 도어와 몸통을 필름으로 감싸 주방 전체 분위기를 바꿉니다.", meta: "1~2일" },
+        { n: "06", title: "신발장 · 붙박이장", body: "현관 신발장과 붙박이장 도어를 벽면과 통일감 있게 마감합니다.", meta: "반일~1일" },
+      ],
+      cases: [
+        { slot: "a-case1", ph: "사례 사진 1", tag: "아파트 · 24평", title: "강동구 거실 · 주방 벽면", body: "도배를 걷어내고 벽면 전체를 무광 화이트 필름으로 마감. 3일 시공." },
+        { slot: "a-case2", ph: "사례 사진 2", tag: "연립 · 18평", title: "성북구 현관문 · 방문 5개", body: "변색된 문짝과 문틀을 다크 오크 톤으로 통일. 1일 시공." },
+        { slot: "a-case3", ph: "사례 사진 3", tag: "단독주택", title: "용인 주방장 · 신발장", body: "주방 상하부장과 신발장 도어를 그레이지 톤으로 교체 없이 정리. 2일 시공." },
+      ],
+      steps: [
+        { n: "1", title: "상담 접수", body: "전화 또는 온라인 폼으로 희망 부위와 지역을 알려주십시오." },
+        { n: "2", title: "무료 방문실측", body: "현장에서 면적, 벽면 상태, 부위를 확인합니다." },
+        { n: "3", title: "견적 확정", body: "자재와 부위별 단가를 명시한 견적서를 드립니다." },
+        { n: "4", title: "시공", body: "가구와 바닥을 보호한 뒤 부위별로 진행합니다." },
+        { n: "5", title: "검수 · A/S 등록", body: "함께 확인한 뒤 2년 보증을 등록합니다." },
+      ],
+      reviews: [
+        { body: "도배를 다시 할지 고민했는데 필름으로 하고 훨씬 만족합니다. 아이가 낙서해도 물걸레로 닦입니다.", who: "송파구 아파트 · 33평" },
+        { body: "실측 오셔서 필요한 부위만 정확히 짚어주셨습니다. 견적도 처음 말씀한 금액 그대로였습니다.", who: "부천 연립 · 21평" },
+        { body: "현관문 하나 바꾸는 걸로 집 입구 분위기가 달라졌습니다. 하루 만에 끝났습니다.", who: "일산 아파트 · 25평" },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">패키지 상품</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">포함 공정과 가격을<br>먼저 적어둡니다</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">24평 아파트 기준 정찰 금액입니다. 평형과 자재 등급, 구조 변경 여부에 따라 실측 후 조정합니다. 부가세 별도.</p>
+  </section>
+
+  <section style="padding:64px 56px 40px">
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:#DCD4C6; border:1px solid #DCD4C6">
+      <sc-for list="{{ packages }}" as="p" hint-placeholder-count="3">
+        <div style="background:#F4F1EA; padding:38px 34px 40px; display:flex; flex-direction:column">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:20px">
+            <h2 style="font-family:'Nanum Myeongjo',serif; font-size:25px; font-weight:800; letter-spacing:-0.03em; margin:0">{{ p.name }}</h2>
+            <span style="font-size:12px; color:#A2543A; letter-spacing:0.06em">{{ p.tag }}</span>
+          </div>
+          <p style="font-size:15px; line-height:1.9; color:#5D5346; margin:0 0 26px; text-wrap:pretty">{{ p.body }}</p>
+          <div style="border-top:1px solid #C9C0B0; padding-top:20px; margin-bottom:26px">
+            <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:6px">
+              <span style="font-family:'Nanum Myeongjo',serif; font-size:34px; font-weight:800; letter-spacing:-0.04em">{{ p.price }}</span>
+              <span style="font-size:14px; color:#8C8071">{{ p.unit }}</span>
+            </div>
+            <div style="font-size:13px; color:#9A8F80">{{ p.range }}</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:14px">포함 공정</div>
+            <div style="display:flex; flex-direction:column; gap:9px; margin-bottom:24px">
+              <sc-for list="{{ p.includes }}" as="i" hint-placeholder-count="6">
+                <div style="display:grid; grid-template-columns:16px minmax(0,1fr); gap:12px; font-size:14.5px; line-height:1.7; color:#3E362C">
+                  <span style="color:#A2543A">·</span><span>{{ i }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:14px">불포함</div>
+            <div style="font-size:14px; line-height:1.9; color:#8C8071; margin-bottom:28px">{{ p.excludes }}</div>
+          </div>
+          <a href="./Quote.dc.html" style="border:1px solid #1F1B16; text-align:center; font-size:15px; padding:16px 20px" style-hover="background:#1F1B16; color:#F4F1EA">이 패키지로 상담</a>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:60px 56px 76px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">평형별 금액</div>
+    <div>
+      <div style="display:grid; grid-template-columns:130px repeat(3,minmax(0,1fr)); gap:28px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
+        <div>평형</div><div>필름 단독</div><div>부분 시공 (주방+욕실)</div><div>전예 리모델링</div>
+      </div>
+      <sc-for list="{{ table }}" as="t" hint-placeholder-count="5">
+        <div style="display:grid; grid-template-columns:130px repeat(3,minmax(0,1fr)); gap:28px; padding:20px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:18px; letter-spacing:-0.02em">{{ t.size }}</div>
+          <div style="font-size:15px; color:#3E362C">{{ t.film }}</div>
+          <div style="font-size:15px; color:#3E362C">{{ t.partial }}</div>
+          <div style="font-size:15px; color:#3E362C">{{ t.full }}</div>
+        </div>
+      </sc-for>
+      <p style="font-size:13px; line-height:1.9; color:#8C8071; margin:20px 0 0">스탠다드 자재 기준 금액입니다. 구조 변경, 시스템 에어컨, 붙박이 추가, 프리미엄 자재는 별도 산정합니다. 정확한 금액은 방문실측 후 견적서로 드립니다.</p>
+    </div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">선택 추가</div>
+      <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
+        <sc-for list="{{ options }}" as="o" hint-placeholder-count="8">
+          <div style="display:grid; grid-template-columns:minmax(0,1fr) 150px; gap:20px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+            <div style="font-size:15px; color:#3E362C">{{ o.title }}</div>
+            <div style="font-size:14px; color:#A2543A; text-align:right">{{ o.price }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">결제 · 계약</div>
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+      <sc-for list="{{ terms }}" as="t" hint-placeholder-count="3">
+        <div style="border-top:1px solid #1F1B16; padding-top:22px">
+          <h3 style="font-family:'Nanum Myeongjo',serif; font-size:20px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
+          <p style="font-size:15px; line-height:1.95; color:#5D5346; margin:0; text-wrap:pretty">{{ t.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">우리 집 금액은 계산기로 먼저</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">평형과 공정을 고르면 예상 금액대가 바로 나옵니다. 확정 견적은 실측 후 드립니다.</p>
+      </div>
+      <div style="display:flex; gap:12px; flex:none">
+        <a href="./Estimator.dc.html" style="border:1px solid #4A4238; color:#EDE7DC; font-size:15px; padding:18px 28px" style-hover="border-color:#A2543A">견적 계산기</a>
+        <a href="./Booking.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 32px" style-hover="background:#A2543A; color:#F7F3EA">상담 예약</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      packages: [
+        {
+          name: "필름 단독", tag: "반일 ~ 3일", price: "180만원", unit: "부터", range: "24평 기준 180 ~ 420만원",
+          body: "교체 없이 표면만 정리하는 범위입니다. 거주 중에 진행할 수 있고 하루 단위로 마감합니다.",
+          includes: ["문 · 문틀 · 몰딩 필름", "창틀 · 샷시 필름", "주방 가구 도어 · 신발장", "실측 · 자재 · 폐기물 처리", "2년 무상 보증"],
+          excludes: "도배, 바닥재, 가구 교체, 조명 공사",
+        },
+        {
+          name: "부분 시공", tag: "1 ~ 2주", price: "680만원", unit: "부터", range: "주방 680만원 · 욕실 520만원부터",
+          body: "주방이나 욕실 한 공간을 철거부터 마감까지 진행합니다. 배관과 방수를 포함합니다.",
+          includes: ["철거 · 폐기물 반출", "설비 배관 · 전기 배선", "방수 · 타일", "주방 가구 또는 위생도기", "실리콘 · 청소 마감", "2년 무상 보증"],
+          excludes: "타 공간 도배 · 바닥, 창호 교체",
+        },
+        {
+          name: "전예 리모델링", tag: "5주 표준", price: "3,900만원", unit: "부터", range: "24평 기준 3,900 ~ 5,400만원",
+          body: "철거부터 입주 청소까지 열두 공정 전체입니다. 설계 담당자가 도면과 일정표를 만듭니다.",
+          includes: ["12공정 전체 시공", "세대별 도면 · 주차별 일정표", "관리사무소 신고 대행", "창호 · 주방 가구 · 위생도기", "준공 청소 · 검수", "2년 무상 보증"],
+          excludes: "구조 변경 · 확장, 시스템 에어컨, 이사 · 입주 청소 외 별도 요청",
+        },
+      ],
+      table: [
+        { size: "18평 이하", film: "180만원부터", partial: "1,050만원부터", full: "3,200만원부터" },
+        { size: "24평", film: "220만원부터", partial: "1,200만원부터", full: "3,900만원부터" },
+        { size: "32평", film: "280만원부터", partial: "1,350만원부터", full: "4,800만원부터" },
+        { size: "40평", film: "340만원부터", partial: "1,500만원부터", full: "5,900만원부터" },
+        { size: "상가 · 사무실", film: "면적별 협의", partial: "면적별 협의", full: "면적 · 용도별 협의" },
+      ],
+      options: [
+        { title: "탄성코트 (발코니 2개소)", price: "60만원부터" },
+        { title: "시스템 에어컨 (2대 기준)", price: "320만원부터" },
+        { title: "붙박이장 추가 (2400mm)", price: "180만원부터" },
+        { title: "중문 설치 (3연동)", price: "140만원부터" },
+        { title: "현관 · 주방 포세린 타일 업그레이드", price: "80만원부터" },
+        { title: "실크 벽지 → 친환경 벽지 변경", price: "40만원부터" },
+        { title: "구조 변경 · 벽 철거 (검토 후)", price: "별도 산정" },
+        { title: "입주 청소 (준공 청소 외)", price: "35만원부터" },
+      ],
+      terms: [
+        { title: "계약금 · 중도금 · 잔금", body: "계약 시 20%, 2주차 착수 시 40%, 준공 검수 후 40%로 나눕니다. 세금계산서와 현금영수증을 발행합니다." },
+        { title: "변경은 서면으로", body: "시공 중 범위나 자재가 바뀌면 변경 내역과 금액을 문서로 확인받은 뒤 진행합니다. 임의 추가 청구는 없습니다." },
+        { title: "지연에 대한 기준", body: "당사 사유로 준공이 지연되면 지연 일수에 따라 잔금에서 조정합니다. 자재 단종이나 관리사무소 승인 지연은 별도 협의합니다." },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

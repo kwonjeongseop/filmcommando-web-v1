@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 서비스</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">열두 공정을<br>직접 시공합니다</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">공정별 작업 범위와 자재, 소요 일수를 적었습니다. 전예 · 부분 · 필름 단독 · 상가 어느 범위로도 구성할 수 있습니다.</p>
+  </section>
+
+  <section style="padding:44px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 유형</div>
+    <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px">
+      <sc-for list="{{ types }}" as="t" hint-placeholder-count="4">
+        <div style="border-left:1px solid #DCD4C6; padding-left:22px">
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:19px; letter-spacing:-0.02em; margin-bottom:9px">{{ t.title }}</div>
+          <div style="font-size:14px; line-height:1.8; color:#5D5346; margin-bottom:9px">{{ t.body }}</div>
+          <div style="font-size:13px; color:#A2543A">{{ t.meta }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:76px 56px 40px">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
+        <div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:800; letter-spacing:-0.03em; margin-bottom:10px">{{ g.week }}</div>
+          <div style="font-size:13px; color:#9A8F80; line-height:1.8">{{ g.days }}</div>
+        </div>
+        <div>
+          <sc-for list="{{ g.trades }}" as="t" hint-placeholder-count="3">
+            <div style="display:grid; grid-template-columns:56px minmax(0,1fr) minmax(0,1.5fr) 130px; gap:28px; align-items:start; padding:26px 4px; border-bottom:1px solid #E6DFD2" style-hover="background:#EFEADF">
+              <div style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#B0A595; letter-spacing:0.06em; padding-top:4px">{{ t.n }}</div>
+              <div>
+                <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 8px">{{ t.title }}</h3>
+                <div style="font-size:13px; color:#A2543A; line-height:1.7">{{ t.spec }}</div>
+              </div>
+              <p style="font-size:15px; line-height:1.9; color:#5D5346; margin:0; text-wrap:pretty">{{ t.body }}</p>
+              <div style="font-size:13px; color:#8C8071; text-align:right; line-height:1.8">{{ t.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,420px); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">부분 시공</div>
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-size:28px; font-weight:700; letter-spacing:-0.03em; margin:0 0 20px">주방 · 욕실 단위로도 진행합니다</h2>
+        <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0 0 30px; text-wrap:pretty">공간 하나만 손보는 경우에도 철거 · 방수 · 설비 · 타일 · 가구를 같은 팀이 맡습니다. 거주 중이라면 사용 가능한 화장실과 조리 공간을 확보한 뒤 일정을 나눕니다.</p>
+        <sc-for list="{{ partial }}" as="p" hint-placeholder-count="4">
+          <div style="display:grid; grid-template-columns:160px minmax(0,1fr) 120px; gap:24px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:18px; letter-spacing:-0.02em">{{ p.title }}</div>
+            <div style="font-size:15px; line-height:1.8; color:#5D5346">{{ p.body }}</div>
+            <div style="font-size:14px; color:#A2543A; text-align:right">{{ p.days }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative; height:360px">
+        <image-slot id="sv-partial" shape="rect" fit="cover" placeholder="주방 또는 욕실 부분 시공 사진"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 전 확인</div>
+    <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 60px">
+      <sc-for list="{{ notes }}" as="n" hint-placeholder-count="4">
+        <div style="display:grid; grid-template-columns:22px minmax(0,1fr); gap:16px">
+          <span style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#A2543A; padding-top:3px">{{ n.n }}</span>
+          <p style="font-size:15px; line-height:1.95; color:#5D5346; margin:0; text-wrap:pretty">{{ n.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">어느 공정까지 필요한지 함께 정합니다</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">실측 후 공정별 견적서와 주차별 일정표를 드립니다. 실측 비용은 없습니다.</p>
+      </div>
+      <div style="display:flex; gap:12px; flex:none">
+        <a href="./Estimator.dc.html" style="border:1px solid #4A4238; color:#EDE7DC; font-size:15px; padding:18px 28px" style-hover="border-color:#A2543A">견적 계산기</a>
+        <a href="./Quote.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 32px" style-hover="background:#A2543A; color:#F7F3EA">방문실측 신청</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      types: [
+        { title: "전예 리모델링", body: "철거부터 입주까지 열두 공정 전체", meta: "5주 표준 · 24평 3,900만원부터" },
+        { title: "부분 시공", body: "주방 · 욕실 · 방 단위로 범위 지정", meta: "1 ~ 2주 · 680만원부터" },
+        { title: "필름 단독", body: "문 · 몰딩 · 창틀 · 가구 도어 마감", meta: "반일 ~ 3일 · 180만원부터" },
+        { title: "상가 · 사무실", body: "영업 유지 야간 · 주말 분할 시공", meta: "면적 · 공정별 협의" },
+      ],
+      groups: [
+        { week: "1주차", days: "철거 · 창호 · 설비 & 전기 1차", trades: [
+          { n: "01", title: "철거", spec: "폐기물 반출 · 보양 포함", body: "벽지, 바닥재, 기존 가구와 위생도기를 걷어냅니다. 공용부 보양과 폐기물 반출까지 포함합니다.", meta: "2 ~ 3일" },
+          { n: "02", title: "창호", spec: "PVC · AL 샷시 / 복층 유리", body: "샷시와 유리를 교체하고 외부 실리콘으로 마감합니다. 주문 제작 기간이 있어 계약 직후 발주합니다.", meta: "1 ~ 2일" },
+          { n: "03", title: "설비 · 전기 1차", spec: "PB 배관 · CD관 매립", body: "수전과 배수 위치를 옮기고 콘센트 · 스위치 배선을 벽 속에 매립합니다. 이 단계에서 위치를 확정합니다.", meta: "2일" },
+        ] },
+        { week: "2주차", days: "목공 · 타일 & 방수", trades: [
+          { n: "04", title: "목공", spec: "석고 2겹 · 히든 도어 가능", body: "천장과 벽체, 문틀, 몰딩, 붙박이 하부틀을 제작합니다. 공간의 형태가 이 공정에서 결정됩니다.", meta: "3 ~ 4일" },
+          { n: "05", title: "방수", spec: "액체 방수 2회 + 도막", body: "욕실과 발코니에 방수층을 도포하고 양생합니다. 양생 시간은 단축할 수 없습니다.", meta: "1일 + 양생" },
+          { n: "06", title: "타일", spec: "포세린 · 폴리싱 · 모자이크", body: "욕실 · 주방 · 현관 타일을 붙이고 줄눈을 마감합니다. 패턴과 줄눈 색은 사전에 확인합니다.", meta: "2 ~ 3일" },
+        ] },
+        { week: "3주차", days: "탄성코트 · 필름 · 조명 & 전기 2차", trades: [
+          { n: "07", title: "탄성코트", spec: "결로 방지 도장 2 ~ 3회", body: "발코니와 외벽면에 탄성 도막을 도포해 결로와 곰팡이를 줄입니다.", meta: "1 ~ 2일" },
+          { n: "08", title: "필름", spec: "국내 정품 인테리어 필름", body: "문 · 문틀 · 몰딩 · 창틀 · 주방 가구 도어 · 신발장을 필름으로 마감합니다. 교체 없이 톤을 통일합니다.", meta: "2 ~ 3일" },
+          { n: "09", title: "조명 · 전기 2차", spec: "매입등 · 레일 · 스위치", body: "조명 기구를 설치하고 스위치와 콘센트를 마감합니다. 실제 밝기와 색온도를 함께 확인합니다.", meta: "1일" },
+        ] },
+        { week: "4주차", days: "도배 · 바닥재 · 가구 설치", trades: [
+          { n: "10", title: "도배", spec: "실크 · 합지 / 퍼티 · 초배", body: "퍼티와 초배 후 정배합니다. 필름 마감 부위와 경계선을 맞춥니다.", meta: "2일" },
+          { n: "11", title: "바닥재", spec: "강마루 · 강화마루 · 장판", body: "선택한 자재를 시공하고 걸레받이를 마감합니다. 문 하부 여유를 함께 조정합니다.", meta: "1 ~ 2일" },
+          { n: "12", title: "가구 설치", spec: "주방 · 붙박이 · 신발장", body: "주문 제작한 가구를 반입해 설치하고 수평을 조정합니다. 상판과 손잡이를 마감합니다.", meta: "2일" },
+        ] },
+        { week: "5주차", days: "위생도기 · 청소 및 마감", trades: [
+          { n: "13", title: "위생도기 세팅", spec: "변기 · 세면대 · 수전", body: "도기와 수전, 액세서리를 설치하고 누수와 배수를 확인합니다.", meta: "1일" },
+          { n: "14", title: "청소 · 검수", spec: "준공 청소 · 터치업", body: "전체 준공 청소 후 실리콘과 도장을 손봅니다. 함께 점검해 하자 목록을 정리하고 보증서를 드립니다.", meta: "1 ~ 2일" },
+        ] },
+      ],
+      partial: [
+        { title: "주방 단위", body: "철거 · 배관 · 타일 · 상하부장 · 상판 · 후드", days: "5 ~ 8일" },
+        { title: "욕실 단위", body: "철거 · 방수 · 타일 · 도기 · 수전 · 환풍", days: "4 ~ 6일" },
+        { title: "방 단위", body: "도배 · 바닥재 · 문 필름 · 조명", days: "2 ~ 3일" },
+        { title: "발코니", body: "철거 · 탄성코트 · 타일 · 세탁 수전", days: "2 ~ 4일" },
+      ],
+      notes: [
+        { n: "01", body: "공동주택은 착공 전 관리사무소 신고와 입주민 동의가 필요합니다. 서류 준비와 제출은 저희가 대행합니다." },
+        { n: "02", body: "작업 가능 시간은 대부분 평일 09:00 ~ 18:00입니다. 소음이 큰 철거와 목공은 앞주에 배치합니다." },
+        { n: "03", body: "창호와 주방 가구는 주문 제작 기간이 있어 계약 직후 발주합니다. 자재 선택이 늦어지면 전체 일정이 밀립니다." },
+        { n: "04", body: "구조 변경(벽 철거, 확장)은 관리 규약과 구조 안전 검토가 필요합니다. 실측 때 가능 여부를 확인해 드립니다." },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

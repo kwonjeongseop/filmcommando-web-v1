@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">고객 후기</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">시공을 마친 집에서<br>남겨주신 말</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">시공 완료 후 문자로 받은 후기를 동의를 얻어 옮겼습니다. 내용은 수정하지 않습니다.</p>
+  </section>
+
+  <section style="border-bottom:1px solid #DCD4C6">
+    <div style="padding:56px; display:grid; grid-template-columns:minmax(0,280px) minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:center">
+      <div>
+        <div style="display:flex; align-items:flex-end; gap:14px">
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:64px; font-weight:800; letter-spacing:-0.05em; line-height:1">4.9</div>
+          <div style="font-size:14px; color:#9A8F80; padding-bottom:8px">/ 5.0</div>
+        </div>
+        <div style="font-size:14px; color:#8C8071; margin-top:14px; line-height:1.7">후기 312건<br>최근 6개월 기준</div>
+      </div>
+      <div>
+        <sc-for list="{{ dist }}" as="d" hint-placeholder-count="5">
+          <div style="display:grid; grid-template-columns:34px minmax(0,1fr) 46px; gap:16px; align-items:center; padding:6px 0">
+            <span style="font-size:13px; color:#9A8F80">{{ d.k }}</span>
+            <span style="height:3px; background:#E0D8C9; display:block; position:relative">
+              <span style="position:absolute; left:0; top:0; bottom:0; background:#A2543A; width:{{ d.w }}"></span>
+            </span>
+            <span style="font-size:13px; color:#8C8071; text-align:right">{{ d.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px">
+        <sc-for list="{{ scores }}" as="s" hint-placeholder-count="3">
+          <div style="border-left:1px solid #DCD4C6; padding-left:22px">
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:24px; letter-spacing:-0.03em">{{ s.v }}</div>
+            <div style="font-size:13px; color:#8C8071; margin-top:9px; line-height:1.6">{{ s.k }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:56px 56px 40px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="position:sticky; top:100px; align-self:start">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:20px">범위</div>
+      <div style="display:flex; flex-direction:column; gap:11px; font-size:14px">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+          <a href="#" style="color:#5D5346; border-bottom:1px solid #E6DFD2; padding-bottom:10px">{{ f }}</a>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="6">
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) 200px; gap:48px; align-items:start; padding:38px 0; border-top:1px solid #DCD4C6">
+          <div>
+            <p style="font-family:'Nanum Myeongjo',serif; font-size:20px; line-height:1.9; letter-spacing:-0.02em; margin:0 0 18px; text-wrap:pretty">{{ r.body }}</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap">
+              <sc-for list="{{ r.tags }}" as="t" hint-placeholder-count="2">
+                <span style="border:1px solid #DCD4C6; color:#8C8071; font-size:12px; padding:6px 11px">{{ t }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="font-size:13px; color:#9A8F80; line-height:1.9; text-align:right">
+            <div style="color:#A2543A; letter-spacing:0.1em; margin-bottom:9px">{{ r.stars }}</div>
+            <div>{{ r.who }}</div>
+            <div>{{ r.date }}</div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid #1F1B16"></div>
+      <div style="padding:44px 0 0; display:flex; justify-content:center; gap:26px; align-items:center">
+        <span style="font-size:14px; color:#B0A595">이전</span>
+        <div style="display:flex; gap:18px; font-size:14px">
+          <span style="color:#1F1B16; border-bottom:1px solid #1F1B16; padding-bottom:3px">1</span>
+          <a href="#" style="color:#8C8071">2</a>
+          <a href="#" style="color:#8C8071">3</a>
+          <a href="#" style="color:#8C8071">4</a>
+        </div>
+        <a href="#" style="font-size:14px; color:#1F1B16">다음</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:64px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,420px); gap:56px; align-items:center">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">후기 작성</div>
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-size:26px; font-weight:700; letter-spacing:-0.03em; margin:0 0 14px">시공을 받으셨다면 한 줄 남겨주십시오</h2>
+        <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">시공 완료 후 보내드리는 문자 링크로 작성하실 수 있습니다. 게시 전 동의 여부를 다시 확인하며, 주소는 구 단위까지만 표기합니다.</p>
+      </div>
+      <div style="position:relative; height:220px">
+        <image-slot id="rv-1" shape="rect" fit="cover" placeholder="시공 완료 사진"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      dist: [
+        { k: "5점", w: "89%", v: "278" },
+        { k: "4점", w: "8%", v: "25" },
+        { k: "3점", w: "2%", v: "6" },
+        { k: "2점", w: "1%", v: "2" },
+        { k: "1점", w: "0.4%", v: "1" },
+      ],
+      scores: [
+        { v: "4.9", k: "마감 품질" },
+        { v: "4.9", k: "일정 준수" },
+        { v: "4.8", k: "현장 정리" },
+      ],
+      filters: ["전체", "전예 리모델링", "부분 시공", "필름 단독", "상가 · 사무실"],
+      reviews: [
+        { body: "도배를 다시 할지 고민했는데 필름으로 하고 훨씬 만족합니다. 아이가 낙서해도 물걸레로 닦입니다.", who: "송파구 아파트 33평", date: "2026.07.18", stars: "★★★★★", tags: ["전예 리모델링", "12공정"] },
+        { body: "실측 오셔서 필요한 부위만 정확히 짚어주셨습니다. 견적도 처음 말씀한 금액 그대로였습니다.", who: "부천 연립 21평", date: "2026.07.09", stars: "★★★★★", tags: ["현관문", "방문"] },
+        { body: "현관문 하나 바꾸는 걸로 집 입구 분위기가 달라졌습니다. 하루 만에 끝났습니다.", who: "일산 아파트 25평", date: "2026.06.28", stars: "★★★★★", tags: ["현관문"] },
+        { body: "주방 상하부장을 교체하려다 필름으로 했습니다. 상판만 그대로 두고도 어색하지 않게 맞춰주셨습니다.", who: "광명 아파트 30평", date: "2026.06.11", stars: "★★★★★", tags: ["주방"] },
+        { body: "아이 둘이 있어서 집을 비울 수 없었는데, 방 하나씩 나눠서 해주셔서 생활에 큰 불편이 없었습니다.", who: "성남 아파트 41평", date: "2026.05.30", stars: "★★★★★", tags: ["벽면", "붙박이장"] },
+        { body: "샷시 얼룩이 계속 신경 쓰였는데 깔끔해졌습니다. 다만 예정보다 반나절 늦어져 4점을 드렸습니다.", who: "인천 다세대 15평", date: "2026.05.12", stars: "★★★★", tags: ["샷시"] },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>
