@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">비용 가이드</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">돈이 어디에<br>얼마나 들어가는가</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">24평 전예 리모델링 기준 공정별 비중과 평형별 예산표입니다. 스탠다드 자재 기준, 부가세 별도입니다.</p>
+  </section>
+
+  <section style="padding:64px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">공정별 비중</div>
+    <div>
+      <div style="display:grid; grid-template-columns:150px minmax(0,1fr) 120px 110px; gap:24px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
+        <div>공정</div><div>비중</div><div style="text-align:right">금액</div><div style="text-align:right">비율</div>
+      </div>
+      <sc-for list="{{ shares }}" as="s" hint-placeholder-count="9">
+        <div style="display:grid; grid-template-columns:150px minmax(0,1fr) 120px 110px; gap:24px; padding:15px 0; border-bottom:1px solid #E6DFD2; align-items:center">
+          <div style="font-size:15px; color:#1F1B16">{{ s.title }}</div>
+          <div style="height:4px; background:#E0D8C9; position:relative">
+            <div style="position:absolute; left:0; top:0; bottom:0; background:#A2543A; width:{{ s.w }}"></div>
+          </div>
+          <div style="font-size:14.5px; color:#3E362C; text-align:right">{{ s.amount }}</div>
+          <div style="font-size:13px; color:#8C8071; text-align:right">{{ s.pct }}</div>
+        </div>
+      </sc-for>
+      <div style="display:grid; grid-template-columns:150px minmax(0,1fr) 120px 110px; gap:24px; padding:20px 0 0">
+        <div style="font-family:'Nanum Myeongjo',serif; font-size:17px">합계</div>
+        <div></div>
+        <div style="font-family:'Nanum Myeongjo',serif; font-size:19px; text-align:right; letter-spacing:-0.02em">3,900만원</div>
+        <div style="font-size:13px; color:#8C8071; text-align:right">100%</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#EFEADF; border-bottom:1px solid #DCD4C6">
+    <div style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">평형별 예산표</div>
+      <div>
+        <div style="display:grid; grid-template-columns:120px repeat(4,minmax(0,1fr)); gap:24px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
+          <div>평형</div><div>스탠다드</div><div>프리미엄</div><div>맞춤 설계</div><div>표준 기간</div>
+        </div>
+        <sc-for list="{{ budget }}" as="b" hint-placeholder-count="5">
+          <div style="display:grid; grid-template-columns:120px repeat(4,minmax(0,1fr)); gap:24px; padding:20px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:18px; letter-spacing:-0.02em">{{ b.size }}</div>
+            <div style="font-size:15px; color:#3E362C">{{ b.std }}</div>
+            <div style="font-size:15px; color:#3E362C">{{ b.prem }}</div>
+            <div style="font-size:15px; color:#3E362C">{{ b.custom }}</div>
+            <div style="font-size:14px; color:#A2543A">{{ b.weeks }}</div>
+          </div>
+        </sc-for>
+        <p style="font-size:13px; line-height:1.9; color:#8C8071; margin:20px 0 0">구조 변경, 확장, 시스템 에어컨, 관리사무소 예치금은 포함되지 않습니다. 노후도가 높은 세대는 배관 · 전선 전면 교체가 필요해 10 ~ 15% 정도 올라갑니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:72px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">비용을 줄이는 순서</div>
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+      <sc-for list="{{ tips }}" as="t" hint-placeholder-count="3">
+        <div style="border-top:1px solid #1F1B16; padding-top:22px">
+          <h3 style="font-family:'Nanum Myeongjo',serif; font-size:20px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
+          <p style="font-size:15px; line-height:1.95; color:#5D5346; margin:0; text-wrap:pretty">{{ t.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">추가 비용이 생기는 경우</div>
+    <div>
+      <sc-for list="{{ extras }}" as="e" hint-placeholder-count="5">
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) 150px; gap:20px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div style="font-size:15px; line-height:1.8; color:#3E362C">{{ e.title }}</div>
+          <div style="font-size:14px; color:#A2543A; text-align:right">{{ e.price }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="background:#EFEADF; padding:34px 32px">
+      <div style="font-size:12px; letter-spacing:0.16em; color:#9A8F80; margin-bottom:16px">견적서에 반드시 있어야 하는 것</div>
+      <div style="display:flex; flex-direction:column; gap:12px">
+        <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+          <div style="display:grid; grid-template-columns:16px minmax(0,1fr); gap:12px; font-size:14.5px; line-height:1.8; color:#3E362C">
+            <span style="color:#A2543A">·</span><span>{{ c }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <a href="./Resources.dc.html" style="display:inline-block; margin-top:24px; font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px">체크리스트 자료실</a>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">우리 집 예산을 계산해 보십시오</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">평형과 공정을 고르면 금액 범위가 바로 나옵니다.</p>
+      </div>
+      <a href="./Estimator.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 36px; flex:none" style-hover="background:#A2543A; color:#F7F3EA">견적 계산기 열기</a>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      shares: [
+        { title: "가구 · 위생도기", amount: "780만원", pct: "20%", w: "100%" },
+        { title: "창호", amount: "700만원", pct: "18%", w: "90%" },
+        { title: "목공", amount: "520만원", pct: "13%", w: "66%" },
+        { title: "타일 · 방수", amount: "450만원", pct: "12%", w: "58%" },
+        { title: "설비 · 전기", amount: "400만원", pct: "10%", w: "51%" },
+        { title: "도배 · 바닥재", amount: "390만원", pct: "10%", w: "50%" },
+        { title: "철거 · 폐기물", amount: "260만원", pct: "7%", w: "33%" },
+        { title: "필름 · 탄성코트", amount: "220만원", pct: "6%", w: "28%" },
+        { title: "청소 · 관리 · 설계", amount: "180만원", pct: "4%", w: "23%" },
+      ],
+      budget: [
+        { size: "18평 이하", std: "3,200 ~ 3,700만원", prem: "3,900 ~ 4,500만원", custom: "4,600만원 ~", weeks: "4주" },
+        { size: "24평", std: "3,900 ~ 4,500만원", prem: "4,800 ~ 5,500만원", custom: "5,700만원 ~", weeks: "5주" },
+        { size: "32평", std: "4,800 ~ 5,600만원", prem: "5,900 ~ 6,800만원", custom: "7,000만원 ~", weeks: "5 ~ 6주" },
+        { size: "40평", std: "5,900 ~ 6,800만원", prem: "7,200 ~ 8,300만원", custom: "8,500만원 ~", weeks: "6주" },
+        { size: "50평 이상", std: "7,300만원 ~", prem: "8,900만원 ~", custom: "1억원 ~", weeks: "6 ~ 8주" },
+      ],
+      tips: [
+        { title: "창호와 가구를 먼저 판단합니다", body: "두 공정이 전체의 40% 가까이를 차지합니다. 샷시 상태가 양호하면 유리만 교체하거나 필름 마감으로 대체할 수 있습니다." },
+        { title: "필름으로 대체 가능한 부위를 찾습니다", body: "문, 몰딩, 주방 가구 도어는 교체 대신 필름으로 마감하면 비용이 크게 줄어듭니다. 상태에 따라 실측 때 판단합니다." },
+        { title: "공정을 나누어 순차 진행합니다", body: "지금 필요한 공간부터 진행하고 나머지는 다음 해로 나눌 수 있습니다. 다만 배관과 배선은 한 번에 잡는 편이 낫습니다." },
+      ],
+      extras: [
+        { title: "노후 배관 · 전선 전면 교체 (20년 이상 세대)", price: "180 ~ 320만원" },
+        { title: "구조 변경 · 벽 철거 (구조 검토 포함)", price: "별도 산정" },
+        { title: "곰팡이 · 누수 하지 보수", price: "40 ~ 150만원" },
+        { title: "관리사무소 예치금 · 엘리베이터 사용료", price: "단지 규정에 따름" },
+        { title: "야간 · 주말 작업 (상가 영업 유지)", price: "인건비 20 ~ 30% 가산" },
+      ],
+      checklist: [
+        "공정별 수량과 단가 (일괄 금액만 적힌 견적은 비교가 어렵습니다)",
+        "자재 제품명과 등급 (브랜드 · 모델명까지)",
+        "포함되지 않는 항목의 목록",
+        "주차별 일정과 준공 예정일",
+        "하자 보증 기간과 범위",
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">공지사항</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">일정과 자재 안내</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">시공 일정, 자재 단가, A/S 운영에 관한 공지를 올립니다. 진행 중인 시공의 개별 일정은 담당자가 직접 안내드립니다.</p>
+  </section>
+
+  <section style="padding:56px 56px 0">
+    <div style="border:1px solid #1F1B16; padding:38px 40px; display:grid; grid-template-columns:minmax(0,1fr) 200px; gap:40px; align-items:center">
+      <div>
+        <div style="font-size:12px; letter-spacing:0.16em; color:#A2543A; margin-bottom:14px">중요 공지</div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-size:26px; font-weight:700; letter-spacing:-0.03em; margin:0 0 12px">2026년 하계 시공 일정 및 휴무 안내</h2>
+        <p style="font-size:15px; line-height:1.95; color:#5D5346; margin:0; max-width:640px; text-wrap:pretty">8월 3일부터 8월 9일까지 하계 휴무로 신규 시공을 진행하지 않습니다. 해당 기간의 접수는 정상적으로 받으며, 실측 일정은 8월 10일 이후로 잡아드립니다.</p>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:13px; color:#9A8F80; margin-bottom:16px">2026.07.21</div>
+        <a href="#" style="border:1px solid #1F1B16; font-size:14px; padding:12px 22px; display:inline-block" style-hover="background:#1F1B16; color:#F4F1EA">자세히 보기</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:56px 56px 40px">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:26px">
+      <div style="display:flex; gap:8px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+          <span style="border:1px solid #DCD4C6; color:#5D5346; font-size:14px; padding:9px 16px; cursor:pointer" style-hover="border-color:#1F1B16; color:#1F1B16">{{ t }}</span>
+        </sc-for>
+      </div>
+      <div style="font-size:13px; color:#9A8F80">전체 24건</div>
+    </div>
+    <div style="display:grid; grid-template-columns:70px 110px minmax(0,1fr) 120px; gap:28px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
+      <div>번호</div><div>구분</div><div>제목</div><div style="text-align:right">등록일</div>
+    </div>
+    <sc-for list="{{ posts }}" as="p" hint-placeholder-count="8">
+      <a href="#" style="display:grid; grid-template-columns:70px 110px minmax(0,1fr) 120px; gap:28px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:baseline" style-hover="background:#EFEADF">
+        <div style="font-size:14px; color:#B0A595">{{ p.no }}</div>
+        <div style="font-size:13px; color:#A2543A">{{ p.cat }}</div>
+        <div style="font-size:16px; color:#1F1B16">{{ p.title }}</div>
+        <div style="font-size:13px; color:#9A8F80; text-align:right">{{ p.date }}</div>
+      </a>
+    </sc-for>
+  </section>
+
+  <section style="padding:20px 56px 76px; display:flex; justify-content:center; align-items:center; gap:26px">
+    <span style="font-size:14px; color:#B0A595">이전</span>
+    <div style="display:flex; gap:18px; font-size:14px">
+      <span style="color:#1F1B16; border-bottom:1px solid #1F1B16; padding-bottom:3px">1</span>
+      <a href="#" style="color:#8C8071">2</a>
+      <a href="#" style="color:#8C8071">3</a>
+    </div>
+    <a href="#" style="font-size:14px; color:#1F1B16">다음</a>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6">
+    <div style="padding:64px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">A/S 접수</div>
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-size:26px; font-weight:700; letter-spacing:-0.03em; margin:0 0 16px">보증 기간 내 A/S는 전화로 접수합니다</h2>
+        <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">시공일과 주소를 말씀해 주시면 보증 내역을 조회합니다. 접수 후 영업일 기준 3일 안에 방문해 확인하고, 부분 보수는 대부분 반일 이내에 끝납니다.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px; padding-top:6px">
+        <div style="display:grid; grid-template-columns:100px minmax(0,1fr); gap:20px; padding-bottom:14px; border-bottom:1px solid #DCD4C6">
+          <span style="font-size:13px; color:#9A8F80">접수 전화</span>
+          <span style="font-family:'Nanum Myeongjo',serif; font-size:19px">0000 - 0000</span>
+        </div>
+        <div style="display:grid; grid-template-columns:100px minmax(0,1fr); gap:20px; padding-bottom:14px; border-bottom:1px solid #DCD4C6">
+          <span style="font-size:13px; color:#9A8F80">운영 시간</span>
+          <span style="font-size:15px; color:#3E362C">평일 · 주말 09:00 – 19:00</span>
+        </div>
+        <div style="display:grid; grid-template-columns:100px minmax(0,1fr); gap:20px">
+          <span style="font-size:13px; color:#9A8F80">필요 정보</span>
+          <span style="font-size:15px; color:#3E362C; line-height:1.8">시공일 · 주소 · 증상 사진</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      tabs: ["전체", "일정", "자재 · 단가", "A/S"],
+      posts: [
+        { no: "24", cat: "일정", title: "2026년 하계 시공 일정 및 휴무 안내", date: "2026.07.21" },
+        { no: "23", cat: "자재 · 단가", title: "인테리어 필름 자재 단가 조정 안내 (8월 시공분부터 적용)", date: "2026.07.14" },
+        { no: "22", cat: "A/S", title: "A/S 접수 절차 변경 안내 — 전화 접수로 통합", date: "2026.06.30" },
+        { no: "21", cat: "일정", title: "장마철 시공 진행 기준 안내 (습도와 접착력)", date: "2026.06.18" },
+        { no: "20", cat: "자재 · 단가", title: "내열 자재 신규 입고 — 주방 레인지 주변 적용", date: "2026.05.27" },
+        { no: "19", cat: "일정", title: "5월 연휴 실측 방문 일정 안내", date: "2026.04.29" },
+        { no: "18", cat: "A/S", title: "보증 제외 항목 안내 (칼자국 · 임의 도색)", date: "2026.04.10" },
+        { no: "17", cat: "일정", title: "수도권 외 지역 방문실측 운영 기준 변경", date: "2026.03.22" },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

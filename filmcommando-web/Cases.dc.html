@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 사례</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">준공한 집을<br>공정과 함께 적었습니다</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">범위 · 지역 · 평형으로 찾아보실 수 있습니다. 사진은 촬영 동의를 받은 현장만 공개합니다.</p>
+  </section>
+
+  <section style="padding:28px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:110px minmax(0,1fr); gap:28px; align-items:center">
+    <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80">범위</div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <sc-for list="{{ scopes }}" as="f" hint-placeholder-count="5">
+        <span style="border:1px solid #DCD4C6; color:#5D5346; font-size:14px; padding:9px 16px; cursor:pointer" style-hover="border-color:#1F1B16; color:#1F1B16">{{ f }}</span>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:20px 56px 24px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:110px minmax(0,1fr); gap:28px; align-items:center">
+    <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80">지역</div>
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:30px">
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <sc-for list="{{ regions }}" as="r" hint-placeholder-count="8">
+          <span style="border:1px solid #DCD4C6; color:#5D5346; font-size:14px; padding:9px 16px; cursor:pointer" style-hover="border-color:#1F1B16; color:#1F1B16">{{ r }}</span>
+        </sc-for>
+      </div>
+      <span style="font-size:13px; color:#9A8F80; flex:none">전체 312건 중 9건</span>
+    </div>
+  </section>
+
+  <section style="padding:56px 56px 40px">
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px 36px">
+      <sc-for list="{{ cases }}" as="c" hint-placeholder-count="9">
+        <a href="./CaseDetail.dc.html" style="display:block">
+          <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:6px">
+            <figure style="margin:0">
+              <div style="position:relative; height:230px">
+                <image-slot id="{{ c.slotBefore }}" shape="rect" fit="cover" placeholder="{{ c.phBefore }}"></image-slot>
+              </div>
+              <figcaption style="font-size:11px; letter-spacing:0.18em; color:#9A8F80; padding-top:9px">시공 전</figcaption>
+            </figure>
+            <figure style="margin:0">
+              <div style="position:relative; height:230px">
+                <image-slot id="{{ c.slotAfter }}" shape="rect" fit="cover" placeholder="{{ c.phAfter }}"></image-slot>
+              </div>
+              <figcaption style="font-size:11px; letter-spacing:0.18em; color:#A2543A; padding-top:9px">시공 후</figcaption>
+            </figure>
+          </div>
+          <div style="padding-top:18px; margin-top:18px; border-top:1px solid #DCD4C6">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:11px">
+              <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">{{ c.scope }}</span>
+              <span style="font-size:12px; color:#B0A595">{{ c.date }}</span>
+            </div>
+            <h2 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 8px">{{ c.title }}</h2>
+            <div style="font-size:14px; color:#9A8F80; margin-bottom:11px">{{ c.tag }}</div>
+            <p style="font-size:14px; line-height:1.9; color:#5D5346; margin:0 0 12px; text-wrap:pretty">{{ c.body }}</p>
+            <div style="font-size:13px; color:#8C8071">{{ c.meta }}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:20px 56px 76px; display:flex; justify-content:center; align-items:center; gap:26px">
+    <span style="font-size:14px; color:#B0A595">이전</span>
+    <div style="display:flex; gap:18px; font-size:14px">
+      <span style="color:#1F1B16; border-bottom:1px solid #1F1B16; padding-bottom:3px">1</span>
+      <a href="#" style="color:#8C8071">2</a>
+      <a href="#" style="color:#8C8071">3</a>
+      <a href="#" style="color:#8C8071">4</a>
+    </div>
+    <a href="#" style="font-size:14px; color:#1F1B16">다음</a>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:64px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">사례 요약</div>
+      <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:40px">
+        <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
+          <div>
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:30px; font-weight:800; letter-spacing:-0.04em">{{ s.v }}</div>
+            <div style="font-size:13px; color:#8C8071; margin-top:10px; line-height:1.7">{{ s.k }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">비슷한 집의 견적서를 보여드립니다</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">평형과 연식, 희망 범위를 알려주시면 유사 사례의 공정별 금액과 일정표를 정리해 드립니다.</p>
+      </div>
+      <div style="display:flex; gap:12px; flex:none">
+        <a href="./Estimator.dc.html" style="border:1px solid #4A4238; color:#EDE7DC; font-size:15px; padding:18px 28px" style-hover="border-color:#A2543A">견적 계산기</a>
+        <a href="./Quote.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 32px" style-hover="background:#A2543A; color:#F7F3EA">견적 접수</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      scopes: ["전체", "전예 리모델링", "부분 시공", "필름 단독", "상가 · 사무실"],
+      regions: ["전체", "서울 강동 · 송파", "서울 성북 · 노원", "경기 성남 · 용인", "경기 부천 · 광명", "경기 고양 · 일산", "인천", "그 외"],
+      cases: [
+        { slotBefore: "cs-1-b", slotAfter: "cs-1-a", scope: "전예 리모델링", date: "2026.07", title: "강동구 아파트 32평", tag: "12공정 · 37일", phBefore: "거실 철거 전", phAfter: "거실 준공", body: "구조 변경 없이 배관과 전선을 전면 교체하고, 문과 몰딩은 필름으로 마감했습니다.", meta: "5,100만원 · 스탠다드 + 일부 프리미엄" },
+        { slotBefore: "cs-2-b", slotAfter: "cs-2-a", scope: "부분 시공", date: "2026.07", title: "성북구 연립 18평", tag: "주방 · 욕실 · 12일", phBefore: "욕실 철거 전", phAfter: "욕실 준공", body: "배관을 새로 잡고 방수와 타일, 도기를 교체했습니다. 거주하며 진행했습니다.", meta: "1,180만원 · 스탠다드" },
+        { slotBefore: "cs-3-b", slotAfter: "cs-3-a", scope: "상가 · 사무실", date: "2026.06", title: "용인 사무실 40평", tag: "바닥 · 조명 · 필름 · 11일", phBefore: "사무실 시공 전", phAfter: "사무실 준공", body: "영업을 유지하기 위해 야간과 주말에 나누어 진행했습니다.", meta: "2,300만원 · 야간 가산 포함" },
+        { slotBefore: "cs-4-b", slotAfter: "cs-4-a", scope: "전예 리모델링", date: "2026.06", title: "송파구 아파트 24평", tag: "12공정 · 34일", phBefore: "주방 철거 전", phAfter: "주방 준공", body: "주방 위치를 옮기지 않고 상하부장과 상판만 교체해 예산을 창호에 배분했습니다.", meta: "4,200만원 · 스탠다드" },
+        { slotBefore: "cs-5-b", slotAfter: "cs-5-a", scope: "필름 단독", date: "2026.05", title: "부천 연립 21평", tag: "문 · 몰딩 · 샷시 · 3일", phBefore: "현관문 시공 전", phAfter: "현관문 시공 후", body: "이사 전 빈 집에서 문 5개와 몰딩, 샷시 프레임을 필름으로 마감했습니다.", meta: "260만원 · 거주 전 시공" },
+        { slotBefore: "cs-6-b", slotAfter: "cs-6-a", scope: "부분 시공", date: "2026.05", title: "일산 아파트 25평", tag: "욕실 2개소 · 9일", phBefore: "욕실 시공 전", phAfter: "욕실 시공 후", body: "욕실 두 곳을 순차로 진행해 사용 가능한 화장실을 항상 하나 남겼습니다.", meta: "980만원 · 프리미엄 타일" },
+        { slotBefore: "cs-7-b", slotAfter: "cs-7-a", scope: "전예 리모델링", date: "2026.04", title: "광명 아파트 30평", tag: "12공정 · 36일", phBefore: "거실 철거 전", phAfter: "거실 준공", body: "발코니 확장 세대로 탄성코트와 단열 보강을 함께 진행했습니다.", meta: "4,900만원 · 스탠다드" },
+        { slotBefore: "cs-8-b", slotAfter: "cs-8-a", scope: "부분 시공", date: "2026.04", title: "인천 다세대 15평", tag: "도배 · 바닥 · 필름 · 5일", phBefore: "방 시공 전", phAfter: "방 준공", body: "곰팡이 부위를 하지 처리한 뒤 도배와 바닥재를 시공했습니다.", meta: "620만원 · 스탠다드" },
+        { slotBefore: "cs-9-b", slotAfter: "cs-9-a", scope: "전예 리모델링", date: "2026.03", title: "성남 아파트 41평", tag: "12공정 · 42일", phBefore: "복도 철거 전", phAfter: "복도 준공", body: "붙박이장 위치를 조정해 방 하나의 사용 면적을 넓혔습니다. 맞춤 설계로 진행했습니다.", meta: "7,400만원 · 맞춤 설계" },
+      ],
+      summary: [
+        { v: "4,800세대", k: "누적 시공" },
+        { v: "36일", k: "전예 리모델링 평균 기간" },
+        { v: "94%", k: "약속 준공일 준수율" },
+        { v: "4.9", k: "후기 평점" },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

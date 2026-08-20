@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+  input::placeholder, textarea::placeholder { color:#A79C8C; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">제휴 · 협력</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">현장을 맡기실<br>업체를 찾으신다면</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">건설사, 인테리어 업체, 관리사무소와 공정 단위로 협력합니다. 필요한 공정만 맡거나 전공정을 맡습니다. 세대 단위 반복 시공에 맞춰 인력을 고정 배정합니다.</p>
+  </section>
+
+  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">협력 대상</div>
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+      <sc-for list="{{ targets }}" as="t" hint-placeholder-count="3">
+        <div style="border-top:1px solid #1F1B16; padding-top:22px">
+          <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
+          <p style="font-size:15px; line-height:1.95; color:#5D5346; margin:0 0 18px; text-wrap:pretty">{{ t.body }}</p>
+          <div style="font-size:13px; color:#A2543A; line-height:1.8">{{ t.meta }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,400px); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">협력 조건</div>
+      <div>
+        <sc-for list="{{ terms }}" as="t" hint-placeholder-count="5">
+          <div style="display:grid; grid-template-columns:150px minmax(0,1fr); gap:28px; padding:19px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+            <div style="font-size:13px; color:#9A8F80; letter-spacing:0.04em">{{ t.k }}</div>
+            <div style="font-size:15px; line-height:1.85; color:#3E362C">{{ t.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative; height:330px">
+        <image-slot id="pt-1" shape="rect" fit="cover" placeholder="세대 단위 현장 사진"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">진행 절차</div>
+    <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:36px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+        <div>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px">
+            <span style="width:7px; height:7px; background:#A2543A; border-radius:999px; flex:none"></span>
+            <span style="height:1px; background:#DCD4C6; flex:1"></span>
+          </div>
+          <div style="font-size:12px; letter-spacing:0.16em; color:#B0A595; margin-bottom:11px">{{ s.n }}</div>
+          <h3 style="font-family:'Nanum Myeongjo',serif; font-size:19px; font-weight:700; letter-spacing:-0.02em; margin:0 0 10px">{{ s.title }}</h3>
+          <p style="font-size:14px; line-height:1.9; color:#5D5346; margin:0; text-wrap:pretty">{{ s.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:80px 56px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:80px">
+      <div>
+        <div style="font-size:12px; letter-spacing:0.2em; color:#8F8272; margin-bottom:28px">제휴 문의</div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:34px; line-height:1.4; letter-spacing:-0.035em; margin:0 0 20px; color:#F7F3EA">규모와 일정을<br>알려주십시오</h2>
+        <p style="font-size:15px; line-height:2; color:#B0A595; margin:0 0 40px; max-width:340px; text-wrap:pretty">세대 수, 부위, 착공 시점을 남겨주시면 담당자가 영업일 1일 내 연락드립니다. 도면이나 견적 요청서가 있으면 함께 보내주십시오.</p>
+        <div style="border-top:1px solid #3A342C; padding-top:26px">
+          <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:8px">담당 직통</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:25px; color:#F7F3EA; letter-spacing:0.02em">0000 - 0000</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px 40px; margin-bottom:32px">
+          <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+            <label style="display:block">
+              <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8F8272; margin-bottom:10px">{{ f.label }}</span>
+              <input placeholder="{{ f.ph }}" style="width:100%; background:transparent; border:0; border-bottom:1px solid #4A4238; color:#F7F3EA; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+            </label>
+          </sc-for>
+        </div>
+        <label style="display:block; margin-bottom:30px">
+          <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8F8272; margin-bottom:10px">문의 내용</span>
+          <textarea placeholder="세대 수, 시공 부위, 착공 희망 시점, 견적 요청 사항" style="width:100%; background:transparent; border:0; border-bottom:1px solid #4A4238; color:#F7F3EA; font-size:16px; font-family:inherit; line-height:1.85; padding:0 0 12px; height:78px; resize:none; outline:none"></textarea>
+        </label>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:30px">
+          <span style="font-size:13px; line-height:1.7; color:#8F8272">개인정보 수집 및 이용에 동의합니다. 문의 목적으로만 사용합니다.</span>
+          <button style="background:#EDE7DC; color:#221E19; border:0; padding:18px 38px; font-size:15px; font-family:inherit; letter-spacing:0.02em; cursor:pointer; flex:none" style-hover="background:#A2543A; color:#F7F3EA">문의 보내기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      targets: [
+        { title: "인테리어 업체", body: "부족한 공정만 맡습니다. 목공 · 타일 · 필름 · 도배 단위로 투입 시점을 조정합니다.", meta: "세대별 · 부위별 단가 협의" },
+        { title: "건설사 · 시공사", body: "준공 전 문 · 몰딩 · 샷시 마감, 하자 보수 구간의 부분 재시공을 진행합니다.", meta: "세대 수 기준 견적" },
+        { title: "관리사무소 · 입주자대표회의", body: "공용부 문, 계단 난간, 우편함 등 반복 부위를 단지 단위로 시공합니다.", meta: "단지 단위 계약 · 분할 시공" },
+      ],
+      terms: [
+        { k: "최소 규모", v: "세대 단위 5세대 이상 또는 공용부 단지 단위" },
+        { k: "견적 방식", v: "부위별 수량 단가. 세대 수에 따른 단가 조정 협의" },
+        { k: "인력 배정", v: "현장당 2~4인 팀 고정 배정. 담당자 1명이 일정 조율" },
+        { k: "결제 조건", v: "계약금 30% · 준공 후 잔금. 세금계산서 발행" },
+        { k: "보증", v: "시공 부위 2년 무상 보증. 하자 접수 시 3일 내 방문" },
+      ],
+      steps: [
+        { n: "01", title: "문의 접수", body: "세대 수, 부위, 착공 시점을 알려주십시오." },
+        { n: "02", title: "현장 확인", body: "샘플 세대를 실측하고 자재를 선정합니다." },
+        { n: "03", title: "단가 · 일정 확정", body: "세대별 단가와 투입 일정을 문서로 확정합니다." },
+        { n: "04", title: "시공 · 검수", body: "세대별 검수 후 인수인계하고 보증을 등록합니다." },
+      ],
+      fields: [
+        { label: "업체명", ph: "○○인테리어" },
+        { label: "담당자", ph: "홍길동" },
+        { label: "연락처", ph: "010-0000-0000" },
+        { label: "이메일", ph: "name@company.co.kr" },
+        { label: "현장 지역", ph: "경기 성남시" },
+        { label: "세대 수", ph: "12세대" },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

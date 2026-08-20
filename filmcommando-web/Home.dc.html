@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+    <div style="padding:96px 56px 84px; display:flex; flex-direction:column; justify-content:space-between">
+      <div>
+        <div style="font-size:12px; letter-spacing:0.26em; color:#A2543A; margin-bottom:44px">철거부터 입주까지 · 전공정 직접 시공</div>
+        <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:58px; line-height:1.27; letter-spacing:-0.04em; margin:0 0 34px">
+          집 하나를<br>한 팀이<br>끝까지 맡습니다
+        </h1>
+        <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0; max-width:430px; text-wrap:pretty">
+          철거 · 창호 · 설비 · 목공 · 타일 · 필름 · 도배 · 바닥 · 가구까지 열두 공정을 자사 팀이 직접 시공합니다. 공정을 쪼개 넘기지 않기 때문에 일정과 책임이 한 곳에 남습니다.
+        </p>
+      </div>
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; margin-top:60px">
+        <div style="display:flex; gap:12px">
+          <a href="./Quote.dc.html" style="background:#1F1B16; color:#F4F1EA; font-size:15px; padding:19px 32px; letter-spacing:0.02em" style-hover="background:#A2543A">무료 방문실측 신청</a>
+          <a href="./Estimator.dc.html" style="border:1px solid #C9C0B0; font-size:15px; padding:19px 28px" style-hover="border-color:#1F1B16">견적 계산기</a>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:7px">전예 · 부분 · 상가</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:15px">누적 4,800세대 시공</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative; height:700px; border-left:1px solid #DCD4C6">
+      <image-slot id="home-hero" shape="rect" fit="cover" placeholder="메인 사진 — 준공된 거실 전경"></image-slot>
+      <div style="position:absolute; left:0; bottom:0; background:#F4F1EA; padding:20px 26px 18px; border-top:1px solid #DCD4C6; border-right:1px solid #DCD4C6; max-width:300px; pointer-events:none">
+        <div style="font-size:11px; letter-spacing:0.18em; color:#A2543A; margin-bottom:9px">전문가 맞춤 설계</div>
+        <div style="font-size:14px; line-height:1.75; color:#4A4136">현장 담당자와 설계 담당자가 함께 실측하고, 세대별 도면과 일정표를 만들어 드립니다</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-top:1px solid #DCD4C6; background:#EFEADF; border-bottom:1px solid #DCD4C6">
+    <div style="padding:44px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">5주 표준 일정</div>
+      <div style="display:flex; align-items:stretch">
+        <sc-for list="{{ bar }}" as="b" hint-placeholder-count="5">
+          <div style="flex:1; border-left:1px solid #C9C0B0; padding-left:18px">
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#A2543A; margin-bottom:9px">{{ b.w }}</div>
+            <div style="font-size:14.5px; line-height:1.7; color:#1F1B16">{{ b.body }}</div>
+          </div>
+        </sc-for>
+        <a href="./Schedule.dc.html" style="flex:none; align-self:center; margin-left:28px; font-size:13px; color:#1F1B16; border-bottom:1px solid #C9C0B0; padding-bottom:4px">일정 자세히</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:88px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">일하는 방식</div>
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+      <sc-for list="{{ trust }}" as="t" hint-placeholder-count="3">
+        <div style="border-top:1px solid #1F1B16; padding-top:22px">
+          <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
+          <p style="font-size:15px; line-height:1.95; color:#5D5346; margin:0; text-wrap:pretty">{{ t.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 범위</div>
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:44px; gap:40px">
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:700; font-size:34px; letter-spacing:-0.03em; margin:0">열두 공정, 필요한 만큼</h2>
+          <a href="./Service.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px; flex:none">공정별 안내</a>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:#DCD4C6; border:1px solid #DCD4C6">
+          <sc-for list="{{ trades }}" as="t" hint-placeholder-count="12">
+            <div style="background:#F4F1EA; padding:22px 20px 24px" style-hover="background:#fff">
+              <div style="font-size:11px; color:#B0A595; letter-spacing:0.1em; margin-bottom:10px">{{ t.n }}</div>
+              <div style="font-family:'Nanum Myeongjo',serif; font-size:18px; letter-spacing:-0.02em; margin-bottom:8px">{{ t.title }}</div>
+              <div style="font-size:13px; line-height:1.7; color:#8C8071">{{ t.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:88px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">패키지</div>
+    <div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px; gap:40px">
+        <div>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:700; font-size:34px; letter-spacing:-0.03em; margin:0 0 12px">가격을 먼저 공개합니다</h2>
+          <p style="font-size:15px; line-height:1.9; color:#5D5346; margin:0; max-width:560px; text-wrap:pretty">자재 등급과 포함 공정을 정해 둔 패키지입니다. 부분 시공과 자재 변경은 실측 후 조정합니다.</p>
+        </div>
+        <a href="./Packages.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px; flex:none">패키지 전체 보기</a>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px">
+        <sc-for list="{{ packages }}" as="p" hint-placeholder-count="3">
+          <div style="border-top:2px solid #1F1B16; padding-top:24px">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px">
+              <h3 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">{{ p.name }}</h3>
+              <span style="font-size:12px; color:#A2543A">{{ p.tag }}</span>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:18px">
+              <span style="font-family:'Nanum Myeongjo',serif; font-size:30px; font-weight:800; letter-spacing:-0.035em">{{ p.price }}</span>
+              <span style="font-size:13px; color:#8C8071">{{ p.unit }}</span>
+            </div>
+            <p style="font-size:14.5px; line-height:1.9; color:#5D5346; margin:0 0 18px; text-wrap:pretty">{{ p.body }}</p>
+            <div style="font-size:13px; color:#8C8071; line-height:1.8; border-top:1px solid #DCD4C6; padding-top:14px">{{ p.includes }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:84px 56px">
+      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; margin-bottom:44px">
+        <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 사례</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:40px">
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:700; font-size:34px; letter-spacing:-0.03em; margin:0">최근 준공한 집</h2>
+          <a href="./Cases.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px">전체 사례 보기</a>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:44px; align-items:start">
+        <figure style="margin:0">
+          <div style="position:relative; height:470px">
+            <image-slot id="home-case1" shape="rect" fit="cover" placeholder="대표 사례 — 전예 리모델링 거실"></image-slot>
+          </div>
+          <figcaption style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; padding-top:22px; border-top:1px solid #DCD4C6; margin-top:22px">
+            <div>
+              <div style="font-size:12px; letter-spacing:0.16em; color:#A2543A; margin-bottom:10px">사례 01 · 전예 리모델링</div>
+              <h3 style="font-family:'Nanum Myeongjo',serif; font-size:24px; font-weight:700; letter-spacing:-0.025em; margin:0 0 8px">강동구 아파트 32평</h3>
+              <div style="font-size:14px; color:#9A8F80">철거 ~ 입주 · 5주 · 12공정</div>
+            </div>
+            <p style="font-size:15px; line-height:1.9; color:#5D5346; margin:0; text-wrap:pretty">구조 변경 없이 배관과 배선을 새로 잡고, 주방과 욕실을 전면 교체했습니다. 문과 몰딩은 필름으로 통일했습니다.</p>
+          </figcaption>
+        </figure>
+        <div style="display:flex; flex-direction:column; gap:40px; padding-top:52px">
+          <sc-for list="{{ cases }}" as="c" hint-placeholder-count="2">
+            <figure style="margin:0">
+              <div style="position:relative; height:236px">
+                <image-slot id="{{ c.slot }}" shape="rect" fit="cover" placeholder="{{ c.ph }}"></image-slot>
+              </div>
+              <figcaption style="padding-top:18px; border-top:1px solid #DCD4C6; margin-top:18px">
+                <div style="font-size:12px; letter-spacing:0.16em; color:#A2543A; margin-bottom:9px">{{ c.no }}</div>
+                <h3 style="font-family:'Nanum Myeongjo',serif; font-size:20px; font-weight:700; letter-spacing:-0.025em; margin:0 0 7px">{{ c.title }}</h3>
+                <div style="font-size:14px; color:#9A8F80; margin-bottom:9px">{{ c.tag }}</div>
+                <p style="font-size:14px; line-height:1.85; color:#5D5346; margin:0; text-wrap:pretty">{{ c.body }}</p>
+              </figcaption>
+            </figure>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div style="padding-top:6px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:26px">고객 후기</div>
+      <div style="font-family:'Nanum Myeongjo',serif; font-size:44px; font-weight:800; letter-spacing:-0.04em; line-height:1">4.9</div>
+      <div style="font-size:13px; color:#9A8F80; margin-top:10px; line-height:1.7">5.0 만점<br>후기 312건</div>
+      <a href="./Review.dc.html" style="display:inline-block; margin-top:26px; font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px">후기 전체 보기</a>
+    </div>
+    <div>
+      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+        <div style="display:grid; grid-template-columns:minmax(0,1fr) 210px; gap:44px; align-items:start; padding:34px 0; border-top:1px solid #DCD4C6">
+          <p style="font-family:'Nanum Myeongjo',serif; font-size:21px; line-height:1.85; letter-spacing:-0.02em; margin:0; text-wrap:pretty">{{ r.body }}</p>
+          <div style="font-size:13px; color:#9A8F80; line-height:1.8; padding-top:6px">{{ r.who }}</div>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid #1F1B16"></div>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:84px 56px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:80px; align-items:center">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:38px; line-height:1.4; letter-spacing:-0.035em; margin:0 0 20px; color:#F7F3EA">실측 · 상담은<br>무료입니다</h2>
+        <p style="font-size:16px; line-height:2; color:#B0A595; margin:0 0 40px; max-width:400px; text-wrap:pretty">담당자가 방문해 구조와 상태를 확인하고, 공정별 견적서와 주차별 일정표를 함께 드립니다. 받아보시고 결정하셔도 됩니다.</p>
+        <div style="display:flex; gap:44px; border-top:1px solid #3A342C; padding-top:28px">
+          <div>
+            <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:8px">전화 상담</div>
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:26px; color:#F7F3EA; letter-spacing:0.02em">0000 - 0000</div>
+          </div>
+          <div>
+            <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:8px">상담 시간</div>
+            <div style="font-size:16px; color:#EDE7DC; padding-top:6px">평일 · 주말 09:00 – 19:00</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <sc-for list="{{ entries }}" as="e" hint-placeholder-count="3">
+          <a href="{{ e.href }}" style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:center; border:1px solid #3A342C; padding:26px 28px; color:#EDE7DC" style-hover="border-color:#A2543A">
+            <div>
+              <div style="font-family:'Nanum Myeongjo',serif; font-size:20px; letter-spacing:-0.02em; margin-bottom:8px; color:#F7F3EA">{{ e.title }}</div>
+              <div style="font-size:14px; line-height:1.75; color:#B0A595">{{ e.body }}</div>
+            </div>
+            <span style="font-size:18px; color:#8F8272">→</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      bar: [
+        { w: "1주차", body: "철거 / 창호 / 설비 & 전기 1차" },
+        { w: "2주차", body: "목공 / 타일 & 방수" },
+        { w: "3주차", body: "탄성코트 / 필름 / 조명·전기 2차" },
+        { w: "4주차", body: "도배 / 바닥재 / 가구 설치" },
+        { w: "5주차", body: "위생도기 세팅 / 청소 및 마감(입주)" },
+      ],
+      trust: [
+        { title: "전문가가 설계하고 자사 팀이 시공합니다", body: "설계 담당자가 실측에 함께 들어가 도면을 만들고, 열두 공정을 자사 팀과 전속 기공이 진행합니다. 공정을 외부에 재하도급하지 않습니다." },
+        { title: "견적서에 공정별로 다 적습니다", body: "공정별 수량과 단가, 자재 제품명, 주차별 일정을 문서로 드립니다. 변경이 생기면 사전에 승인받고 진행합니다." },
+        { title: "준공 후 2년 보증", body: "시공 부위별 하자를 2년간 무상 보수합니다. 접수 후 영업일 3일 안에 방문해 확인합니다." },
+      ],
+      trades: [
+        { n: "01", title: "철거", meta: "폐기물 반출 포함" },
+        { n: "02", title: "창호", meta: "샷시 · 유리 · 실리콘" },
+        { n: "03", title: "설비 · 전기", meta: "배관 · 배선 1차" },
+        { n: "04", title: "목공", meta: "천장 · 벽체 · 문틀" },
+        { n: "05", title: "방수", meta: "욕실 · 발코니" },
+        { n: "06", title: "타일", meta: "욕실 · 주방 · 현관" },
+        { n: "07", title: "탄성코트", meta: "발코니 결로 방지" },
+        { n: "08", title: "필름", meta: "문 · 몰딩 · 가구 도어" },
+        { n: "09", title: "조명 · 전기 2차", meta: "기구 설치 · 마감" },
+        { n: "10", title: "도배", meta: "퍼티 · 초배 · 정배" },
+        { n: "11", title: "바닥재", meta: "강마루 · 장판" },
+        { n: "12", title: "가구 · 위생도기", meta: "주방 · 붙박이 · 도기" },
+      ],
+      packages: [
+        { name: "필름 단독", tag: "반일 ~ 3일", price: "180만원", unit: "부터 · 24평 기준", body: "문 · 문틀 · 몰딩 · 창틀 · 주방 가구 도어를 필름으로 마감합니다. 거주 중 진행 가능합니다.", includes: "포함: 실측 · 자재 · 시공 · 폐기물 · 2년 보증" },
+        { name: "부분 시공", tag: "1 ~ 2주", price: "680만원", unit: "부터 · 주방 또는 욕실", body: "주방 또는 욕실 단위로 철거부터 마감까지 진행합니다. 배관 교체와 방수를 포함합니다.", includes: "포함: 철거 · 방수 · 타일 · 설비 · 가구 또는 도기" },
+        { name: "전예 리모델링", tag: "5주 표준", price: "3,900만원", unit: "부터 · 24평 기준", body: "철거부터 입주 청소까지 열두 공정 전체를 진행합니다. 세대별 도면과 일정표를 제공합니다.", includes: "포함: 12공정 · 설계 · 관리사무소 신고 · 준공 청소" },
+      ],
+      cases: [
+        { slot: "home-case2", no: "사례 02 · 부분 시공", title: "성북구 연립 18평", tag: "욕실 · 주방 · 2주", ph: "욕실 시공 사진", body: "배관을 새로 잡고 타일과 도기를 교체했습니다." },
+        { slot: "home-case3", no: "사례 03 · 상가", title: "용인 사무실 40평", tag: "바닥 · 조명 · 필름 · 2주", ph: "사무실 사진", body: "영업을 유지하며 야간에 나누어 진행했습니다." },
+      ],
+      reviews: [
+        { body: "공정마다 업체가 바뀌지 않아서 물어볼 곳이 한 군데였습니다. 5주 일정이 이틀만 밀렸습니다.", who: "강동구 아파트 32평\n전예 리모델링" },
+        { body: "주방만 하려고 갔는데 배관 상태부터 짚어주셨습니다. 견적도 처음 금액 그대로였습니다.", who: "부천 연립 21평\n부분 시공" },
+        { body: "문과 몰딩만 필름으로 바꿨는데 집 전체 분위기가 달라졌습니다. 하루 만에 끝났습니다.", who: "일산 아파트 25평\n필름 단독" },
+      ],
+      entries: [
+        { href: "./Estimator.dc.html", title: "통합 견적 계산기", body: "평형과 공정을 고르면 예상 금액대를 바로 확인할 수 있습니다" },
+        { href: "./Booking.dc.html", title: "상담 예약", body: "원하는 날짜와 시간대를 골라 방문실측 일정을 잡습니다" },
+        { href: "./Resources.dc.html", title: "사전 점검 체크리스트", body: "계약 전 확인할 항목과 관리사무소 제출 서류를 정리했습니다" },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

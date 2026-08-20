@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">자재 · 마감재 쇼룸</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">실물로 보고<br>고르시는 편이 낫습니다</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">주로 쓰는 자재를 부위별로 모았습니다. 실측 때 샘플을 가져가 집 조명 아래에서 비교해 보실 수 있습니다.</p>
+  </section>
+
+  <section style="padding:32px 56px; border-bottom:1px solid #DCD4C6; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="7">
+        <span style="border:1px solid #DCD4C6; color:#5D5346; font-size:14px; padding:9px 16px; cursor:pointer" style-hover="border-color:#1F1B16; color:#1F1B16">{{ f }}</span>
+      </sc-for>
+    </div>
+    <a href="./Booking.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px; flex:none">샘플 보러 방문 예약</a>
+  </section>
+
+  <section style="padding:56px 56px 40px">
+    <sc-for list="{{ categories }}" as="c" hint-placeholder-count="4">
+      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
+        <div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin-bottom:12px">{{ c.title }}</div>
+          <p style="font-size:14px; line-height:1.9; color:#8C8071; margin:0">{{ c.body }}</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px">
+          <sc-for list="{{ c.items }}" as="i" hint-placeholder-count="4">
+            <div>
+              <div style="position:relative; height:170px">
+                <image-slot id="{{ i.slot }}" shape="rect" fit="cover" placeholder="{{ i.ph }}"></image-slot>
+              </div>
+              <div style="padding-top:14px; border-top:1px solid #DCD4C6; margin-top:14px">
+                <div style="font-size:15.5px; color:#1F1B16; margin-bottom:7px">{{ i.name }}</div>
+                <div style="font-size:13px; color:#8C8071; line-height:1.7; margin-bottom:8px">{{ i.spec }}</div>
+                <div style="font-size:12.5px; color:#A2543A; letter-spacing:0.04em">{{ i.grade }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+    <div style="border-top:1px solid #1F1B16"></div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">고르는 순서</div>
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-size:27px; font-weight:700; letter-spacing:-0.03em; margin:0 0 22px">바닥부터 정하고 벽으로 올라갑니다</h2>
+        <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0 0 26px; text-wrap:pretty">면적이 넓고 교체가 어려운 것부터 정하는 편이 실패가 적습니다. 바닥재 → 문 · 몰딩 → 벽지 → 타일 → 가구 순서로 좁혀 갑니다. 색은 세 가지를 넘기지 않는 편이 정돈되어 보입니다.</p>
+        <sc-for list="{{ order }}" as="o" hint-placeholder-count="5">
+          <div style="display:grid; grid-template-columns:40px 130px minmax(0,1fr); gap:20px; padding:15px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#B0A595">{{ o.n }}</div>
+            <div style="font-size:15px; color:#1F1B16">{{ o.title }}</div>
+            <div style="font-size:14.5px; line-height:1.8; color:#5D5346">{{ o.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative; height:420px">
+        <image-slot id="mt-room" shape="rect" fit="cover" placeholder="마감재 조합 사진 (샘플 보드)"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">샘플은 실측 때 가져갑니다</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">집 조명과 채광 아래에서 비교하시는 편이 정확합니다. 사무실 방문도 가능합니다.</p>
+      </div>
+      <a href="./Booking.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 36px; flex:none" style-hover="background:#A2543A; color:#F7F3EA">상담 예약</a>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      filters: ["전체", "바닥재", "벽지", "필름", "타일", "주방 가구", "위생도기", "조명"],
+      categories: [
+        { title: "바닥재", body: "면적이 가장 넓어 전체 톤을 좌우합니다. 반려동물과 아이가 있으면 표면 경도를 함께 봅니다.", items: [
+          { slot: "mt-f1", ph: "강마루 샘플", name: "강마루 · 내추럴 오크", spec: "7.5mm · 표면 경도 높음", grade: "스탠다드" },
+          { slot: "mt-f2", ph: "강마루 샘플", name: "강마루 · 그레이 애쉬", spec: "7.5mm · 넓은 판재", grade: "스탠다드" },
+          { slot: "mt-f3", ph: "원목마루 샘플", name: "원목마루 · 화이트 오크", spec: "15mm · 표면 우드 3mm", grade: "프리미엄" },
+          { slot: "mt-f4", ph: "장판 샘플", name: "장판 · 6.0T 우드", spec: "6mm · 층간소음 완화", grade: "스탠다드" },
+        ] },
+        { title: "벽지 · 도장", body: "실크는 오염에 강하고 합지는 통기성이 좋습니다. 아이 방은 친환경 등급을 확인합니다.", items: [
+          { slot: "mt-w1", ph: "실크 벽지 샘플", name: "실크 벽지 · 웜 화이트", spec: "합지 대비 오염 강함", grade: "스탠다드" },
+          { slot: "mt-w2", ph: "벽지 샘플", name: "실크 벽지 · 라이트 그레이", spec: "무늬 없는 단색", grade: "스탠다드" },
+          { slot: "mt-w3", ph: "친환경 벽지 샘플", name: "친환경 벽지 · 오프 화이트", spec: "HB 최우수 등급", grade: "프리미엄" },
+          { slot: "mt-w4", ph: "도장 샘플", name: "수성 도장 · 매트", spec: "이음선 없는 마감", grade: "맞춤 설계" },
+        ] },
+        { title: "필름", body: "문 · 몰딩 · 창틀 · 가구 도어에 적용합니다. 부위별로 내열 · 내후 자재를 구분해 씁니다.", items: [
+          { slot: "mt-i1", ph: "필름 샘플", name: "무광 솔리드 · 화이트", spec: "생활 스크래치 보통", grade: "스탠다드" },
+          { slot: "mt-i2", ph: "필름 샘플", name: "우드 그레인 · 다크 오크", spec: "결 방향 시공 가능", grade: "스탠다드" },
+          { slot: "mt-i3", ph: "필름 샘플", name: "내열 필름 · 그레이지", spec: "레인지 주변 적용", grade: "프리미엄" },
+          { slot: "mt-i4", ph: "필름 샘플", name: "내후 필름 · 샷시용", spec: "자외선 변색 저항", grade: "프리미엄" },
+        ] },
+        { title: "타일 · 주방 · 도기", body: "욕실과 주방은 물에 노출되는 시간이 길어 흡수율과 미끄럼 저항을 함께 봅니다.", items: [
+          { slot: "mt-t1", ph: "타일 샘플", name: "포세린 타일 · 600×600", spec: "흡수율 0.5% 이하", grade: "프리미엄" },
+          { slot: "mt-t2", ph: "타일 샘플", name: "무광 벽타일 · 300×600", spec: "욕실 벽면", grade: "스탠다드" },
+          { slot: "mt-t3", ph: "주방 상판 샘플", name: "엔지니어드 스톤 상판", spec: "20mm · 이음 최소화", grade: "프리미엄" },
+          { slot: "mt-t4", ph: "위생도기 사진", name: "일체형 도기 · 절수형", spec: "국내 브랜드 정품", grade: "스탠다드" },
+        ] },
+      ],
+      order: [
+        { n: "01", title: "바닥재", body: "면적이 넓어 전체 톤의 기준이 됩니다. 밝기를 먼저 정합니다." },
+        { n: "02", title: "문 · 몰딩", body: "바닥과 같은 계열로 가면 무난하고, 대비를 주면 구획이 또렷해집니다." },
+        { n: "03", title: "벽지", body: "가구와 소품을 고려해 한 톤 밝게 잡는 편이 안전합니다." },
+        { n: "04", title: "타일", body: "욕실과 주방의 줄눈 색까지 함께 정합니다." },
+        { n: "05", title: "가구 · 손잡이", body: "마지막에 정해야 전체와 어긋나지 않습니다." },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

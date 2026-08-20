@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">통합 견적 계산기</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">공정을 고르면<br>금액대가 나옵니다</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">평형 · 자재 등급 · 공정을 선택하면 예상 범위를 계산합니다. 참고용 금액이며, 확정 견적은 방문실측 후 드립니다.</p>
+  </section>
+
+  <section style="display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr)">
+    <div style="padding:56px 56px 76px">
+
+      <div style="margin-bottom:46px">
+        <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:24px">
+          <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">01</span>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">건물 유형과 평형</h2>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap; margin-bottom:16px">
+          <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="4">
+            <span onClick="{{ k.onClick }}" style="{{ k.style }}">{{ k.label }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap">
+          <sc-for list="{{ sizes }}" as="s" hint-placeholder-count="5">
+            <span onClick="{{ s.onClick }}" style="{{ s.style }}">{{ s.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-bottom:46px">
+        <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:24px">
+          <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">02</span>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">자재 등급</h2>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap; margin-bottom:14px">
+          <sc-for list="{{ grades }}" as="g" hint-placeholder-count="3">
+            <span onClick="{{ g.onClick }}" style="{{ g.style }}">{{ g.label }}</span>
+          </sc-for>
+        </div>
+        <div style="font-size:13.5px; line-height:1.8; color:#8C8071">{{ gradeNote }}</div>
+      </div>
+
+      <div style="margin-bottom:40px">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:8px">
+          <div style="display:flex; align-items:baseline; gap:16px">
+            <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">03</span>
+            <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">공정 선택</h2>
+          </div>
+          <div style="display:flex; gap:16px; font-size:13px">
+            <span onClick="{{ selectAll }}" style="color:#1F1B16; border-bottom:1px solid #C9C0B0; padding-bottom:3px; cursor:pointer">전체 선택</span>
+            <span onClick="{{ selectNone }}" style="color:#8C8071; border-bottom:1px solid #E6DFD2; padding-bottom:3px; cursor:pointer">해제</span>
+            <span onClick="{{ selectFilm }}" style="color:#A2543A; border-bottom:1px solid #D8C3B4; padding-bottom:3px; cursor:pointer">필름만</span>
+          </div>
+        </div>
+        <sc-for list="{{ trades }}" as="t" hint-placeholder-count="12">
+          <div onClick="{{ t.onClick }}" style="{{ t.rowStyle }}">
+            <span style="{{ t.boxStyle }}"></span>
+            <span style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#B0A595; letter-spacing:0.06em">{{ t.n }}</span>
+            <span style="font-size:16px; color:#1F1B16">{{ t.title }}</span>
+            <span style="font-size:14px; color:#8C8071">{{ t.note }}</span>
+            <span style="font-size:14px; color:#5D5346; text-align:right">{{ t.amount }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex; gap:44px; padding-top:26px; border-top:1px solid #DCD4C6">
+        <div>
+          <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:9px">선택 공정</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:20px">{{ countLabel }}</div>
+        </div>
+        <div>
+          <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:9px">예상 기간</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:20px">{{ durationLabel }}</div>
+        </div>
+        <div>
+          <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:9px">거주 중 진행</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:20px">{{ liveInLabel }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#221E19; color:#EDE7DC; padding:56px 48px 76px; border-left:1px solid #DCD4C6">
+      <div style="position:sticky; top:130px">
+        <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:18px">예상 금액</div>
+        <div style="font-family:'Nanum Myeongjo',serif; font-size:40px; font-weight:800; letter-spacing:-0.04em; line-height:1.25; color:#F7F3EA; margin-bottom:10px">{{ totalLabel }}</div>
+        <div style="font-size:13.5px; color:#8F8272; margin-bottom:32px">부가세 별도 · 참고용 범위</div>
+
+        <div style="border-top:1px solid #3A342C; padding-top:22px; margin-bottom:28px">
+          <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
+            <div style="display:grid; grid-template-columns:110px minmax(0,1fr); gap:18px; padding:11px 0; border-bottom:1px solid #302A23">
+              <span style="font-size:13px; color:#8F8272">{{ s.k }}</span>
+              <span style="font-size:14.5px; color:#EDE7DC; line-height:1.6">{{ s.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border-top:1px solid #3A342C; padding-top:22px; margin-bottom:30px">
+          <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:14px">포함되지 않는 항목</div>
+          <div style="font-size:14px; line-height:1.9; color:#B0A595">구조 변경 · 확장, 시스템 에어컨, 관리사무소 예치금, 이사 · 입주 청소</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px">
+          <a href="./Quote.dc.html" style="background:#EDE7DC; color:#221E19; text-align:center; font-size:15px; padding:18px 20px" style-hover="background:#A2543A; color:#F7F3EA">이 조건으로 견적 접수</a>
+          <a href="./Booking.dc.html" style="border:1px solid #4A4238; color:#EDE7DC; text-align:center; font-size:15px; padding:17px 20px" style-hover="border-color:#A2543A">상담 예약하기</a>
+        </div>
+        <p style="font-size:13px; line-height:1.85; color:#8F8272; margin:24px 0 0">계산 결과는 최근 시공 사례의 평균 단가를 기준으로 산출한 범위입니다. 벽면 상태, 배관 노후도, 자재 선택에 따라 달라집니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+// base = 24평 스탠다드 기준 공정별 금액(만원). 비용 가이드의 공정별 비중과 같은 기준입니다.
+const TRADES = [
+  { key: "demo", n: "01", title: "철거", note: "폐기물 반출 포함", base: 260, days: 3, liveIn: false },
+  { key: "window", n: "02", title: "창호", note: "샷시 · 유리 교체", base: 700, days: 2, liveIn: false },
+  { key: "mep", n: "03", title: "설비 · 전기 1차", note: "배관 · 배선 매립", base: 400, days: 2, liveIn: false },
+  { key: "carpentry", n: "04", title: "목공", note: "천장 · 벽체 · 문틀", base: 520, days: 4, liveIn: false },
+  { key: "water", n: "05", title: "방수", note: "욕실 · 발코니", base: 160, days: 1, liveIn: false },
+  { key: "tile", n: "06", title: "타일", note: "욕실 · 주방 · 현관", base: 320, days: 3, liveIn: false },
+  { key: "coat", n: "07", title: "탄성코트", note: "발코니 결로 방지", base: 60, days: 2, liveIn: true },
+  { key: "film", n: "08", title: "필름", note: "문 · 몰딩 · 가구 도어", base: 200, days: 3, liveIn: true },
+  { key: "light", n: "09", title: "조명 · 전기 2차", note: "기구 설치 · 마감", base: 150, days: 1, liveIn: true },
+  { key: "paper", n: "10", title: "도배", note: "퍼티 · 초배 · 정배", base: 200, days: 2, liveIn: true },
+  { key: "floor", n: "11", title: "바닥재", note: "강마루 · 장판", base: 210, days: 2, liveIn: true },
+  { key: "furniture", n: "12", title: "가구 · 위생도기", note: "주방 · 붙박이 · 도기", base: 780, days: 3, liveIn: false },
+];
+
+const KINDS = [
+  { key: "apt", label: "아파트", factor: 1 },
+  { key: "row", label: "연립 · 다세대", factor: 1.04 },
+  { key: "house", label: "단독주택", factor: 1.12 },
+  { key: "shop", label: "상가 · 사무실", factor: 1.08 },
+];
+
+const SIZES = [
+  { key: "18", label: "18평 이하", py: 18 },
+  { key: "24", label: "24평", py: 24 },
+  { key: "32", label: "32평", py: 32 },
+  { key: "40", label: "40평", py: 40 },
+  { key: "50", label: "50평 이상", py: 52 },
+];
+
+const GRADES = [
+  { key: "std", label: "스탠다드", factor: 1, note: "국내 브랜드 기본 자재. 무광 단색 필름, 실크 벽지, 강화마루 기준입니다." },
+  { key: "prem", label: "프리미엄", factor: 1.22, note: "고내구 표면 자재. 포세린 타일, 강마루, 프리미엄 필름과 도장급 마감 기준입니다." },
+  { key: "custom", label: "맞춤 설계", factor: 1.45, note: "설계 담당자가 도면부터 구성합니다. 주문 제작 가구와 특수 자재, 조명 계획을 포함합니다." },
+];
+
+const CHIP = "border:1px solid #C9C0B0; color:#5D5346; font-size:14.5px; padding:11px 17px; cursor:pointer; background:transparent";
+const CHIP_ON = "border:1px solid #1F1B16; background:#1F1B16; color:#F4F1EA; font-size:14.5px; padding:11px 17px; cursor:pointer";
+const ROW = "display:grid; grid-template-columns:18px 44px minmax(0,1fr) minmax(0,1fr) 130px; gap:20px; align-items:center; padding:17px 4px; border-bottom:1px solid #E6DFD2; cursor:pointer";
+const BOX = "width:15px; height:15px; border:1px solid #A79C8C; display:block";
+const BOX_ON = "width:15px; height:15px; border:1px solid #A2543A; background:#A2543A; display:block";
+
+class Component extends DCLogic {
+  state = {
+    kind: "apt",
+    size: "24",
+    grade: "std",
+    on: { demo: true, window: true, mep: true, carpentry: true, water: true, tile: true, coat: true, film: true, light: true, paper: true, floor: true, furniture: true },
+  };
+
+  man(v) {
+    const n = Math.round(v / 10) * 10;
+    if (n >= 10000) return (n / 10000).toFixed(n % 10000 === 0 ? 0 : 2).replace(/\.00$/, "") + "억원";
+    return n.toLocaleString("ko-KR") + "만원";
+  }
+
+  renderVals() {
+    const s = this.state;
+    const kind = KINDS.find(k => k.key === s.kind);
+    const size = SIZES.find(x => x.key === s.size);
+    const grade = GRADES.find(g => g.key === s.grade);
+    const picked = TRADES.filter(t => s.on[t.key]);
+
+    const core = picked.reduce((a, t) => a + t.base, 0) * (size.py / 24) * kind.factor * grade.factor;
+    const low = core * 0.98;
+    const high = core * 1.3;
+
+    const days = picked.reduce((a, t) => a + t.days, 0);
+    const weeks = Math.max(1, Math.round(days / 5.5));
+    const liveIn = picked.length > 0 && picked.every(t => t.liveIn);
+
+    return {
+      kinds: KINDS.map(k => ({ label: k.label, style: s.kind === k.key ? CHIP_ON : CHIP, onClick: () => this.setState({ kind: k.key }) })),
+      sizes: SIZES.map(x => ({ label: x.label, style: s.size === x.key ? CHIP_ON : CHIP, onClick: () => this.setState({ size: x.key }) })),
+      grades: GRADES.map(g => ({ label: g.label, style: s.grade === g.key ? CHIP_ON : CHIP, onClick: () => this.setState({ grade: g.key }) })),
+      gradeNote: grade.note,
+      trades: TRADES.map(t => {
+        const active = !!s.on[t.key];
+        return {
+          n: t.n, title: t.title, note: t.note,
+          amount: this.man(t.base * (size.py / 24) * kind.factor * grade.factor),
+          rowStyle: ROW + (active ? "" : "; opacity:0.45"),
+          boxStyle: active ? BOX_ON : BOX,
+          onClick: () => this.setState(st => ({ on: Object.assign({}, st.on, { [t.key]: !st.on[t.key] }) })),
+        };
+      }),
+      selectAll: () => this.setState({ on: TRADES.reduce((a, t) => (a[t.key] = true, a), {}) }),
+      selectNone: () => this.setState({ on: {} }),
+      selectFilm: () => this.setState({ on: { film: true } }),
+      countLabel: picked.length + " / 12 공정",
+      durationLabel: picked.length === 0 ? "—" : (weeks >= 2 ? weeks + "주 내외" : days + "일 내외"),
+      liveInLabel: picked.length === 0 ? "—" : (liveIn ? "가능" : "비운 상태 권장"),
+      totalLabel: picked.length === 0 ? "공정을 선택해 주십시오" : this.man(low) + " ~ " + this.man(high),
+      summary: [
+        { k: "건물 유형", v: kind.label },
+        { k: "평형", v: size.label },
+        { k: "자재 등급", v: grade.label },
+        { k: "선택 공정", v: picked.length === 0 ? "없음" : picked.map(t => t.title).join(" · ") },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

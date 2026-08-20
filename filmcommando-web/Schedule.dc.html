@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">공정 일정</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">5주, 열두 개 공정<br>순서가 품질입니다</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">전체 리모델링의 표준 일정입니다. 평형과 범위에 따라 주차가 앞뒤로 움직이며, 실측 후 세대별 일정표를 드립니다.</p>
+  </section>
+
+  <section style="border-bottom:1px solid #DCD4C6; background:#EFEADF">
+    <div style="padding:44px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">전체 흐름</div>
+      <div style="display:flex; align-items:stretch; gap:0">
+        <sc-for list="{{ bar }}" as="b" hint-placeholder-count="5">
+          <div style="flex:1; border-left:1px solid #C9C0B0; padding:0 0 0 18px">
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#A2543A; margin-bottom:10px">{{ b.w }}</div>
+            <div style="font-size:15px; line-height:1.75; color:#1F1B16">{{ b.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:76px 56px 40px">
+    <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="5">
+      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:44px 0; border-top:1px solid #DCD4C6">
+        <div>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px">
+            <span style="width:7px; height:7px; background:#A2543A; border-radius:999px; flex:none"></span>
+            <span style="height:1px; background:#DCD4C6; flex:1"></span>
+          </div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:26px; font-weight:800; letter-spacing:-0.03em; margin-bottom:10px">{{ w.label }}</div>
+          <div style="font-size:13px; color:#9A8F80; line-height:1.8">{{ w.days }}</div>
+        </div>
+        <div>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-size:29px; font-weight:700; letter-spacing:-0.03em; margin:0 0 16px">{{ w.title }}</h2>
+          <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0 0 34px; max-width:820px; text-wrap:pretty">{{ w.body }}</p>
+          <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px">
+            <sc-for list="{{ w.tasks }}" as="t" hint-placeholder-count="3">
+              <div style="border-top:1px solid #1F1B16; padding-top:18px">
+                <h3 style="font-size:17px; font-weight:400; margin:0 0 10px; color:#1F1B16">{{ t.title }}</h3>
+                <p style="font-size:14px; line-height:1.9; color:#5D5346; margin:0 0 12px; text-wrap:pretty">{{ t.body }}</p>
+                <div style="font-size:12px; color:#A2543A; letter-spacing:0.04em">{{ t.meta }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:grid; grid-template-columns:150px minmax(0,1fr); gap:28px; margin-top:32px; padding-top:20px; border-top:1px solid #E6DFD2">
+            <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80">고객 확인</div>
+            <div style="font-size:15px; line-height:1.85; color:#3E362C">{{ w.check }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+    <div style="border-top:1px solid #1F1B16"></div>
+  </section>
+
+  <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
+    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,400px); gap:56px">
+      <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">일정 변수</div>
+      <div>
+        <sc-for list="{{ risks }}" as="r" hint-placeholder-count="4">
+          <div style="display:grid; grid-template-columns:170px minmax(0,1fr); gap:28px; padding:19px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+            <div style="font-size:14px; color:#A2543A">{{ r.k }}</div>
+            <div style="font-size:15px; line-height:1.85; color:#3E362C">{{ r.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative; height:340px">
+        <image-slot id="sc-1" shape="rect" fit="cover" placeholder="공정 진행 현장 사진"></image-slot>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#221E19; color:#EDE7DC">
+    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+      <div>
+        <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">세대별 일정표를 만들어 드립니다</h2>
+        <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">실측 후 주차별 공정과 방문 일정을 문서로 정리해 공유합니다. 입주일에 맞춰 역산해 잡습니다.</p>
+      </div>
+      <a href="./Quote.dc.html" style="background:#EDE7DC; color:#221E19; font-size:15px; padding:18px 36px; letter-spacing:0.02em; flex:none" style-hover="background:#A2543A; color:#F7F3EA">무료 방문실측 신청</a>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      bar: [
+        { w: "1주차", body: "철거 / 창호 / 설비 & 전기 1차" },
+        { w: "2주차", body: "목공 / 타일 & 방수" },
+        { w: "3주차", body: "탄성코트 / 필름 / 조명·전기 2차" },
+        { w: "4주차", body: "도배 / 바닥재 / 가구 설치" },
+        { w: "5주차", body: "위생도기 세팅 / 청소 및 마감(입주)" },
+      ],
+      weeks: [
+        {
+          label: "1주차", days: "1 ~ 7일차", title: "철거 / 창호 / 설비 & 전기 1차",
+          body: "집을 비운 상태에서 시작합니다. 철거로 구조를 드러낸 뒤 창호를 교체하고, 벽 안에 들어갈 배관과 배선을 먼저 잡습니다. 이 주에 정한 것은 뒤에서 되돌리기 어렵기 때문에 도면 확정이 가장 중요합니다.",
+          tasks: [
+            { title: "철거", body: "벽지·바닥재·기존 가구와 위생도기를 걷어내고 폐기물을 반출합니다.", meta: "2 ~ 3일" },
+            { title: "창호", body: "샷시와 유리를 교체하고 외부 실리콘 마감까지 진행합니다.", meta: "1 ~ 2일" },
+            { title: "설비 & 전기 1차", body: "수전·배수 위치 변경, 콘센트와 스위치 배선을 벽 속에 매립합니다.", meta: "2일" },
+          ],
+          check: "콘센트·스위치 위치, 수전 높이, 창호 색상과 개폐 방향",
+        },
+        {
+          label: "2주차", days: "8 ~ 14일차", title: "목공 / 타일 & 방수",
+          body: "공간의 형태를 만드는 주입니다. 목공으로 벽체·천장·문틀을 세우고, 욕실과 주방은 방수 후 타일을 붙입니다. 방수는 양생 시간이 필요해 일정을 앞당기기 어려운 공정입니다.",
+          tasks: [
+            { title: "목공", body: "천장 · 벽체 · 문틀 · 몰딩 · 붙박이 하부틀을 제작합니다.", meta: "3 ~ 4일" },
+            { title: "방수", body: "욕실과 발코니에 방수층을 도포하고 양생합니다.", meta: "1일 + 양생" },
+            { title: "타일", body: "욕실 · 주방 · 현관 타일 시공 후 줄눈을 마감합니다.", meta: "2 ~ 3일" },
+          ],
+          check: "타일 패턴과 줄눈 색, 문 위치와 개폐 방향, 천장 단 높이",
+        },
+        {
+          label: "3주차", days: "15 ~ 21일차", title: "탄성코트 / 필름 / 조명·전기 2차",
+          body: "표면을 마감하는 주입니다. 발코니는 탄성코트로 도장하고, 문·몰딩·창틀·가구 도어는 필름으로 마감합니다. 조명과 스위치를 달아 실제 밝기를 확인합니다.",
+          tasks: [
+            { title: "탄성코트", body: "발코니와 외벽면 결로 방지 도장을 2회 이상 도포합니다.", meta: "1 ~ 2일" },
+            { title: "필름", body: "문 · 문틀 · 몰딩 · 창틀 · 주방장 · 신발장을 필름으로 마감합니다.", meta: "2 ~ 3일" },
+            { title: "조명 · 전기 2차", body: "조명 기구를 설치하고 스위치 · 콘센트를 마감합니다.", meta: "1일" },
+          ],
+          check: "필름 색상 최종 확인, 조명 위치와 색온도, 스위치 마감재",
+        },
+        {
+          label: "4주차", days: "22 ~ 28일차", title: "도배 / 바닥재 / 가구 설치",
+          body: "눈에 보이는 마감이 올라오는 주입니다. 도배와 바닥재를 시공한 뒤 주방 가구와 붙박이장을 설치합니다. 이 시점부터는 보양 상태를 유지해야 흠집이 남지 않습니다.",
+          tasks: [
+            { title: "도배", body: "퍼티 · 초배 후 벽지를 시공합니다. 필름 마감 부위와 경계를 맞춥니다.", meta: "2일" },
+            { title: "바닥재", body: "강마루 · 강화마루 · 장판 등 선택 자재를 깔고 걸레받이를 마감합니다.", meta: "1 ~ 2일" },
+            { title: "가구 설치", body: "주방 가구, 붙박이장, 신발장을 반입해 설치하고 수평을 조정합니다.", meta: "2일" },
+          ],
+          check: "벽지 시공 방향과 패턴, 바닥재 방향, 가구 손잡이와 상판",
+        },
+        {
+          label: "5주차", days: "29 ~ 35일차", title: "위생도기 세팅 / 청소 및 마감(입주)",
+          body: "설치와 검수를 끝내고 집을 넘겨드리는 주입니다. 위생도기와 수전을 세팅하고 전체 준공 청소를 한 뒤, 함께 돌아보며 하자 목록을 만들어 처리합니다.",
+          tasks: [
+            { title: "위생도기 세팅", body: "변기 · 세면대 · 수전 · 액세서리를 설치하고 누수를 확인합니다.", meta: "1일" },
+            { title: "청소 및 마감", body: "준공 청소 후 실리콘 · 코킹 · 도장 터치업을 진행합니다.", meta: "1 ~ 2일" },
+            { title: "검수 · 입주", body: "함께 점검해 하자 목록을 정리하고 보증서를 전달합니다.", meta: "반일" },
+          ],
+          check: "수압과 배수, 문·창 개폐, 하자 목록 확인 후 서명",
+        },
+      ],
+      risks: [
+        { k: "관리사무소 승인", v: "동의서 · 공사 신고 · 엘리베이터 사용 협의에 3 ~ 7일이 필요합니다. 착공 전에 미리 진행합니다." },
+        { k: "자재 입고", v: "창호와 주방 가구는 주문 제작 기간이 있어 계약 직후 발주합니다. 지연 시 주차 순서를 조정합니다." },
+        { k: "양생과 습도", v: "방수와 도장은 양생 시간이 필요하고, 장마철에는 도배 · 필름 접착 일정을 늘려 잡습니다." },
+        { k: "작업 가능 시간", v: "대부분의 공동주택은 평일 09:00 ~ 18:00로 제한됩니다. 소음 공정은 앞주에 몰아 배치합니다." },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

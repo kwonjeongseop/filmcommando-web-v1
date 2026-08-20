@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; background:#F4F1EA; }
+  * { box-sizing:border-box; }
+  a { color:#1F1B16; text-decoration:none; }
+  a:hover { color:#A2543A; }
+  ::selection { background:#1F1B16; color:#F4F1EA; }
+  input::placeholder, textarea::placeholder { color:#A79C8C; }
+</style>
+<script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+  <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
+
+  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+    <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">상담 예약</div>
+    <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">날짜와 시간을<br>직접 고르십시오</h1>
+    <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">방문실측과 사무실 상담 모두 예약할 수 있습니다. 예약 확정은 문자로 안내드립니다. 실측 비용은 없습니다.</p>
+  </section>
+
+  <section style="display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
+    <div style="padding:56px 56px 76px">
+      <div style="margin-bottom:44px">
+        <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:24px">
+          <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">01</span>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">상담 방식</h2>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px">
+          <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
+            <div onClick="{{ m.onClick }}" style="{{ m.style }}">
+              <div style="font-family:'Nanum Myeongjo',serif; font-size:19px; letter-spacing:-0.02em; margin-bottom:9px">{{ m.title }}</div>
+              <div style="font-size:14px; line-height:1.75; margin-bottom:10px">{{ m.body }}</div>
+              <div style="font-size:13px">{{ m.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-bottom:44px">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:24px">
+          <div style="display:flex; align-items:baseline; gap:16px">
+            <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">02</span>
+            <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">날짜</h2>
+          </div>
+          <span style="font-size:14px; color:#8C8071">{{ monthLabel }}</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px; margin-bottom:10px">
+          <sc-for list="{{ dow }}" as="d" hint-placeholder-count="7">
+            <div style="font-size:12px; letter-spacing:0.1em; color:#9A8F80; text-align:center; padding-bottom:6px">{{ d }}</div>
+          </sc-for>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px">
+          <sc-for list="{{ days }}" as="d" hint-placeholder-count="35">
+            <div onClick="{{ d.onClick }}" style="{{ d.style }}">
+              <span style="font-size:15px">{{ d.n }}</span>
+              <span style="font-size:11px; letter-spacing:0.04em">{{ d.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-bottom:44px">
+        <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:24px">
+          <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">03</span>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">시간대</h2>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap">
+          <sc-for list="{{ slots }}" as="s" hint-placeholder-count="6">
+            <span onClick="{{ s.onClick }}" style="{{ s.style }}">{{ s.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:28px">
+          <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">04</span>
+          <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">연락처와 현장 정보</h2>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 44px; margin-bottom:30px">
+          <label style="display:block">
+            <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">이름</span>
+            <input placeholder="홍길동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+          </label>
+          <label style="display:block">
+            <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">연락처</span>
+            <input placeholder="010-0000-0000" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+          </label>
+          <label style="display:block">
+            <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">현장 주소</span>
+            <input placeholder="서울 강동구 ○○아파트 000동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+          </label>
+          <label style="display:block">
+            <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">평형 · 연식</span>
+            <input placeholder="32평 · 20년" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+          </label>
+        </div>
+        <label style="display:block; margin-bottom:28px">
+          <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">상담하고 싶은 내용</span>
+          <textarea placeholder="희망 범위, 예산, 입주 예정일 등을 적어주십시오." style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; line-height:1.9; padding:0 0 12px; height:76px; resize:none; outline:none"></textarea>
+        </label>
+        <label style="display:flex; align-items:flex-start; gap:13px; cursor:pointer; padding:20px 0; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6; margin-bottom:30px">
+          <span style="width:15px; height:15px; border:1px solid #A79C8C; flex:none; margin-top:4px"></span>
+          <span style="font-size:14px; line-height:1.8; color:#5D5346">개인정보 수집 및 이용에 동의합니다. (수집 항목: 이름, 연락처, 주소 / 목적: 상담 및 실측 일정 조율)</span>
+        </label>
+        <div style="display:flex; align-items:center; gap:26px">
+          <button style="background:#1F1B16; color:#F4F1EA; border:0; padding:19px 46px; font-size:16px; font-family:inherit; letter-spacing:0.02em; cursor:pointer" style-hover="background:#A2543A">예약 신청</button>
+          <span style="font-size:13px; color:#9A8F80; line-height:1.7">신청 후 담당자가 확인 전화를 드린 뒤 예약이 확정됩니다.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#221E19; color:#EDE7DC; padding:56px 48px 76px; border-left:1px solid #DCD4C6">
+      <div style="position:sticky; top:130px">
+        <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:18px">예약 내용</div>
+        <div style="font-family:'Nanum Myeongjo',serif; font-size:27px; line-height:1.5; letter-spacing:-0.03em; color:#F7F3EA; margin-bottom:30px">{{ summaryLabel }}</div>
+        <div style="border-top:1px solid #3A342C; padding-top:22px; margin-bottom:30px">
+          <sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
+            <div style="display:grid; grid-template-columns:100px minmax(0,1fr); gap:18px; padding:11px 0; border-bottom:1px solid #302A23">
+              <span style="font-size:13px; color:#8F8272">{{ s.k }}</span>
+              <span style="font-size:14.5px; color:#EDE7DC; line-height:1.6">{{ s.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="border-top:1px solid #3A342C; padding-top:22px; margin-bottom:30px">
+          <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:16px">실측에 걸리는 시간</div>
+          <div style="font-size:14.5px; line-height:1.9; color:#B0A595">전예 리모델링 40 ~ 60분 · 부분 시공 30분 · 필름 단독 20분. 도면이 있으면 미리 보내주시면 짧아집니다.</div>
+        </div>
+        <div style="border-top:1px solid #3A342C; padding-top:22px">
+          <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:10px">전화 예약</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:26px; color:#F7F3EA; letter-spacing:0.02em; margin-bottom:8px">0000 - 0000</div>
+          <div style="font-size:14px; color:#B0A595">평일 · 주말 09:00 – 19:00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const CARD = "border:1px solid #C9C0B0; padding:22px 22px 24px; cursor:pointer; color:#5D5346";
+const CARD_ON = "border:1px solid #1F1B16; background:#1F1B16; color:#EDE7DC; padding:22px 22px 24px; cursor:pointer";
+const CHIP = "border:1px solid #C9C0B0; color:#5D5346; font-size:14.5px; padding:11px 17px; cursor:pointer";
+const CHIP_ON = "border:1px solid #1F1B16; background:#1F1B16; color:#F4F1EA; font-size:14.5px; padding:11px 17px; cursor:pointer";
+const CELL = "display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; height:62px; border:1px solid #E6DFD2; color:#3E362C; cursor:pointer; background:#fff";
+const CELL_ON = "display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; height:62px; border:1px solid #1F1B16; background:#1F1B16; color:#F4F1EA; cursor:pointer";
+const CELL_OFF = "display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; height:62px; border:1px solid #EFEADF; color:#C4BBAA; background:#F4F1EA";
+const CELL_EMPTY = "height:62px";
+
+const MODES = [
+  { key: "visit", title: "방문 실측", body: "담당자가 현장에 방문해 실측하고 상태를 확인합니다", meta: "무료 · 40 ~ 60분" },
+  { key: "office", title: "사무실 상담", body: "자재 샘플과 사례를 직접 보며 범위를 정합니다", meta: "무료 · 예약 필수" },
+  { key: "call", title: "전화 · 온라인", body: "사진과 도면으로 대략적인 금액대를 먼저 확인합니다", meta: "무료 · 20분" },
+];
+
+const SLOTS = [
+  { key: "am1", label: "09:00 – 11:00" },
+  { key: "am2", label: "11:00 – 13:00" },
+  { key: "pm1", label: "13:00 – 15:00" },
+  { key: "pm2", label: "15:00 – 17:00" },
+  { key: "pm3", label: "17:00 – 19:00" },
+  { key: "any", label: "시간 협의" },
+];
+
+class Component extends DCLogic {
+  state = { mode: "visit", day: 12, slot: "am2" };
+
+  renderVals() {
+    const s = this.state;
+    const full = [4, 5, 11, 18, 25];
+    const cells = [];
+    for (let i = 0; i < 5; i++) cells.push({ style: CELL_EMPTY, n: "", note: "", onClick: null });
+    for (let d = 1; d <= 30; d++) {
+      const closed = full.indexOf(d) >= 0;
+      cells.push({
+        n: String(d),
+        note: closed ? "마감" : "가능",
+        style: closed ? CELL_OFF : (s.day === d ? CELL_ON : CELL),
+        onClick: closed ? null : () => this.setState({ day: d }),
+      });
+    }
+    const mode = MODES.find(m => m.key === s.mode);
+    const slot = SLOTS.find(x => x.key === s.slot);
+
+    return {
+      modes: MODES.map(m => ({ title: m.title, body: m.body, meta: m.meta, style: s.mode === m.key ? CARD_ON : CARD, onClick: () => this.setState({ mode: m.key }) })),
+      monthLabel: "2026년 9월",
+      dow: ["일", "월", "화", "수", "목", "금", "토"],
+      days: cells,
+      slots: SLOTS.map(x => ({ label: x.label, style: s.slot === x.key ? CHIP_ON : CHIP, onClick: () => this.setState({ slot: x.key }) })),
+      summaryLabel: "9월 " + s.day + "일 · " + slot.label,
+      summary: [
+        { k: "상담 방식", v: mode.title },
+        { k: "일시", v: "2026년 9월 " + s.day + "일 " + slot.label },
+        { k: "비용", v: "무료" },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>
