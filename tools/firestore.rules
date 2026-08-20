@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 예약 — 로그인 사용자 작성,
+    //         관리자만 전체 읽기
+    match /bookings/{docId} {
+      allow create: if request.auth != null;
+      allow read, update, delete:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // 공지사항 — 누구나 읽기,
+    //             관리자만 쓰기
+    match /notices/{docId} {
+      allow read: if true;
+      allow write:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // 고객 후기 — 누구나 읽기,
+    //              관리자만 쓰기
+    match /reviews/{docId} {
+      allow read: if true;
+      allow write:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // 시공 사례 — 누구나 읽기,
+    //              관리자만 쓰기
+    match /cases/{docId} {
+      allow read: if true;
+      allow write:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // 패키지 — 누구나 읽기,
+    //           관리자만 쓰기
+    match /packages/{docId} {
+      allow read: if true;
+      allow write:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // 사용자 — 본인만 읽기/쓰기
+    match /users/{userId} {
+      allow read, write:
+        if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // 그 외 전체 차단
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
