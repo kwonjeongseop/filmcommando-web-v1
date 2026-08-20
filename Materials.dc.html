@@ -19,14 +19,56 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Materials 반응형 */
+  @media (max-width:768px) {
+    .fc-mat-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-mat-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-mat-category-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-mat-items {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-mat-item-img {
+      height:140px !important;
+    }
+    .fc-mat-order-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-mat-order-row {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-mat-order-img {
+      height:220px !important;
+    }
+    .fc-mat-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+      padding:40px 20px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-mat-items {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-mat-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-mat-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">자재 · 마감재 쇼룸</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">실물로 보고<br>고르시는 편이 낫습니다</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">주로 쓰는 자재를 부위별로 모았습니다. 실측 때 샘플을 가져가 집 조명 아래에서 비교해 보실 수 있습니다.</p>
@@ -43,15 +85,15 @@
 
   <section style="padding:56px 56px 40px">
     <sc-for list="{{ categories }}" as="c" hint-placeholder-count="4">
-      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
+      <div class="fc-mat-category-wrap" style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
         <div>
           <div style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin-bottom:12px">{{ c.title }}</div>
           <p style="font-size:14px; line-height:1.9; color:#8C8071; margin:0">{{ c.body }}</p>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px">
+        <div class="fc-mat-items" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px">
           <sc-for list="{{ c.items }}" as="i" hint-placeholder-count="4">
             <div>
-              <div style="position:relative; height:170px">
+              <div class="fc-mat-item-img" style="position:relative; height:170px">
                 <image-slot id="{{ i.slot }}" shape="rect" fit="cover" placeholder="{{ i.ph }}"></image-slot>
               </div>
               <div style="padding-top:14px; border-top:1px solid #DCD4C6; margin-top:14px">
@@ -68,27 +110,27 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+    <div class="fc-mat-order-wrap" style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">고르는 순서</div>
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-size:27px; font-weight:700; letter-spacing:-0.03em; margin:0 0 22px">바닥부터 정하고 벽으로 올라갑니다</h2>
         <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0 0 26px; text-wrap:pretty">면적이 넓고 교체가 어려운 것부터 정하는 편이 실패가 적습니다. 바닥재 → 문 · 몰딩 → 벽지 → 타일 → 가구 순서로 좁혀 갑니다. 색은 세 가지를 넘기지 않는 편이 정돈되어 보입니다.</p>
         <sc-for list="{{ order }}" as="o" hint-placeholder-count="5">
-          <div style="display:grid; grid-template-columns:40px 130px minmax(0,1fr); gap:20px; padding:15px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div class="fc-mat-order-row" style="display:grid; grid-template-columns:40px 130px minmax(0,1fr); gap:20px; padding:15px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
             <div style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#B0A595">{{ o.n }}</div>
             <div style="font-size:15px; color:#1F1B16">{{ o.title }}</div>
             <div style="font-size:14.5px; line-height:1.8; color:#5D5346">{{ o.body }}</div>
           </div>
         </sc-for>
       </div>
-      <div style="position:relative; height:420px">
+      <div class="fc-mat-order-img" style="position:relative; height:420px">
         <image-slot id="mt-room" shape="rect" fit="cover" placeholder="마감재 조합 사진 (샘플 보드)"></image-slot>
       </div>
     </div>
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-mat-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">샘플은 실측 때 가져갑니다</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">집 조명과 채광 아래에서 비교하시는 편이 정확합니다. 사무실 방문도 가능합니다.</p>

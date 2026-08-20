@@ -18,22 +18,57 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Resources 반응형 */
+  @media (max-width:768px) {
+    .fc-res-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-res-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-res-files-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-res-files {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-res-checklist-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-res-checklist-items {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-res-terms-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-res-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+      padding:40px 20px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-res-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-res-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">자료실</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">계약 전에<br>확인하실 것들</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">사전 점검 체크리스트와 관리사무소 제출 서식을 정리했습니다. 저희와 계약하지 않으셔도 쓰실 수 있습니다.</p>
   </section>
 
-  <section style="padding:56px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-res-files-wrap" style="padding:56px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">내려받기</div>
-    <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
+    <div class="fc-res-files" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
       <sc-for list="{{ files }}" as="f" hint-placeholder-count="6">
         <a href="#" style="display:grid; grid-template-columns:minmax(0,1fr) 110px; gap:20px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:center" style-hover="background:#EFEADF">
           <div>
@@ -48,13 +83,13 @@
 
   <section style="padding:72px 56px 40px">
     <sc-for list="{{ lists }}" as="l" hint-placeholder-count="4">
-      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
+      <div class="fc-res-checklist-wrap" style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
         <div>
           <div style="font-size:12px; letter-spacing:0.16em; color:#A2543A; margin-bottom:12px">{{ l.n }}</div>
           <div style="font-family:'Nanum Myeongjo',serif; font-size:23px; font-weight:700; letter-spacing:-0.025em; margin-bottom:12px">{{ l.title }}</div>
           <p style="font-size:14px; line-height:1.9; color:#8C8071; margin:0">{{ l.body }}</p>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 56px">
+        <div class="fc-res-checklist-items" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 56px">
           <sc-for list="{{ l.items }}" as="i" hint-placeholder-count="8">
             <label style="display:grid; grid-template-columns:16px minmax(0,1fr); gap:14px; padding:14px 0; border-bottom:1px solid #E6DFD2; cursor:pointer; align-items:start">
               <span style="width:14px; height:14px; border:1px solid #A79C8C; display:block; margin-top:4px"></span>
@@ -68,7 +103,7 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+    <div class="fc-res-terms-wrap" style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">용어 정리</div>
       <div>
         <sc-for list="{{ termsA }}" as="t" hint-placeholder-count="5">
@@ -90,7 +125,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-res-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">체크리스트를 들고 실측을 받아보십시오</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">항목마다 답을 드립니다. 답하기 어려운 업체라면 견적서를 다시 보셔야 합니다.</p>
