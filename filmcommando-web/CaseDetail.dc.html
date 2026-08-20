@@ -19,18 +19,75 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* CaseDetail 반응형 */
+  @media (max-width:768px) {
+    .fc-cd-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-cd-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-cd-hero-img {
+      height:300px !important;
+    }
+    .fc-cd-brief {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-cd-rooms-label {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-cd-room-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:20px 20px !important;
+    }
+    .fc-cd-before-after {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-cd-ba-img {
+      height:200px !important;
+    }
+    .fc-cd-log-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-cd-review-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-cd-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+      padding:40px 20px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-cd-hero-img {
+      height:220px !important;
+    }
+    .fc-cd-ba-img {
+      height:160px !important;
+    }
+    .fc-cd-log-row {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-cd-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
   <section style="padding:28px 56px; border-bottom:1px solid #DCD4C6; font-size:13px; color:#8C8071">
     <a href="./Cases.dc.html" style="color:#8C8071">시공 사례</a> &nbsp;/&nbsp; 아파트 · 전예 리모델링 &nbsp;/&nbsp; <span style="color:#1F1B16">강동구 아파트 32평</span>
   </section>
 
-  <section style="padding:72px 56px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,320px); gap:56px; align-items:end">
+  <section class="fc-cd-hero" style="padding:72px 56px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,320px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#A2543A">사례 01</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:44px; line-height:1.32; letter-spacing:-0.04em; margin:0">20년 된 32평,<br>구조는 그대로 두고</h1>
     <div style="display:flex; flex-direction:column; gap:12px">
@@ -44,13 +101,13 @@
   </section>
 
   <section style="padding:0 56px 64px">
-    <div style="position:relative; height:620px">
+    <div class="fc-cd-hero-img" style="position:relative; height:620px">
       <image-slot id="cd-hero" shape="rect" fit="cover" placeholder="준공 사진 — 거실 전경"></image-slot>
     </div>
   </section>
 
   <section style="border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6; background:#EFEADF">
-    <div style="padding:64px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
+    <div class="fc-cd-brief" style="padding:64px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">의뢰 내용</div>
       <p style="font-family:'Nanum Myeongjo',serif; font-size:21px; line-height:1.9; letter-spacing:-0.02em; margin:0; text-wrap:pretty">“아이 방을 하나 더 쓰고 싶은데 벽을 못 건드린다고 들었습니다. 구조를 바꾸지 않고 지금 집을 정리할 수 있을까요.”</p>
       <div>
@@ -61,26 +118,26 @@
   </section>
 
   <section style="padding:72px 56px 40px">
-    <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; margin-bottom:12px">
+    <div class="fc-cd-rooms-label" style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; margin-bottom:12px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">전 · 후</div>
       <h2 style="font-family:'Nanum Myeongjo',serif; font-size:30px; font-weight:700; letter-spacing:-0.03em; margin:0">공간별 변화</h2>
     </div>
     <sc-for list="{{ rooms }}" as="r" hint-placeholder-count="4">
-      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:36px 0; border-top:1px solid #DCD4C6">
+      <div class="fc-cd-room-wrap" style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:36px 0; border-top:1px solid #DCD4C6">
         <div>
           <div style="font-family:'Nanum Myeongjo',serif; font-size:20px; letter-spacing:-0.025em; margin-bottom:10px">{{ r.title }}</div>
           <div style="font-size:13px; color:#A2543A; line-height:1.8">{{ r.trades }}</div>
         </div>
         <div>
-          <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; margin-bottom:20px">
+          <div class="fc-cd-before-after" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; margin-bottom:20px">
             <figure style="margin:0">
-              <div style="position:relative; height:300px">
+              <div class="fc-cd-ba-img" style="position:relative; height:300px">
                 <image-slot id="{{ r.before }}" shape="rect" fit="cover" placeholder="{{ r.beforePh }}"></image-slot>
               </div>
               <figcaption style="font-size:12px; letter-spacing:0.16em; color:#9A8F80; padding-top:12px">BEFORE</figcaption>
             </figure>
             <figure style="margin:0">
-              <div style="position:relative; height:300px">
+              <div class="fc-cd-ba-img" style="position:relative; height:300px">
                 <image-slot id="{{ r.after }}" shape="rect" fit="cover" placeholder="{{ r.afterPh }}"></image-slot>
               </div>
               <figcaption style="font-size:12px; letter-spacing:0.16em; color:#A2543A; padding-top:12px">AFTER</figcaption>
@@ -93,17 +150,17 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px">
+    <div class="fc-cd-log-wrap" style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">공정 기록</div>
       <div>
         <sc-for list="{{ log }}" as="l" hint-placeholder-count="5">
-          <div style="display:grid; grid-template-columns:100px minmax(0,1fr) 120px; gap:24px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div class="fc-cd-log-row" style="display:grid; grid-template-columns:100px minmax(0,1fr) 120px; gap:24px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
             <div style="font-family:'Nanum Myeongjo',serif; font-size:15px; color:#A2543A">{{ l.week }}</div>
             <div style="font-size:15px; line-height:1.8; color:#3E362C">{{ l.body }}</div>
             <div style="font-size:13.5px; color:#8C8071; text-align:right">{{ l.days }}</div>
           </div>
         </sc-for>
-        <div style="display:grid; grid-template-columns:100px minmax(0,1fr) 120px; gap:24px; padding:18px 0 0">
+        <div class="fc-cd-log-row" style="display:grid; grid-template-columns:100px minmax(0,1fr) 120px; gap:24px; padding:18px 0 0">
           <div style="font-family:'Nanum Myeongjo',serif; font-size:15px">합계</div>
           <div style="font-size:14px; color:#8C8071">계획 35일 · 실제 37일 (자재 입고 2일 지연)</div>
           <div style="font-family:'Nanum Myeongjo',serif; font-size:16px; text-align:right">37일</div>
@@ -122,7 +179,7 @@
     </div>
   </section>
 
-  <section style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:start">
+  <section class="fc-cd-review-wrap" style="padding:72px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:start">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">고객 후기</div>
     <p style="font-family:'Nanum Myeongjo',serif; font-size:22px; line-height:1.9; letter-spacing:-0.02em; margin:0; text-wrap:pretty">공정마다 업체가 바뀌지 않아서 물어볼 곳이 한 군데였습니다. 5주 일정이 이틀만 밀렸고, 밀린 이유도 미리 알려주셨습니다.</p>
     <div style="font-size:14px; color:#9A8F80; line-height:1.9; padding-top:6px">
@@ -133,7 +190,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-cd-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">비슷한 조건의 집을 보여드립니다</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">평형과 연식을 알려주시면 유사 사례의 견적서와 일정표를 정리해 드립니다.</p>
