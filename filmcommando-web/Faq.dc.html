@@ -18,20 +18,36 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Faq 반응형 */
+  @media (max-width:768px) {
+    .fc-faq-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-faq-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-faq-body {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-faq-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-faq-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">자주 묻는 질문</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">실측 전에<br>많이 물으시는 것들</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">여기에 없는 질문은 전화로 물어보셔도 됩니다. 사진을 보내주시면 더 정확하게 답할 수 있습니다.</p>
   </section>
 
-  <section style="padding:56px 56px 80px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-faq-body" style="padding:56px 56px 80px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="position:sticky; top:100px; align-self:start">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:20px">분류</div>
       <div style="display:flex; flex-direction:column; gap:12px; font-size:14px">

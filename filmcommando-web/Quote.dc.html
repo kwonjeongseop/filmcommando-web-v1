@@ -19,20 +19,44 @@
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
   input::placeholder, textarea::placeholder { color:#A79C8C; }
+
+  /* Quote 반응형 */
+  @media (max-width:768px) {
+    .fc-qtt-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-qtt-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-qtt-body {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-qtt-form-fields {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-qtt-sidebar {
+      position:static !important;
+      top:auto !important;
+      margin-top:32px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-qtt-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-qtt-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">견적 · 접수</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">실측하고 견적서를<br>드립니다</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">접수 후 영업일 기준 1일 내 연락드립니다. 실측 후 견적서를 받아보시고 결정하셔도 됩니다.</p>
   </section>
 
-  <section style="display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)">
+  <section class="fc-qtt-body" style="display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)">
     <div style="padding:64px 56px 80px">
       <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
         <div style="margin-bottom:52px">
@@ -40,7 +64,7 @@
             <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">{{ g.n }}</span>
             <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">{{ g.title }}</h2>
           </div>
-          <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px 44px">
+          <div class="fc-qtt-form-fields" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px 44px">
             <sc-for list="{{ g.fields }}" as="f" hint-placeholder-count="4">
               <label style="display:block">
                 <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">{{ f.label }}</span>
@@ -94,7 +118,7 @@
       </div>
     </div>
 
-    <div style="background:#221E19; color:#EDE7DC; padding:64px 48px 80px; border-left:1px solid #DCD4C6">
+    <div class="fc-qtt-sidebar" style="background:#221E19; color:#EDE7DC; padding:64px 48px 80px; border-left:1px solid #DCD4C6">
       <div style="margin-bottom:44px">
         <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:12px">전화 상담</div>
         <div style="font-family:'Nanum Myeongjo',serif; font-size:30px; color:#F7F3EA; letter-spacing:0.02em; margin-bottom:10px">0000 - 0000</div>
