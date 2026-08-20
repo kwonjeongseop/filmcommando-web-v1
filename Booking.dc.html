@@ -93,32 +93,33 @@
         <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 44px; margin-bottom:30px">
           <label style="display:block">
             <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">이름</span>
-            <input placeholder="홍길동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+            <input id="bk-name" placeholder="홍길동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
           </label>
           <label style="display:block">
             <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">연락처</span>
-            <input placeholder="010-0000-0000" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+            <input id="bk-phone" placeholder="010-0000-0000" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
           </label>
           <label style="display:block">
             <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">현장 주소</span>
-            <input placeholder="서울 강동구 ○○아파트 000동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+            <input id="bk-address" placeholder="서울 강동구 ○○아파트 000동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
           </label>
           <label style="display:block">
             <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">평형 · 연식</span>
-            <input placeholder="32평 · 20년" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
+            <input id="bk-home-info" placeholder="32평 · 20년" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
           </label>
         </div>
         <label style="display:block; margin-bottom:28px">
           <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">상담하고 싶은 내용</span>
-          <textarea placeholder="희망 범위, 예산, 입주 예정일 등을 적어주십시오." style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; line-height:1.9; padding:0 0 12px; height:76px; resize:none; outline:none"></textarea>
+          <textarea id="bk-memo" placeholder="희망 범위, 예산, 입주 예정일 등을 적어주십시오." style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; line-height:1.9; padding:0 0 12px; height:76px; resize:none; outline:none"></textarea>
         </label>
         <label style="display:flex; align-items:flex-start; gap:13px; cursor:pointer; padding:20px 0; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6; margin-bottom:30px">
           <span style="width:15px; height:15px; border:1px solid #A79C8C; flex:none; margin-top:4px"></span>
           <span style="font-size:14px; line-height:1.8; color:#5D5346">개인정보 수집 및 이용에 동의합니다. (수집 항목: 이름, 연락처, 주소 / 목적: 상담 및 실측 일정 조율)</span>
         </label>
         <div style="display:flex; align-items:center; gap:26px">
-          <button style="background:#1F1B16; color:#F4F1EA; border:0; padding:19px 46px; font-size:16px; font-family:inherit; letter-spacing:0.02em; cursor:pointer" style-hover="background:#A2543A">예약 신청</button>
+          <button onclick="{{ onSubmit }}" style="background:#1F1B16; color:#F4F1EA; border:0; padding:19px 46px; font-size:16px; font-family:inherit; letter-spacing:0.02em; cursor:pointer" style-hover="background:#A2543A">예약 신청</button>
           <span style="font-size:13px; color:#9A8F80; line-height:1.7">신청 후 담당자가 확인 전화를 드린 뒤 예약이 확정됩니다.</span>
+          <span style="font-size:13px; color:#A2543A; line-height:1.7">{{ submitMsg }}</span>
         </div>
       </div>
     </div>
@@ -178,7 +179,37 @@ const SLOTS = [
 ];
 
 class Component extends DCLogic {
-  state = { mode: "visit", day: 12, slot: "am2" };
+  state = { mode: "visit", day: 12, slot: "am2", submitMsg: "" };
+
+  handleBookingSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const val = (id) => { const el = document.getElementById(id); return el ? el.value : ""; };
+    const s = this.state;
+    const mode = MODES.find(m => m.key === s.mode);
+    const slot = SLOTS.find(x => x.key === s.slot);
+    const data = {
+      name: val("bk-name"),
+      phone: val("bk-phone"),
+      address: val("bk-address"),
+      homeInfo: val("bk-home-info"),
+      memo: val("bk-memo"),
+      mode: mode.title,
+      day: s.day,
+      slot: slot.label,
+    };
+    this.setState({ submitMsg: "신청 중..." });
+    Promise.all([
+      import("./firebase-config.js"),
+      import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"),
+    ]).then(([cfg, fs]) => {
+      return fs.addDoc(fs.collection(cfg.db, "bookings"), Object.assign({}, data, { createdAt: fs.serverTimestamp() }));
+    }).then(() => {
+      this.setState({ submitMsg: "예약 신청이 접수되었습니다." });
+    }).catch((err) => {
+      console.error(err);
+      this.setState({ submitMsg: "오류가 발생했습니다. 다시 시도해 주십시오." });
+    });
+  }
 
   renderVals() {
     const s = this.state;
@@ -209,6 +240,8 @@ class Component extends DCLogic {
         { k: "일시", v: "2026년 9월 " + s.day + "일 " + slot.label },
         { k: "비용", v: "무료" },
       ],
+      onSubmit: (e) => this.handleBookingSubmit(e),
+      submitMsg: s.submitMsg,
     };
   }
 }

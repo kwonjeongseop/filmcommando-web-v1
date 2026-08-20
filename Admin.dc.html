@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>필름특공대 — 관리자</title>
+<script src="./support.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    background: #E7E2D8;
+    font-family: 'Gowun Dodum', sans-serif;
+    color: #1F1B16;
+    min-height: 100vh;
+  }
+  #admin-root { display: none; }
+  .admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 40px;
+    background: #F4F1EA;
+    border-bottom: 1px solid #C9C0B0;
+  }
+  .admin-logo {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .admin-user {
+    font-size: 13px;
+    color: #6E6357;
+  }
+  .admin-body {
+    padding: 40px;
+  }
+  .admin-title {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #F4F1EA;
+    font-size: 14px;
+  }
+  .booking-table th, .booking-table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid #DCD4C6;
+  }
+  .booking-table th {
+    color: #6E6357;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .empty-msg, .loading-msg {
+    font-size: 14px;
+    color: #8C8071;
+    padding: 20px 0;
+  }
+  .back-link {
+    color: #8C8071;
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .back-link:hover { color: #A2543A; }
+</style>
+</head>
+<body>
+<x-dc>
+<div id="admin-root">
+  <div class="admin-header">
+    <div class="admin-logo">필름특공대 관리자</div>
+    <div style="display:flex; align-items:center; gap:20px">
+      <span class="admin-user" id="admin-user"></span>
+      <a href="./Home.dc.html" class="back-link">← 홈으로</a>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="admin-title">상담 예약 목록</div>
+    <div id="booking-status" class="loading-msg">불러오는 중...</div>
+    <table class="booking-table" id="booking-table" style="display:none">
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th>연락처</th>
+          <th>주소</th>
+          <th>평형·연식</th>
+          <th>상담방식</th>
+          <th>일시</th>
+          <th>메모</th>
+        </tr>
+      </thead>
+      <tbody id="booking-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script type="module">
+  import { initAuthObserver } from './auth.js';
+
+  const root = document.getElementById('admin-root');
+  const userLabel = document.getElementById('admin-user');
+  const status = document.getElementById('booking-status');
+  const table = document.getElementById('booking-table');
+  const tbody = document.getElementById('booking-tbody');
+
+  function renderRow(b) {
+    const tr = document.createElement('tr');
+    const cols = [b.name, b.phone, b.address, b.homeInfo, b.mode,
+      (b.day ? b.day + '일 ' : '') + (b.slot || ''), b.memo];
+    cols.forEach((v) => {
+      const td = document.createElement('td');
+      td.textContent = v || '';
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+
+  async function loadBookings() {
+    const [{ db }, fs] = await Promise.all([
+      import('./firebase-config.js'),
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'),
+    ]);
+    try {
+      const snap = await fs.getDocs(fs.collection(db, 'bookings'));
+      if (snap.empty) {
+        status.textContent = '등록된 예약이 없습니다.';
+        return;
+      }
+      snap.forEach((doc) => renderRow(doc.data()));
+      status.style.display = 'none';
+      table.style.display = '';
+    } catch (e) {
+      status.textContent = '예약 목록을 불러오지 못했습니다.';
+    }
+  }
+
+  initAuthObserver(({ user, isAdmin }) => {
+    if (!user || !isAdmin) {
+      window.location.href = './Home.dc.html';
+      return;
+    }
+    userLabel.textContent = user.email || '';
+    root.style.display = '';
+    loadBookings();
+  });
+</script>
+</x-dc>
+</body>
+</html>
