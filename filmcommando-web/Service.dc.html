@@ -19,22 +19,78 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Service 반응형 */
+  @media (max-width:768px) {
+    .fc-svc-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-svc-hero {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-svc-types-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-svc-types-cards {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-svc-process-label {
+      grid-template-columns:1fr !important;
+      padding:20px 20px !important;
+    }
+    .fc-svc-process-row {
+      grid-template-columns:1fr !important;
+    }
+    .fc-svc-partial-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-svc-partial-item {
+      grid-template-columns:1fr !important;
+    }
+    .fc-svc-partial-img {
+      height:220px !important;
+    }
+    .fc-svc-notes-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-svc-notes-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-svc-cta {
+      flex-direction:column !important;
+      gap:20px !important;
+      padding:40px 20px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-svc-types-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-svc-partial-img {
+      height:180px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-svc-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-svc-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 서비스</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">열두 공정을<br>직접 시공합니다</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">공정별 작업 범위와 자재, 소요 일수를 적었습니다. 전예 · 부분 · 필름 단독 · 상가 어느 범위로도 구성할 수 있습니다.</p>
   </section>
 
-  <section style="padding:44px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
+  <section class="fc-svc-types-wrap" style="padding:44px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">시공 유형</div>
-    <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px">
+    <div class="fc-svc-types-cards" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:28px">
       <sc-for list="{{ types }}" as="t" hint-placeholder-count="4">
         <div style="border-left:1px solid #DCD4C6; padding-left:22px">
           <div style="font-family:'Nanum Myeongjo',serif; font-size:19px; letter-spacing:-0.02em; margin-bottom:9px">{{ t.title }}</div>
@@ -47,14 +103,14 @@
 
   <section style="padding:76px 56px 40px">
     <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
-      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
+      <div class="fc-svc-process-label" style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; padding:40px 0; border-top:1px solid #DCD4C6">
         <div>
           <div style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:800; letter-spacing:-0.03em; margin-bottom:10px">{{ g.week }}</div>
           <div style="font-size:13px; color:#9A8F80; line-height:1.8">{{ g.days }}</div>
         </div>
         <div>
           <sc-for list="{{ g.trades }}" as="t" hint-placeholder-count="3">
-            <div style="display:grid; grid-template-columns:56px minmax(0,1fr) minmax(0,1.5fr) 130px; gap:28px; align-items:start; padding:26px 4px; border-bottom:1px solid #E6DFD2" style-hover="background:#EFEADF">
+            <div class="fc-svc-process-row" style="display:grid; grid-template-columns:56px minmax(0,1fr) minmax(0,1.5fr) 130px; gap:28px; align-items:start; padding:26px 4px; border-bottom:1px solid #E6DFD2" style-hover="background:#EFEADF">
               <div style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#B0A595; letter-spacing:0.06em; padding-top:4px">{{ t.n }}</div>
               <div>
                 <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 8px">{{ t.title }}</h3>
@@ -70,28 +126,28 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,420px); gap:56px">
+    <div class="fc-svc-partial-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,420px); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">부분 시공</div>
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-size:28px; font-weight:700; letter-spacing:-0.03em; margin:0 0 20px">주방 · 욕실 단위로도 진행합니다</h2>
         <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0 0 30px; text-wrap:pretty">공간 하나만 손보는 경우에도 철거 · 방수 · 설비 · 타일 · 가구를 같은 팀이 맡습니다. 거주 중이라면 사용 가능한 화장실과 조리 공간을 확보한 뒤 일정을 나눕니다.</p>
         <sc-for list="{{ partial }}" as="p" hint-placeholder-count="4">
-          <div style="display:grid; grid-template-columns:160px minmax(0,1fr) 120px; gap:24px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div class="fc-svc-partial-item" style="display:grid; grid-template-columns:160px minmax(0,1fr) 120px; gap:24px; padding:17px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
             <div style="font-family:'Nanum Myeongjo',serif; font-size:18px; letter-spacing:-0.02em">{{ p.title }}</div>
             <div style="font-size:15px; line-height:1.8; color:#5D5346">{{ p.body }}</div>
             <div style="font-size:14px; color:#A2543A; text-align:right">{{ p.days }}</div>
           </div>
         </sc-for>
       </div>
-      <div style="position:relative; height:360px">
+      <div class="fc-svc-partial-img" style="position:relative; height:360px">
         <image-slot id="sv-partial" shape="rect" fit="cover" placeholder="주방 또는 욕실 부분 시공 사진"></image-slot>
       </div>
     </div>
   </section>
 
-  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-svc-notes-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 전 확인</div>
-    <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 60px">
+    <div class="fc-svc-notes-cards" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 60px">
       <sc-for list="{{ notes }}" as="n" hint-placeholder-count="4">
         <div style="display:grid; grid-template-columns:22px minmax(0,1fr); gap:16px">
           <span style="font-family:'Nanum Myeongjo',serif; font-size:14px; color:#A2543A; padding-top:3px">{{ n.n }}</span>
@@ -102,7 +158,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
+    <div class="fc-svc-cta" style="padding:70px 56px; display:flex; justify-content:space-between; align-items:center; gap:40px">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:31px; letter-spacing:-0.035em; margin:0 0 12px; color:#F7F3EA">어느 공정까지 필요한지 함께 정합니다</h2>
         <p style="font-size:15px; line-height:1.9; color:#B0A595; margin:0">실측 후 공정별 견적서와 주차별 일정표를 드립니다. 실측 비용은 없습니다.</p>
