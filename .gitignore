@@ -3,3 +3,9 @@ test-results/
 .env
 .thumbnail
 .omc/
+tools/build/
+tools/dist/
+tools/__pycache__/
+tools/*.spec
+tools/.env
+tools/certs/
