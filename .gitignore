@@ -10,3 +10,6 @@ tools/*.spec
 tools/.env
 tools/certs/
 tools/gabia_dns_filmcommando.xls
+tools/node_modules/
+tools/package*.json
+tools/serviceAccountKey.json
