@@ -11,13 +11,48 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
 
+      - name: Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 배포 파일 존재 검증
+        run: |
+          echo "=== 배포 대상 파일 목록 ==="
+          ls -la filmcommando-web/
+          FILE_COUNT=$(ls filmcommando-web/ | wc -l)
+          echo "파일 수: $FILE_COUNT"
+          if [ "$FILE_COUNT" -lt 30 ]; then
+            echo "오류: 배포 파일 수 부족 ($FILE_COUNT < 30)"
+            exit 1
+          fi
+          if [ ! -f "filmcommando-web/index.html" ]; then
+            echo "오류: index.html 없음"
+            exit 1
+          fi
+          echo "검증 통과: $FILE_COUNT개 파일 확인"
+
       - name: GitHub Pages 배포
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./filmcommando-web
           cname: filmcommando.com
+
+      - name: 배포 완료 HTTP 응답 확인
+        run: |
+          echo "=== 배포 완료 후 응답 확인 ==="
+          sleep 10
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 15 http://filmcommando.com)
+          echo "HTTP 응답: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "경고: 예상과 다른 응답 코드 ($STATUS)"
+          else
+            echo "정상: 200 OK 확인"
+          fi
