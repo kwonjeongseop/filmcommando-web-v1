@@ -19,20 +19,52 @@
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
   input::placeholder, textarea::placeholder { color:#A79C8C; }
+
+  /* Booking 반응형 */
+  @media (max-width:768px) {
+    .fc-bkg-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-bkg-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-bkg-form-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-bkg-form-row {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-bkg-cal-cell {
+      height:40px !important;
+    }
+    .fc-bkg-summary {
+      position:static !important;
+      top:auto !important;
+      margin-top:32px !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-bkg-summary-row {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-bkg-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-bkg-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">상담 예약</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">날짜와 시간을<br>직접 고르십시오</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">방문실측과 사무실 상담 모두 예약할 수 있습니다. 예약 확정은 문자로 안내드립니다. 실측 비용은 없습니다.</p>
   </section>
 
-  <section style="display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
+  <section class="fc-bkg-form-wrap" style="display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)">
     <div style="padding:56px 56px 76px">
       <div style="margin-bottom:44px">
         <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid #1F1B16; margin-bottom:24px">
@@ -65,7 +97,7 @@
         </div>
         <div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px">
           <sc-for list="{{ days }}" as="d" hint-placeholder-count="35">
-            <div onClick="{{ d.onClick }}" style="{{ d.style }}">
+            <div class="fc-bkg-cal-cell" onClick="{{ d.onClick }}" style="{{ d.style }}">
               <span style="font-size:15px">{{ d.n }}</span>
               <span style="font-size:11px; letter-spacing:0.04em">{{ d.note }}</span>
             </div>
@@ -90,7 +122,7 @@
           <span style="font-size:12px; letter-spacing:0.16em; color:#A2543A">04</span>
           <h2 style="font-family:'Nanum Myeongjo',serif; font-size:22px; font-weight:700; letter-spacing:-0.025em; margin:0">연락처와 현장 정보</h2>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 44px; margin-bottom:30px">
+        <div class="fc-bkg-form-row" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 44px; margin-bottom:30px">
           <label style="display:block">
             <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8C8071; margin-bottom:11px">이름</span>
             <input id="bk-name" placeholder="홍길동" style="width:100%; background:transparent; border:0; border-bottom:1px solid #C9C0B0; color:#1F1B16; font-size:16px; font-family:inherit; padding:0 0 11px; outline:none">
@@ -125,12 +157,12 @@
     </div>
 
     <div style="background:#221E19; color:#EDE7DC; padding:56px 48px 76px; border-left:1px solid #DCD4C6">
-      <div style="position:sticky; top:130px">
+      <div class="fc-bkg-summary" style="position:sticky; top:130px">
         <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:18px">예약 내용</div>
         <div style="font-family:'Nanum Myeongjo',serif; font-size:27px; line-height:1.5; letter-spacing:-0.03em; color:#F7F3EA; margin-bottom:30px">{{ summaryLabel }}</div>
         <div style="border-top:1px solid #3A342C; padding-top:22px; margin-bottom:30px">
           <sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
-            <div style="display:grid; grid-template-columns:100px minmax(0,1fr); gap:18px; padding:11px 0; border-bottom:1px solid #302A23">
+            <div class="fc-bkg-summary-row" style="display:grid; grid-template-columns:100px minmax(0,1fr); gap:18px; padding:11px 0; border-bottom:1px solid #302A23">
               <span style="font-size:13px; color:#8F8272">{{ s.k }}</span>
               <span style="font-size:14.5px; color:#EDE7DC; line-height:1.6">{{ s.v }}</span>
             </div>
