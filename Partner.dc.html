@@ -20,22 +20,70 @@
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
   input::placeholder, textarea::placeholder { color:#A79C8C; }
+
+  /* Partner 반응형 */
+  @media (max-width:768px) {
+    .fc-ptn-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-ptn-hero {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-ptn-target-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-ptn-target-cards {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-ptn-cond-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-ptn-cond-row {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+    .fc-ptn-proc-wrap {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-ptn-proc-cards {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-ptn-proc-img {
+      height:200px !important;
+    }
+    .fc-ptn-cta {
+      grid-template-columns:minmax(0,1fr) !important;
+      padding:40px 20px !important;
+    }
+    .fc-ptn-form-fields {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-ptn-proc-cards {
+      grid-template-columns:minmax(0,1fr) !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-ptn-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
+  <section class="fc-ptn-hero" style="padding:72px 56px 60px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,380px); gap:56px; align-items:end">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">제휴 · 협력</div>
     <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:46px; line-height:1.32; letter-spacing:-0.04em; margin:0">현장을 맡기실<br>업체를 찾으신다면</h1>
     <p style="font-size:15px; line-height:2; color:#5D5346; margin:0; text-wrap:pretty">건설사, 인테리어 업체, 관리사무소와 공정 단위로 협력합니다. 필요한 공정만 맡거나 전공정을 맡습니다. 세대 단위 반복 시공에 맞춰 인력을 고정 배정합니다.</p>
   </section>
 
-  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-ptn-target-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">협력 대상</div>
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+    <div class="fc-ptn-target-cards" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
       <sc-for list="{{ targets }}" as="t" hint-placeholder-count="3">
         <div style="border-top:1px solid #1F1B16; padding-top:22px">
           <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
@@ -47,25 +95,25 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,400px); gap:56px">
+    <div class="fc-ptn-cond-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr) minmax(0,400px); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">협력 조건</div>
       <div>
         <sc-for list="{{ terms }}" as="t" hint-placeholder-count="5">
-          <div style="display:grid; grid-template-columns:150px minmax(0,1fr); gap:28px; padding:19px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
+          <div class="fc-ptn-cond-row" style="display:grid; grid-template-columns:150px minmax(0,1fr); gap:28px; padding:19px 0; border-bottom:1px solid #DCD4C6; align-items:baseline">
             <div style="font-size:13px; color:#9A8F80; letter-spacing:0.04em">{{ t.k }}</div>
             <div style="font-size:15px; line-height:1.85; color:#3E362C">{{ t.v }}</div>
           </div>
         </sc-for>
       </div>
-      <div style="position:relative; height:330px">
+      <div class="fc-ptn-proc-img" style="position:relative; height:330px">
         <image-slot id="pt-1" shape="rect" fit="cover" placeholder="세대 단위 현장 사진"></image-slot>
       </div>
     </div>
   </section>
 
-  <section style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-ptn-proc-wrap" style="padding:76px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">진행 절차</div>
-    <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:36px">
+    <div class="fc-ptn-proc-cards" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:36px">
       <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
         <div>
           <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px">
@@ -81,7 +129,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:80px 56px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:80px">
+    <div class="fc-ptn-cta" style="padding:80px 56px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:80px">
       <div>
         <div style="font-size:12px; letter-spacing:0.2em; color:#8F8272; margin-bottom:28px">제휴 문의</div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:34px; line-height:1.4; letter-spacing:-0.035em; margin:0 0 20px; color:#F7F3EA">규모와 일정을<br>알려주십시오</h2>
@@ -92,7 +140,7 @@
         </div>
       </div>
       <div>
-        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px 40px; margin-bottom:32px">
+        <div class="fc-ptn-form-fields" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px 40px; margin-bottom:32px">
           <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
             <label style="display:block">
               <span style="display:block; font-size:12px; letter-spacing:0.12em; color:#8F8272; margin-bottom:10px">{{ f.label }}</span>
