@@ -19,14 +19,95 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  /* Home 반응형 */
+  @media (max-width:768px) {
+    .fc-home-wrap {
+      min-width:0 !important;
+      padding:0 0 80px !important;
+    }
+    .fc-home-hero {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-hero-img {
+      height:300px !important;
+      order:-1 !important;
+    }
+    .fc-home-schedule-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-trust-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-trust-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-trades-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-trades-cards {
+      grid-template-columns:1fr 1fr !important;
+    }
+    .fc-home-pkg-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-pkg-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-cases-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-cases-body {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-cases-img {
+      height:240px !important;
+    }
+    .fc-home-cases-caption {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-cases-sub-img {
+      height:160px !important;
+    }
+    .fc-home-review-wrap {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-review-item {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-cta {
+      grid-template-columns:1fr !important;
+      padding:40px 20px !important;
+    }
+    .fc-home-cta-link {
+      grid-template-columns:1fr !important;
+    }
+  }
+  @media (max-width:480px) {
+    .fc-home-trades-cards {
+      grid-template-columns:1fr !important;
+    }
+    .fc-home-hero-img {
+      height:220px !important;
+    }
+    .fc-home-cases-img {
+      height:180px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; min-width:1200px; overflow-x:hidden">
+<div class="fc-home-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
-  <section style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+  <section class="fc-home-hero" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
     <div style="padding:96px 56px 84px; display:flex; flex-direction:column; justify-content:space-between">
       <div>
         <div style="font-size:12px; letter-spacing:0.26em; color:#A2543A; margin-bottom:44px">철거부터 입주까지 · 전공정 직접 시공</div>
@@ -48,7 +129,7 @@
         </div>
       </div>
     </div>
-    <div style="position:relative; height:700px; border-left:1px solid #DCD4C6">
+    <div class="fc-home-hero-img" style="position:relative; height:700px; border-left:1px solid #DCD4C6">
       <image-slot id="home-hero" shape="rect" fit="cover" placeholder="메인 사진 — 준공된 거실 전경"></image-slot>
       <div style="position:absolute; left:0; bottom:0; background:#F4F1EA; padding:20px 26px 18px; border-top:1px solid #DCD4C6; border-right:1px solid #DCD4C6; max-width:300px; pointer-events:none">
         <div style="font-size:11px; letter-spacing:0.18em; color:#A2543A; margin-bottom:9px">전문가 맞춤 설계</div>
@@ -58,7 +139,7 @@
   </section>
 
   <section style="border-top:1px solid #DCD4C6; background:#EFEADF; border-bottom:1px solid #DCD4C6">
-    <div style="padding:44px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
+    <div class="fc-home-schedule-wrap" style="padding:44px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; align-items:center">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80">5주 표준 일정</div>
       <div style="display:flex; align-items:stretch">
         <sc-for list="{{ bar }}" as="b" hint-placeholder-count="5">
@@ -72,9 +153,9 @@
     </div>
   </section>
 
-  <section style="padding:88px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-home-trust-wrap" style="padding:88px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">일하는 방식</div>
-    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
+    <div class="fc-home-trust-cards" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:44px">
       <sc-for list="{{ trust }}" as="t" hint-placeholder-count="3">
         <div style="border-top:1px solid #1F1B16; padding-top:22px">
           <h3 style="font-family:'Nanum Myeongjo',serif; font-size:21px; font-weight:700; letter-spacing:-0.025em; margin:0 0 14px">{{ t.title }}</h3>
@@ -85,14 +166,14 @@
   </section>
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
-    <div style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+    <div class="fc-home-trades-wrap" style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 범위</div>
       <div>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:44px; gap:40px">
           <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:700; font-size:34px; letter-spacing:-0.03em; margin:0">열두 공정, 필요한 만큼</h2>
           <a href="./Service.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px; flex:none">공정별 안내</a>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:#DCD4C6; border:1px solid #DCD4C6">
+        <div class="fc-home-trades-cards" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:#DCD4C6; border:1px solid #DCD4C6">
           <sc-for list="{{ trades }}" as="t" hint-placeholder-count="12">
             <div style="background:#F4F1EA; padding:22px 20px 24px" style-hover="background:#fff">
               <div style="font-size:11px; color:#B0A595; letter-spacing:0.1em; margin-bottom:10px">{{ t.n }}</div>
@@ -105,7 +186,7 @@
     </div>
   </section>
 
-  <section style="padding:88px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-home-pkg-wrap" style="padding:88px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">패키지</div>
     <div>
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px; gap:40px">
@@ -115,7 +196,7 @@
         </div>
         <a href="./Packages.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px; flex:none">패키지 전체 보기</a>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px">
+      <div class="fc-home-pkg-cards" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px">
         <sc-for list="{{ packages }}" as="p" hint-placeholder-count="3">
           <div style="border-top:2px solid #1F1B16; padding-top:24px">
             <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px">
@@ -136,19 +217,19 @@
 
   <section style="background:#EFEADF; border-top:1px solid #DCD4C6; border-bottom:1px solid #DCD4C6">
     <div style="padding:84px 56px">
-      <div style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; margin-bottom:44px">
+      <div class="fc-home-cases-wrap" style="display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px; margin-bottom:44px">
         <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">시공 사례</div>
         <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:40px">
           <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:700; font-size:34px; letter-spacing:-0.03em; margin:0">최근 준공한 집</h2>
           <a href="./Cases.dc.html" style="font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px">전체 사례 보기</a>
         </div>
       </div>
-      <div style="display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:44px; align-items:start">
+      <div class="fc-home-cases-body" style="display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:44px; align-items:start">
         <figure style="margin:0">
-          <div style="position:relative; height:470px">
+          <div class="fc-home-cases-img" style="position:relative; height:470px">
             <image-slot id="home-case1" shape="rect" fit="cover" placeholder="대표 사례 — 전예 리모델링 거실"></image-slot>
           </div>
-          <figcaption style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; padding-top:22px; border-top:1px solid #DCD4C6; margin-top:22px">
+          <figcaption class="fc-home-cases-caption" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; padding-top:22px; border-top:1px solid #DCD4C6; margin-top:22px">
             <div>
               <div style="font-size:12px; letter-spacing:0.16em; color:#A2543A; margin-bottom:10px">사례 01 · 전예 리모델링</div>
               <h3 style="font-family:'Nanum Myeongjo',serif; font-size:24px; font-weight:700; letter-spacing:-0.025em; margin:0 0 8px">강동구 아파트 32평</h3>
@@ -160,7 +241,7 @@
         <div style="display:flex; flex-direction:column; gap:40px; padding-top:52px">
           <sc-for list="{{ cases }}" as="c" hint-placeholder-count="2">
             <figure style="margin:0">
-              <div style="position:relative; height:236px">
+              <div class="fc-home-cases-sub-img" style="position:relative; height:236px">
                 <image-slot id="{{ c.slot }}" shape="rect" fit="cover" placeholder="{{ c.ph }}"></image-slot>
               </div>
               <figcaption style="padding-top:18px; border-top:1px solid #DCD4C6; margin-top:18px">
@@ -176,7 +257,7 @@
     </div>
   </section>
 
-  <section style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
+  <section class="fc-home-review-wrap" style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="padding-top:6px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:26px">고객 후기</div>
       <div style="font-family:'Nanum Myeongjo',serif; font-size:44px; font-weight:800; letter-spacing:-0.04em; line-height:1">4.9</div>
@@ -185,7 +266,7 @@
     </div>
     <div>
       <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
-        <div style="display:grid; grid-template-columns:minmax(0,1fr) 210px; gap:44px; align-items:start; padding:34px 0; border-top:1px solid #DCD4C6">
+        <div class="fc-home-review-item" style="display:grid; grid-template-columns:minmax(0,1fr) 210px; gap:44px; align-items:start; padding:34px 0; border-top:1px solid #DCD4C6">
           <p style="font-family:'Nanum Myeongjo',serif; font-size:21px; line-height:1.85; letter-spacing:-0.02em; margin:0; text-wrap:pretty">{{ r.body }}</p>
           <div style="font-size:13px; color:#9A8F80; line-height:1.8; padding-top:6px">{{ r.who }}</div>
         </div>
@@ -195,7 +276,7 @@
   </section>
 
   <section style="background:#221E19; color:#EDE7DC">
-    <div style="padding:84px 56px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:80px; align-items:center">
+    <div class="fc-home-cta" style="padding:84px 56px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:80px; align-items:center">
       <div>
         <h2 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:38px; line-height:1.4; letter-spacing:-0.035em; margin:0 0 20px; color:#F7F3EA">실측 · 상담은<br>무료입니다</h2>
         <p style="font-size:16px; line-height:2; color:#B0A595; margin:0 0 40px; max-width:400px; text-wrap:pretty">담당자가 방문해 구조와 상태를 확인하고, 공정별 견적서와 주차별 일정표를 함께 드립니다. 받아보시고 결정하셔도 됩니다.</p>
@@ -212,7 +293,7 @@
       </div>
       <div style="display:flex; flex-direction:column; gap:16px">
         <sc-for list="{{ entries }}" as="e" hint-placeholder-count="3">
-          <a href="{{ e.href }}" style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:center; border:1px solid #3A342C; padding:26px 28px; color:#EDE7DC" style-hover="border-color:#A2543A">
+          <a href="{{ e.href }}" class="fc-home-cta-link" style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; align-items:center; border:1px solid #3A342C; padding:26px 28px; color:#EDE7DC" style-hover="border-color:#A2543A">
             <div>
               <div style="font-family:'Nanum Myeongjo',serif; font-size:20px; letter-spacing:-0.02em; margin-bottom:8px; color:#F7F3EA">{{ e.title }}</div>
               <div style="font-size:14px; line-height:1.75; color:#B0A595">{{ e.body }}</div>
