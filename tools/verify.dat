@@ -32,5 +32,5 @@ PAGE|https://filmcommando.com/image-slot.js|200
 PAGE|https://filmcommando.com/page-transition.js|200
 PAGE|https://filmcommando.com/firebase-config.js|200
 PAGE|https://filmcommando.com/auth.js|200
-API|https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAPYrNtF0hTbsBJ2DEtKqYCSXfG9vg8X-U|400
+API|https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAPYrNtF0hTbsBJ2DEtKqYCSXfG9vg8X-U|403
 FILE|C:\claude\filmcommando-web-v1\filmcommando-web|35
