@@ -1,0 +1,36 @@
+# filmcommando.com 검증 대상 목록
+# 형식: TYPE|TARGET|EXPECT
+# PAGE: HTTP 상태코드 확인
+# API: Firebase API 유효성 확인 (400=키유효)
+# FILE: 로컬 파일 수량 확인
+
+PAGE|https://filmcommando.com/index.html|200
+PAGE|https://filmcommando.com/Home.dc.html|200
+PAGE|https://filmcommando.com/About.dc.html|200
+PAGE|https://filmcommando.com/Service.dc.html|200
+PAGE|https://filmcommando.com/Packages.dc.html|200
+PAGE|https://filmcommando.com/Cost.dc.html|200
+PAGE|https://filmcommando.com/Estimator.dc.html|200
+PAGE|https://filmcommando.com/Cases.dc.html|200
+PAGE|https://filmcommando.com/CaseDetail.dc.html|200
+PAGE|https://filmcommando.com/Materials.dc.html|200
+PAGE|https://filmcommando.com/Resources.dc.html|200
+PAGE|https://filmcommando.com/Schedule.dc.html|200
+PAGE|https://filmcommando.com/Booking.dc.html|200
+PAGE|https://filmcommando.com/Review.dc.html|200
+PAGE|https://filmcommando.com/Partner.dc.html|200
+PAGE|https://filmcommando.com/Process.dc.html|200
+PAGE|https://filmcommando.com/Notice.dc.html|200
+PAGE|https://filmcommando.com/Faq.dc.html|200
+PAGE|https://filmcommando.com/Quote.dc.html|200
+PAGE|https://filmcommando.com/Login.dc.html|200
+PAGE|https://filmcommando.com/Admin.dc.html|200
+PAGE|https://filmcommando.com/SiteHeader.dc.html|200
+PAGE|https://filmcommando.com/SiteFooter.dc.html|200
+PAGE|https://filmcommando.com/support.js|200
+PAGE|https://filmcommando.com/image-slot.js|200
+PAGE|https://filmcommando.com/page-transition.js|200
+PAGE|https://filmcommando.com/firebase-config.js|200
+PAGE|https://filmcommando.com/auth.js|200
+API|https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAPYrNtF0hTbsBJ2DEtKqYCSXfG9vg8X-U|400
+FILE|C:\claude\filmcommando-web-v1\filmcommando-web|35
