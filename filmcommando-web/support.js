@@ -156,10 +156,14 @@
     runtime.setRootName(rootName);
     runtime.adoptParsed(rootName, parsed);
     if (!window.__resources) {
+      window.__fcPendingImports = (window.__fcPendingImports || 0) + 1;
       fetch(location.href).then((res) => res.ok ? res.text() : "").then((t) => {
         const raw = t ? parseDcText(t) : null;
         if (raw?.template) runtime.updateHtml(rootName, raw.template);
       }).catch(() => {
+      }).finally(() => {
+        window.__fcPendingImports--;
+        if (window.__fcPendingImports <= 0 && window.__fcReveal) window.__fcReveal();
       });
     }
     const dc = doc.querySelector("x-dc");
@@ -1894,7 +1898,6 @@
       __dcBoot: () => {
         rootName = boot(runtime, document) ?? rootName;
         notifyHost();
-        if (!window.__fcPendingImports && window.__fcReveal) window.__fcReveal();
       },
       __dcRegistry: runtime.registry.entries,
       getDC: (name) => runtime.getDC(name),
