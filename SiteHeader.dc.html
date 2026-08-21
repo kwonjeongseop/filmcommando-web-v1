@@ -59,20 +59,22 @@
   .fc-nav-mobile a:last-child {
     border-bottom: none;
   }
-  html.fc-mobile-mode .fc-top-bar { display: none !important; }
-  html.fc-mobile-mode .fc-nav-desktop { display: none !important; }
-  html.fc-mobile-mode .fc-nav-toggle { display: flex !important; }
-  html.fc-mobile-mode .fc-header-right { gap: 8px !important; }
-  html.fc-mobile-mode .fc-phone { display: none !important; }
-  html.fc-mobile-mode .fc-btn-consult {
-    font-size: 12px !important;
-    padding: 8px 10px !important;
+  @media (max-width: 1080px) {
+    .fc-top-bar { display: none !important; }
+    .fc-nav-toggle { display: flex !important; }
+    .fc-nav-desktop { display: none !important; }
+    .fc-header-right { gap: 8px !important; }
+    .fc-phone { display: none !important; }
+    .fc-btn-consult {
+      font-size: 12px !important;
+      padding: 8px 10px !important;
+    }
+    .fc-btn-quote {
+      font-size: 12px !important;
+      padding: 9px 12px !important;
+    }
+    .fc-login-email { display: none !important; }
   }
-  html.fc-mobile-mode .fc-btn-quote {
-    font-size: 12px !important;
-    padding: 9px 12px !important;
-  }
-  html.fc-mobile-mode .fc-login-email { display: none !important; }
   @media (max-width: 480px) {
     .fc-logo-text {
       font-size: 18px !important;
@@ -157,55 +159,6 @@ class Component extends DCLogic {
         mobileNav.classList.toggle('open');
       });
     }
-    (function() {
-      var MARGIN = 30;
-      var mobileClass = 'fc-mobile-mode';
-
-      function applyMode(isMobile) {
-        var toggle = document.getElementById('fc-toggle');
-        var navDesktop = document.querySelector('.fc-nav-desktop');
-        var topBar = document.querySelector('.fc-top-bar');
-        var phone = document.querySelector('.fc-phone');
-        var btnConsult = document.querySelector('.fc-btn-consult');
-        var btnQuote = document.querySelector('.fc-btn-quote');
-        var loginEmail = document.querySelector('.fc-login-email');
-        var mobileNav = document.getElementById('fc-nav-mobile');
-
-        if (isMobile) {
-          document.documentElement.classList.add(mobileClass);
-          if (toggle) toggle.style.display = 'flex';
-          if (navDesktop) navDesktop.style.display = 'none';
-          if (topBar) topBar.style.display = 'none';
-        } else {
-          document.documentElement.classList.remove(mobileClass);
-          if (toggle) toggle.style.display = 'none';
-          if (navDesktop) navDesktop.style.display = '';
-          if (topBar) topBar.style.display = '';
-          if (mobileNav) {
-            mobileNav.classList.remove('open');
-          }
-          if (toggle) toggle.classList.remove('open');
-        }
-      }
-
-      function checkOverlap() {
-        var nav = document.querySelector('.fc-nav-desktop');
-        var right = document.querySelector('.fc-header-right');
-        if (!nav || !right) return;
-        var navRect = nav.getBoundingClientRect();
-        var rightRect = right.getBoundingClientRect();
-        var isMobile = navRect.right + MARGIN >= rightRect.left
-          || window.innerWidth <= 480;
-        applyMode(isMobile);
-      }
-
-      var ro = new ResizeObserver(function() {
-        checkOverlap();
-      });
-      ro.observe(document.documentElement);
-      window.addEventListener('resize', checkOverlap);
-      checkOverlap();
-    })();
   }
   handleLogout(e) {
     if (e && e.preventDefault) e.preventDefault();
