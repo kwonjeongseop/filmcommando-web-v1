@@ -1894,6 +1894,7 @@
       __dcBoot: () => {
         rootName = boot(runtime, document) ?? rootName;
         notifyHost();
+        if (!window.__fcPendingImports && window.__fcReveal) window.__fcReveal();
       },
       __dcRegistry: runtime.registry.entries,
       getDC: (name) => runtime.getDC(name),
