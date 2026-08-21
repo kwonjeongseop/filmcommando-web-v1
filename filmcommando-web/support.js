@@ -1648,6 +1648,7 @@
       const pre = res ? res[url] : void 0;
       const target = typeof pre === "string" && pre ? pre : url;
       const blob = bundledBlob(target);
+      window.__fcPendingImports = (window.__fcPendingImports || 0) + 1;
       (blob ? blob.text() : fetch(target).then((res2) => {
         if (!res2.ok) {
           console.error(
@@ -1681,7 +1682,10 @@
           url,
           e
         )
-      );
+      ).finally(() => {
+        window.__fcPendingImports--;
+        if (window.__fcPendingImports <= 0 && window.__fcReveal) window.__fcReveal();
+      });
     }
     let rootName = null;
     function updateHtml(name, html) {
@@ -1904,24 +1908,40 @@
     else document.addEventListener("DOMContentLoaded", () => api.__dcBoot());
   }
   hideRawTemplate();
+
+  // dc-import(SiteHeader 등) 비동기 로드 완료 전 빈 구간 노출 방지 —
+  // body를 우선 숨기고, 대기 중인 dc-import fetch가 전부 끝난 시점(ensureFetched의
+  // finally 콜백)에만 visibility를 풀며 기존 fc-slide-in 진입 애니메이션을 재생한다.
+  // dc-import가 하나도 없는 페이지(Login/Admin 등)나 fetch가 끝내 정착하지 못하는
+  // 경우를 대비해 폴백 타이머로 최종 표출을 보장한다.
+  var fcHideStyle = document.createElement("style");
+  fcHideStyle.id = "fc-body-hide";
+  fcHideStyle.textContent = "body{visibility:hidden}";
+  document.head.appendChild(fcHideStyle);
+  window.__fcPendingImports = 0;
+  window.__fcReveal = function () {
+    var hideEl = document.getElementById("fc-body-hide");
+    if (!hideEl) return;
+    hideEl.remove();
+    if (!document.getElementById("fc-slide-in-style")) {
+      var fcSlideStyle = document.createElement("style");
+      fcSlideStyle.id = "fc-slide-in-style";
+      fcSlideStyle.textContent = "@keyframes slideInRight{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}" +
+        ".fc-slide-in{animation:slideInRight 0.28s cubic-bezier(0.4,0,0.2,1) forwards}";
+      document.head.appendChild(fcSlideStyle);
+    }
+    document.body.classList.add("fc-slide-in");
+    setTimeout(function () {
+      document.body.classList.remove("fc-slide-in");
+    }, 280);
+  };
+  setTimeout(function () {
+    if (document.body) window.__fcReveal();
+  }, 4000);
+
   loadReactUmd().then(init).catch((err) => {
     console.error("[dc] failed to load React or boot:", err);
+    if (document.body) window.__fcReveal();
     throw err;
   });
 })();
-
-// 페이지 진입 슬라이드 애니메이션 — page-transition.js의 키프레임을 재사용하되
-// 스크립트 로드 순서에 의존하지 않도록 동일 규칙을 여기서도 멱등하게 보장한다.
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.getElementById("fc-slide-in-style")) {
-    var fcSlideStyle = document.createElement("style");
-    fcSlideStyle.id = "fc-slide-in-style";
-    fcSlideStyle.textContent = "@keyframes slideInRight{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}" +
-      ".fc-slide-in{animation:slideInRight 0.28s cubic-bezier(0.4,0,0.2,1) forwards}";
-    document.head.appendChild(fcSlideStyle);
-  }
-  document.body.classList.add("fc-slide-in");
-  setTimeout(function () {
-    document.body.classList.remove("fc-slide-in");
-  }, 280);
-});
