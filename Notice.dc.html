@@ -88,19 +88,12 @@
           <span style="border:1px solid #DCD4C6; color:#5D5346; font-size:14px; padding:9px 16px; cursor:pointer" style-hover="border-color:#1F1B16; color:#1F1B16">{{ t }}</span>
         </sc-for>
       </div>
-      <div style="font-size:13px; color:#9A8F80">전체 24건</div>
+      <div id="notice-count" style="font-size:13px; color:#9A8F80">불러오는 중...</div>
     </div>
     <div class="fc-ntc-list-header" style="display:grid; grid-template-columns:70px 110px minmax(0,1fr) 120px; gap:28px; padding-bottom:14px; border-bottom:1px solid #1F1B16; font-size:12px; letter-spacing:0.14em; color:#9A8F80">
       <div>번호</div><div>구분</div><div>제목</div><div style="text-align:right">등록일</div>
     </div>
-    <sc-for list="{{ posts }}" as="p" hint-placeholder-count="8">
-      <a href="#" class="fc-ntc-list-row" style="display:grid; grid-template-columns:70px 110px minmax(0,1fr) 120px; gap:28px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:baseline" style-hover="background:#EFEADF">
-        <div style="font-size:14px; color:#B0A595">{{ p.no }}</div>
-        <div style="font-size:13px; color:#A2543A">{{ p.cat }}</div>
-        <div style="font-size:16px; color:#1F1B16">{{ p.title }}</div>
-        <div style="font-size:13px; color:#9A8F80; text-align:right">{{ p.date }}</div>
-      </a>
-    </sc-for>
+    <div id="notice-list"></div>
   </section>
 
   <section style="padding:20px 56px 76px; display:flex; justify-content:center; align-items:center; gap:26px">
@@ -140,22 +133,346 @@
   <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
 </div>
 
+<script type="module">
+import { db } from './firebase-config.js';
+import { getCachedUser, initAuthObserver } from './auth.js';
+import {
+  collection, query, orderBy, onSnapshot, addDoc, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// ── 보안 방어 함수 ──────────────────────────────
+
+// (A) HTML 특수문자 이스케이프
+// 참고: 이 페이지의 모든 렌더링은 textContent만 사용하며,
+// textContent는 브라우저가 값을 항상 순수 텍스트로 취급해
+// 자동으로 안전하게 처리한다(HTML로 파싱되지 않음). 따라서
+// escapeHtml()을 textContent 대입값에 적용하면 "&amp;" 같은
+// 문자가 화면에 그대로 보이는 이중 이스케이프가 발생하므로
+// 렌더링 경로에는 사용하지 않는다. 요구사항에 따라 함수 자체는
+// 정의해 두되, innerHTML을 쓰는 다른 코드가 절대 추가되지
+// 않는 한 호출할 필요가 없다.
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// (B) 파일명에서 경로 구분자·특수문자 제거
+function sanitizeFileName(name) {
+  return String(name)
+    .replace(/[\/\\:*?"<>|]/g, '_')
+    .slice(0, 100);
+}
+
+// (C) 닉네임 기준 rate limit — 1분에 3회 초과 작성 차단
+class RateLimiter {
+  constructor(maxCount, windowMs) {
+    this.maxCount = maxCount;
+    this.windowMs = windowMs;
+    this.records = new Map();
+  }
+  check(key) {
+    const now = Date.now();
+    const arr = (this.records.get(key) || [])
+      .filter((t) => now - t < this.windowMs);
+    if (arr.length >= this.maxCount) {
+      this.records.set(key, arr);
+      return false;
+    }
+    arr.push(now);
+    this.records.set(key, arr);
+    return true;
+  }
+}
+const commentLimiter = new RateLimiter(3, 60000);
+
+const MAX_TEXT_LEN  = 500;
+const MAX_NICK_LEN  = 50;
+const MAX_FILE_BYTES = 786432; // 750KB
+const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+function col(...path) { return collection(db, ...path); }
+
+function formatDate(d) {
+  const p = (n) => String(n).padStart(2, '0');
+  return d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate());
+}
+
+// ── 로그인 상태 캐시 ─────────────────────────────
+let currentUser = null;
+initAuthObserver(({ user }) => { currentUser = user; });
+
+// ── 공지 목록 — Firestore 실시간 연동 ─────────────
+const listEl  = document.getElementById('notice-list');
+const countEl = document.getElementById('notice-count');
+
+const noticesQuery = query(col('notices'), orderBy('no', 'desc'));
+onSnapshot(noticesQuery, (snap) => {
+  countEl.textContent = '전체 ' + snap.size + '건';
+  listEl.textContent = '';
+  snap.forEach((docSnap) => {
+    listEl.appendChild(buildNoticeItem(docSnap.id, docSnap.data()));
+  });
+}, () => {
+  countEl.textContent = '공지를 불러오지 못했습니다.';
+});
+
+function buildNoticeItem(id, data) {
+  const wrap = document.createElement('div');
+
+  const row = document.createElement('div');
+  row.className = 'fc-ntc-list-row';
+  row.style.cssText = 'display:grid; grid-template-columns:70px 110px minmax(0,1fr) 120px; gap:28px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:baseline; cursor:pointer';
+  row.addEventListener('mouseenter', () => { row.style.background = '#EFEADF'; });
+  row.addEventListener('mouseleave', () => { row.style.background = ''; });
+
+  const cNo = document.createElement('div');
+  cNo.style.cssText = 'font-size:14px; color:#B0A595';
+  cNo.textContent = data.no != null ? String(data.no) : '';
+
+  const cCat = document.createElement('div');
+  cCat.style.cssText = 'font-size:13px; color:#A2543A';
+  cCat.textContent = data.cat || '';
+
+  const cTitle = document.createElement('div');
+  cTitle.style.cssText = 'font-size:16px; color:#1F1B16';
+  cTitle.textContent = data.title || '';
+
+  const cDate = document.createElement('div');
+  cDate.style.cssText = 'font-size:13px; color:#9A8F80; text-align:right';
+  cDate.textContent = data.date || '';
+
+  row.appendChild(cNo);
+  row.appendChild(cCat);
+  row.appendChild(cTitle);
+  row.appendChild(cDate);
+
+  const detail = document.createElement('div');
+  detail.style.cssText = 'display:none; padding:26px 0 34px; border-bottom:1px solid #DCD4C6';
+  let built = false;
+
+  row.addEventListener('click', () => {
+    const willOpen = detail.style.display === 'none';
+    detail.style.display = willOpen ? '' : 'none';
+    if (willOpen && !built) {
+      buildDetailBody(id, data, detail);
+      built = true;
+    }
+  });
+
+  wrap.appendChild(row);
+  wrap.appendChild(detail);
+  return wrap;
+}
+
+// ── 공지 상세(accordion) — 본문 + 댓글 ────────────
+function buildDetailBody(noticeId, data, detail) {
+  const content = document.createElement('p');
+  content.style.cssText = 'font-size:15px; line-height:1.9; color:#5D5346; margin:0 0 26px; white-space:pre-wrap';
+  content.textContent = data.content || '(내용 없음)';
+  detail.appendChild(content);
+
+  const commentsWrap = document.createElement('div');
+  commentsWrap.style.cssText = 'border-top:1px solid #E6DFD2; padding-top:22px';
+
+  const commentsTitle = document.createElement('div');
+  commentsTitle.style.cssText = 'font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:14px';
+  commentsTitle.textContent = '댓글';
+  commentsWrap.appendChild(commentsTitle);
+
+  const commentList = document.createElement('div');
+  commentsWrap.appendChild(commentList);
+
+  const commentsQuery = query(
+    col('notices', noticeId, 'comments'), orderBy('createdAt', 'asc'));
+  onSnapshot(commentsQuery, (snap) => {
+    commentList.textContent = '';
+    if (snap.empty) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'font-size:13px; color:#B0A595; padding:8px 0 18px';
+      empty.textContent = '첫 댓글을 남겨 보십시오.';
+      commentList.appendChild(empty);
+    }
+    snap.forEach((c) => commentList.appendChild(buildCommentRow(c.data())));
+  });
+
+  commentsWrap.appendChild(buildCommentForm(noticeId));
+  detail.appendChild(commentsWrap);
+}
+
+function buildCommentRow(c) {
+  const row = document.createElement('div');
+  row.style.cssText = 'padding:12px 0; border-bottom:1px solid #EDE7DC';
+
+  const head = document.createElement('div');
+  head.style.cssText = 'display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:12px; color:#9A8F80; margin-bottom:6px';
+
+  const nick = document.createElement('span');
+  nick.style.cssText = 'color:#5D5346; font-weight:600';
+  nick.textContent = c.nickname || '익명';
+
+  const date = document.createElement('span');
+  date.style.cssText = 'flex-shrink:0';
+  date.textContent = (c.createdAt && c.createdAt.toDate)
+    ? formatDate(c.createdAt.toDate()) : '';
+
+  head.appendChild(nick);
+  head.appendChild(date);
+
+  const body = document.createElement('div');
+  body.style.cssText = 'font-size:14px; line-height:1.75; color:#3E362C; white-space:pre-wrap';
+  body.textContent = c.text || '';
+
+  row.appendChild(head);
+  row.appendChild(body);
+  return row;
+}
+
+function buildCommentForm(noticeId) {
+  const form = document.createElement('div');
+  form.style.cssText = 'margin-top:20px; display:flex; flex-direction:column; gap:10px; max-width:520px';
+
+  let nicknameInput = null;
+  if (!currentUser) {
+    nicknameInput = document.createElement('input');
+    nicknameInput.type = 'text';
+    nicknameInput.placeholder = '닉네임 (50자 이내)';
+    nicknameInput.maxLength = MAX_NICK_LEN;
+    nicknameInput.style.cssText = 'border:1px solid #C9C0B0; background:#F4F1EA; padding:10px 12px; font-size:14px; font-family:inherit; color:#1F1B16';
+    form.appendChild(nicknameInput);
+  }
+
+  const textInput = document.createElement('textarea');
+  textInput.placeholder = '댓글을 입력해 주십시오 (500자 이내)';
+  textInput.maxLength = MAX_TEXT_LEN;
+  textInput.rows = 2;
+  textInput.style.cssText = 'border:1px solid #C9C0B0; background:#F4F1EA; padding:10px 12px; font-size:14px; font-family:inherit; color:#1F1B16; resize:vertical';
+  form.appendChild(textInput);
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/jpeg,image/png,image/gif,image/webp';
+  fileInput.style.cssText = 'font-size:13px; color:#5D5346';
+  form.appendChild(fileInput);
+
+  const msgEl = document.createElement('div');
+  msgEl.style.cssText = 'font-size:12px; color:#A2543A; min-height:16px';
+  form.appendChild(msgEl);
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'button';
+  submitBtn.textContent = '댓글 작성';
+  submitBtn.style.cssText = 'align-self:flex-start; border:1px solid #1F1B16; background:none; color:#1F1B16; font-size:13px; padding:9px 20px; cursor:pointer; font-family:inherit';
+
+  submitBtn.addEventListener('click', () => {
+    handleCommentSubmit({ noticeId, nicknameInput, textInput, fileInput, msgEl, submitBtn });
+  });
+  form.appendChild(submitBtn);
+
+  return form;
+}
+
+// ── 댓글 작성 처리 ────────────────────────────────
+async function handleCommentSubmit({ noticeId, nicknameInput, textInput, fileInput, msgEl, submitBtn }) {
+  msgEl.textContent = '';
+
+  const text = textInput.value.trim();
+  if (!text) {
+    msgEl.textContent = '댓글 내용을 입력해 주십시오.';
+    return;
+  }
+  if (text.length > MAX_TEXT_LEN) {
+    msgEl.textContent = '댓글은 500자 이내로 입력해 주십시오.';
+    return;
+  }
+
+  let nickname;
+  if (currentUser) {
+    nickname = currentUser.displayName || currentUser.email || '회원';
+  } else {
+    nickname = (nicknameInput && nicknameInput.value || '').trim();
+    if (!nickname) {
+      msgEl.textContent = '닉네임을 입력해 주십시오.';
+      return;
+    }
+    if (nickname.length > MAX_NICK_LEN) {
+      msgEl.textContent = '닉네임은 50자 이내로 입력해 주십시오.';
+      return;
+    }
+  }
+
+  if (!commentLimiter.check(nickname)) {
+    msgEl.textContent = '작성이 너무 잦습니다. 잠시 후 다시 시도해 주십시오.';
+    return;
+  }
+
+  const file = fileInput.files && fileInput.files[0];
+  if (file) {
+    if (!ALLOWED_MIME.includes(file.type)) {
+      msgEl.textContent = '이미지 파일(jpeg/png/gif/webp)만 첨부할 수 있습니다.';
+      return;
+    }
+    if (file.size > MAX_FILE_BYTES) {
+      msgEl.textContent = '이미지 용량은 750KB 이하만 첨부할 수 있습니다.';
+      return;
+    }
+  }
+
+  submitBtn.disabled = true;
+  try {
+    const payload = { nickname, text, createdAt: serverTimestamp() };
+    if (currentUser) payload.uid = currentUser.uid;
+    await addDoc(col('notices', noticeId, 'comments'), payload);
+
+    if (file) {
+      await uploadAttachment(file, nickname);
+    }
+
+    textInput.value = '';
+    if (nicknameInput) nicknameInput.value = '';
+    fileInput.value = '';
+  } catch (e) {
+    msgEl.textContent = '댓글 등록에 실패했습니다.';
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+async function uploadAttachment(file, nickname) {
+  const fileName = sanitizeFileName(file.name);
+  const base64 = await fileToBase64(file);
+  const payload = {
+    nickname,
+    fileName,
+    mimeType: file.type,
+    base64,
+    createdAt: serverTimestamp(),
+  };
+  if (currentUser) payload.uid = currentUser.uid;
+  await addDoc(col('attachments'), payload);
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      resolve(result.split(',')[1] || '');
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+</script>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
   renderVals() {
     return {
       tabs: ["전체", "일정", "자재 · 단가", "A/S"],
-      posts: [
-        { no: "24", cat: "일정", title: "2026년 하계 시공 일정 및 휴무 안내", date: "2026.07.21" },
-        { no: "23", cat: "자재 · 단가", title: "인테리어 필름 자재 단가 조정 안내 (8월 시공분부터 적용)", date: "2026.07.14" },
-        { no: "22", cat: "A/S", title: "A/S 접수 절차 변경 안내 — 전화 접수로 통합", date: "2026.06.30" },
-        { no: "21", cat: "일정", title: "장마철 시공 진행 기준 안내 (습도와 접착력)", date: "2026.06.18" },
-        { no: "20", cat: "자재 · 단가", title: "내열 자재 신규 입고 — 주방 레인지 주변 적용", date: "2026.05.27" },
-        { no: "19", cat: "일정", title: "5월 연휴 실측 방문 일정 안내", date: "2026.04.29" },
-        { no: "18", cat: "A/S", title: "보증 제외 항목 안내 (칼자국 · 임의 도색)", date: "2026.04.10" },
-        { no: "17", cat: "일정", title: "수도권 외 지역 방문실측 운영 기준 변경", date: "2026.03.22" },
-      ],
     };
   }
 }
