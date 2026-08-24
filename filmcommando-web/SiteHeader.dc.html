@@ -60,56 +60,7 @@
     border-bottom: none;
   }
 
-  /* Priority+ 내비게이션 — 공간 부족 시 뒤쪽 항목을 더보기로 이동 */
-  .fc-nav-wrap {
-    position: relative;
-    min-width: 0;
-  }
-  .fc-nav-sentinel {
-    position: absolute;
-    inset: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  .fc-nav-more {
-    position: relative;
-  }
-  .fc-more-btn {
-    display: inline-flex;
-    align-items: center;
-    color: #4A4136;
-    background: none;
-    border: none;
-    font-family: 'Gowun Dodum', sans-serif;
-    font-size: 14.5px;
-    letter-spacing: 0.01em;
-    padding: 0;
-    cursor: pointer;
-  }
-  .fc-more-dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 12px;
-    min-width: 140px;
-    background: #fff;
-    border: 1px solid #EDE8DF;
-    border-radius: 4px;
-    box-shadow: 0 4px 16px rgba(31,27,22,0.14);
-    padding: 6px 0;
-    z-index: 100;
-  }
-  .fc-more-dropdown.open {
-    display: block;
-  }
-  .fc-more-dropdown a {
-    display: block;
-    padding: 10px 16px;
-    font-size: 14px;
-    white-space: nowrap;
-  }
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     .fc-top-bar { display: none !important; }
     .fc-nav-toggle { display: flex !important; }
     .fc-nav-desktop { display: none !important; }
@@ -148,23 +99,16 @@
       <span class="fc-logo-text" style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:22px; letter-spacing:-0.01em">필름특공대</span>
       <span class="fc-logo-sub" style="font-size:10px; letter-spacing:0.26em; color:#9A8F80">REMODELING</span>
     </a>
-    <div class="fc-nav-wrap">
-      <nav class="fc-nav-desktop" style="display:flex; gap:19px; font-size:14.5px; letter-spacing:0.01em; color:#4A4136; justify-content:center; white-space:nowrap; min-width:0;">
-        <a href="./About.dc.html" style="color:#4A4136">회사소개</a>
-        <a href="./Service.dc.html" style="color:#4A4136">시공 서비스</a>
-        <a href="./Packages.dc.html" style="color:#4A4136">패키지</a>
-        <a href="./Cost.dc.html" style="color:#4A4136">비용 가이드</a>
-        <a href="./Schedule.dc.html" style="color:#4A4136">공정 일정</a>
-        <a href="./Cases.dc.html" style="color:#4A4136">시공 사례</a>
-        <a href="./Materials.dc.html" style="color:#4A4136">자재 쇼룸</a>
-        <a href="./Review.dc.html" style="color:#4A4136">고객 후기</a>
-        <div class="fc-nav-more" id="fc-nav-more" style="display:none">
-          <button class="fc-more-btn" id="fc-more-btn" type="button" aria-haspopup="true" aria-expanded="false">···</button>
-          <div class="fc-more-dropdown" id="fc-more-dropdown"></div>
-        </div>
-      </nav>
-      <div class="fc-nav-sentinel" id="fc-nav-sentinel" aria-hidden="true"></div>
-    </div>
+    <nav class="fc-nav-desktop" style="display:flex; gap:19px; font-size:14.5px; letter-spacing:0.01em; color:#4A4136; justify-content:center; white-space:nowrap; min-width:0;">
+      <a href="./About.dc.html" style="color:#4A4136">회사소개</a>
+      <a href="./Service.dc.html" style="color:#4A4136">시공 서비스</a>
+      <a href="./Packages.dc.html" style="color:#4A4136">패키지</a>
+      <a href="./Cost.dc.html" style="color:#4A4136">비용 가이드</a>
+      <a href="./Schedule.dc.html" style="color:#4A4136">공정 일정</a>
+      <a href="./Cases.dc.html" style="color:#4A4136">시공 사례</a>
+      <a href="./Materials.dc.html" style="color:#4A4136">자재 쇼룸</a>
+      <a href="./Review.dc.html" style="color:#4A4136">고객 후기</a>
+    </nav>
     <button class="fc-nav-toggle" id="fc-toggle" aria-label="메뉴">
       <span></span><span></span><span></span>
     </button>
@@ -215,82 +159,6 @@ class Component extends DCLogic {
         toggle.classList.toggle('open');
         mobileNav.classList.toggle('open');
       });
-    }
-    this.setupPriorityNav();
-  }
-  setupPriorityNav() {
-    const nav = document.querySelector('.fc-nav-desktop');
-    const sentinel = document.getElementById('fc-nav-sentinel');
-    const moreWrap = document.getElementById('fc-nav-more');
-    const moreBtn = document.getElementById('fc-more-btn');
-    const dropdown = document.getElementById('fc-more-dropdown');
-    if (!nav || !sentinel || !moreWrap || !moreBtn || !dropdown) return;
-    this.navEl = nav;
-    this.sentinelEl = sentinel;
-    this.moreWrapEl = moreWrap;
-    this.moreBtnEl = moreBtn;
-    this.dropdownEl = dropdown;
-
-    let rafId = null;
-    const observer = new ResizeObserver(() => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        this.adjustPriorityNav();
-      });
-    });
-    observer.observe(sentinel);
-
-    moreBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const open = dropdown.classList.toggle('open');
-      moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    document.addEventListener('click', (e) => {
-      if (!moreWrap.contains(e.target)) {
-        dropdown.classList.remove('open');
-        moreBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-  adjustPriorityNav() {
-    const nav = this.navEl, sentinel = this.sentinelEl, moreWrap = this.moreWrapEl,
-      moreBtn = this.moreBtnEl, dropdown = this.dropdownEl;
-    if (!nav || !sentinel || !moreWrap || !moreBtn || !dropdown) return;
-
-    // 1. 초기화 — 더보기로 이동했던 항목을 전부 nav로 복귀
-    Array.prototype.slice.call(dropdown.children).forEach((a) => {
-      nav.insertBefore(a, moreWrap);
-    });
-    moreWrap.style.display = 'none';
-    dropdown.classList.remove('open');
-    moreBtn.setAttribute('aria-expanded', 'false');
-
-    const items = Array.prototype.filter.call(nav.children, (el) => el.tagName === 'A');
-    if (!items.length) return;
-
-    // 2. sentinel 기준 가용 폭 측정 (nav 자체는 측정하지 않음)
-    const availWidth = sentinel.getBoundingClientRect().width;
-    const gap = 19;
-    const moreBtnWidth = moreBtn.getBoundingClientRect().width || 24;
-
-    // 3~4. 앞에서부터 폭 누적, 초과 지점부터 뒤쪽 항목 전부 더보기로 이동
-    let used = 0;
-    let overflowFrom = -1;
-    for (let i = 0; i < items.length; i++) {
-      const w = items[i].getBoundingClientRect().width;
-      const next = used + (i > 0 ? gap : 0) + w;
-      const isLast = i === items.length - 1;
-      const reserve = isLast ? 0 : gap + moreBtnWidth;
-      if (next + reserve > availWidth) { overflowFrom = i; break; }
-      used = next;
-    }
-
-    if (overflowFrom > -1) {
-      for (let j = overflowFrom; j < items.length; j++) {
-        dropdown.appendChild(items[j]);
-      }
-      moreWrap.style.display = 'inline-flex';
     }
   }
   handleLogout(e) {
