@@ -156,7 +156,7 @@
 
     var headerW = header.offsetWidth;
     var logoW = logo.offsetWidth;
-    var navW = nav.scrollWidth;
+    var navW = Math.max(nav.scrollWidth, 700);
     var rightW = right.scrollWidth;
     var needed = logoW + 26 + navW + 26 + rightW + 80;
 
