@@ -144,25 +144,6 @@
 </header>
 
 </x-dc>
-<script>
-(function() {
-  function applyNav() {
-    var w = document.documentElement.clientWidth;
-    var toggle = document.getElementById('fc-toggle');
-    var nav = document.getElementById('fc-desktop-nav');
-    if (!toggle || !nav) return;
-    if (w < 1300) {
-      nav.style.display = 'none';
-      toggle.style.display = 'flex';
-    } else if (w >= 1340) {
-      nav.style.display = '';
-      toggle.style.display = '';
-    }
-  }
-  applyNav();
-  window.addEventListener('resize', applyNav);
-})();
-</script>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:120}}">
 class Component extends DCLogic {
   componentDidMount() {
@@ -179,6 +160,25 @@ class Component extends DCLogic {
         mobileNav.classList.toggle('open');
       });
     }
+    this.applyNav();
+    this._onResize = () => this.applyNav();
+    window.addEventListener('resize', this._onResize);
+  }
+  applyNav() {
+    var w = document.documentElement.clientWidth;
+    var toggle = document.getElementById('fc-toggle');
+    var nav = document.getElementById('fc-desktop-nav');
+    if (!toggle || !nav) return;
+    if (w < 1300) {
+      nav.style.display = 'none';
+      toggle.style.display = 'flex';
+    } else if (w >= 1340) {
+      nav.style.display = '';
+      toggle.style.display = '';
+    }
+  }
+  componentWillUnmount() {
+    if (this._onResize) window.removeEventListener('resize', this._onResize);
   }
   handleLogout(e) {
     if (e && e.preventDefault) e.preventDefault();
