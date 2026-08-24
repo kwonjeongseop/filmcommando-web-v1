@@ -32,5 +32,11 @@ PAGE|https://filmcommando.com/image-slot.js|200
 PAGE|https://filmcommando.com/page-transition.js|200
 PAGE|https://filmcommando.com/firebase-config.js|200
 PAGE|https://filmcommando.com/auth.js|200
+PAGE|https://filmcommando.com/Privacy.dc.html|200
+PAGE|https://filmcommando.com/Site_Overview.dc.html|200
+PAGE|https://filmcommando.com/Main-A.dc.html|200
+PAGE|https://filmcommando.com/Main-B.dc.html|200
+PAGE|https://filmcommando.com/Main-B_v2.dc.html|200
+PAGE|https://filmcommando.com/Main-C.dc.html|200
 API|https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAPYrNtF0hTbsBJ2DEtKqYCSXfG9vg8X-U|403
-FILE|C:\claude\filmcommando-web-v1\filmcommando-web|35
+FILE|C:\claude\filmcommando-web-v1\filmcommando-web|36
