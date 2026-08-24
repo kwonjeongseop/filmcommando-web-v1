@@ -67,16 +67,36 @@ service cloud.firestore {
     // 삭제: 본인(uid 일치) 또는 관리자
     // 수정: 금지 (update 차단)
     // 보안: 텍스트 500자 이하, 닉네임 50자 이하 강제
+    // 보안: hasOnly로 허용 필드 고정 (uid 스푸핑 방지) —
+    //        비로그인은 uid 필드 자체를 허용하지 않고,
+    //        로그인 시에는 uid가 본인 것과 일치해야만 허용
     match /notices/{noticeId}/comments/{commentId} {
       allow read: if true;
       allow create:
-        if request.resource.data.keys().hasAll(
-            ['nickname','text','createdAt'])
-        && request.resource.data.text is string
-        && request.resource.data.text.size() <= 500
-        && request.resource.data.nickname is string
-        && request.resource.data.nickname.size() <= 50
-        && request.resource.data.nickname.size() >= 1;
+        if (
+          // 비로그인: nickname/text/createdAt 3필드만 허용
+          (request.auth == null
+            && request.resource.data.keys().hasOnly(
+                ['nickname','text','createdAt'])
+            && request.resource.data.text is string
+            && request.resource.data.text.size() >= 1
+            && request.resource.data.text.size() <= 500
+            && request.resource.data.nickname is string
+            && request.resource.data.nickname.size() >= 1
+            && request.resource.data.nickname.size() <= 50)
+          ||
+          // 로그인: uid 추가 허용, uid는 반드시 본인 uid
+          (request.auth != null
+            && request.resource.data.keys().hasOnly(
+                ['nickname','text','createdAt','uid'])
+            && request.resource.data.uid == request.auth.uid
+            && request.resource.data.text is string
+            && request.resource.data.text.size() >= 1
+            && request.resource.data.text.size() <= 500
+            && request.resource.data.nickname is string
+            && request.resource.data.nickname.size() >= 1
+            && request.resource.data.nickname.size() <= 50)
+        );
       allow delete:
         if request.auth != null
         && (request.auth.uid == resource.data.uid
@@ -86,21 +106,49 @@ service cloud.firestore {
 
     // 게시판 파일 첨부 메타데이터
     // 전체 읽기, 로그인·비로그인 모두 create 허용
-    // Base64 데이터는 1MB(1,048,576바이트) 이하 강제
+    // Base64 데이터는 750KB(786,432바이트) 이하 강제
+    //   (Firestore 문서 1MiB 한도 대비 나머지 필드 여유 확보)
     // 삭제: 본인 또는 관리자
+    // 보안: hasOnly로 허용 필드 고정 (uid 스푸핑 방지) —
+    //        비로그인은 uid 필드 자체를 허용하지 않고,
+    //        로그인 시에는 uid가 본인 것과 일치해야만 허용
     match /attachments/{attachId} {
       allow read: if true;
       allow create:
-        if request.resource.data.keys().hasAll(
-            ['nickname','fileName','mimeType',
-             'base64','createdAt'])
-        && request.resource.data.mimeType in [
-            'image/jpeg','image/png',
-            'image/gif','image/webp']
-        && request.resource.data.base64 is string
-        && request.resource.data.base64.size() <= 1048576
-        && request.resource.data.fileName is string
-        && request.resource.data.fileName.size() <= 100;
+        if (
+          (request.auth == null
+            && request.resource.data.keys().hasOnly(
+                ['nickname','fileName','mimeType',
+                 'base64','createdAt'])
+            && request.resource.data.mimeType in [
+                'image/jpeg','image/png',
+                'image/gif','image/webp']
+            && request.resource.data.base64 is string
+            && request.resource.data.base64.size() <= 786432
+            && request.resource.data.fileName is string
+            && request.resource.data.fileName.size() >= 1
+            && request.resource.data.fileName.size() <= 100
+            && request.resource.data.nickname is string
+            && request.resource.data.nickname.size() >= 1
+            && request.resource.data.nickname.size() <= 50)
+          ||
+          (request.auth != null
+            && request.resource.data.keys().hasOnly(
+                ['nickname','fileName','mimeType',
+                 'base64','createdAt','uid'])
+            && request.resource.data.uid == request.auth.uid
+            && request.resource.data.mimeType in [
+                'image/jpeg','image/png',
+                'image/gif','image/webp']
+            && request.resource.data.base64 is string
+            && request.resource.data.base64.size() <= 786432
+            && request.resource.data.fileName is string
+            && request.resource.data.fileName.size() >= 1
+            && request.resource.data.fileName.size() <= 100
+            && request.resource.data.nickname is string
+            && request.resource.data.nickname.size() >= 1
+            && request.resource.data.nickname.size() <= 50)
+        );
       allow delete:
         if request.auth != null
         && (request.auth.uid == resource.data.uid
