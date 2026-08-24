@@ -428,7 +428,7 @@ async function handleCommentSubmit({ noticeId, nicknameInput, textInput, fileInp
     await addDoc(col('notices', noticeId, 'comments'), payload);
 
     if (file) {
-      await uploadAttachment(file, nickname);
+      await uploadAttachment(file, nickname, noticeId);
     }
 
     textInput.value = '';
@@ -441,7 +441,7 @@ async function handleCommentSubmit({ noticeId, nicknameInput, textInput, fileInp
   }
 }
 
-async function uploadAttachment(file, nickname) {
+async function uploadAttachment(file, nickname, noticeId) {
   const fileName = sanitizeFileName(file.name);
   const base64 = await fileToBase64(file);
   const payload = {
@@ -450,6 +450,7 @@ async function uploadAttachment(file, nickname) {
     mimeType: file.type,
     base64,
     createdAt: serverTimestamp(),
+    noticeId,
   };
   if (currentUser) payload.uid = currentUser.uid;
   await addDoc(col('attachments'), payload);
