@@ -54,6 +54,60 @@ service cloud.firestore {
         && request.auth.uid == userId;
     }
 
+    // 자료실 — 전체 읽기, 관리자만 쓰기 (GitHub Releases URL 저장)
+    match /resources/{docId} {
+      allow read: if true;
+      allow write:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // 댓글 — 전체 읽기
+    // 작성: 누구나 (비로그인 포함, 닉네임 필수)
+    // 삭제: 본인(uid 일치) 또는 관리자
+    // 수정: 금지 (update 차단)
+    // 보안: 텍스트 500자 이하, 닉네임 50자 이하 강제
+    match /notices/{noticeId}/comments/{commentId} {
+      allow read: if true;
+      allow create:
+        if request.resource.data.keys().hasAll(
+            ['nickname','text','createdAt'])
+        && request.resource.data.text is string
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() <= 50
+        && request.resource.data.nickname.size() >= 1;
+      allow delete:
+        if request.auth != null
+        && (request.auth.uid == resource.data.uid
+            || request.auth.token.admin == true);
+      allow update: if false;
+    }
+
+    // 게시판 파일 첨부 메타데이터
+    // 전체 읽기, 로그인·비로그인 모두 create 허용
+    // Base64 데이터는 1MB(1,048,576바이트) 이하 강제
+    // 삭제: 본인 또는 관리자
+    match /attachments/{attachId} {
+      allow read: if true;
+      allow create:
+        if request.resource.data.keys().hasAll(
+            ['nickname','fileName','mimeType',
+             'base64','createdAt'])
+        && request.resource.data.mimeType in [
+            'image/jpeg','image/png',
+            'image/gif','image/webp']
+        && request.resource.data.base64 is string
+        && request.resource.data.base64.size() <= 1048576
+        && request.resource.data.fileName is string
+        && request.resource.data.fileName.size() <= 100;
+      allow delete:
+        if request.auth != null
+        && (request.auth.uid == resource.data.uid
+            || request.auth.token.admin == true);
+      allow update: if false;
+    }
+
     // 그 외 전체 차단
     match /{document=**} {
       allow read, write: if false;
