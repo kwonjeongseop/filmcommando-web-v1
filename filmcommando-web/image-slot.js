@@ -703,6 +703,13 @@
     }
 
     connectedCallback() {
+      // 배포 환경(오멜렛 미실행, window.omelette 없음)에서는 실제 이미지가
+      // 채워지지 않은 빈 placeholder 박스를 방문자에게 노출하지 않도록
+      // 숨긴다. 오멜렛 런타임(window.omelette.writeFile 존재)에서는
+      // 기존 동작을 그대로 유지한다.
+      if (!(window.omelette && window.omelette.writeFile)) {
+        this.style.display = 'none';
+      }
       // Warn once per page — an id-less slot works for the session but
       // cannot persist, and two id-less slots would share nothing.
       if (!this.id && !ImageSlot._warned) {
