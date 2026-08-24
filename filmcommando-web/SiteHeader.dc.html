@@ -99,7 +99,7 @@
       <span class="fc-logo-text" style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:22px; letter-spacing:-0.01em">필름특공대</span>
       <span class="fc-logo-sub" style="font-size:10px; letter-spacing:0.26em; color:#9A8F80">REMODELING</span>
     </a>
-    <nav class="fc-nav-desktop" style="display:flex; gap:19px; font-size:14.5px; letter-spacing:0.01em; color:#4A4136; justify-content:center; white-space:nowrap; min-width:0;">
+    <nav class="fc-nav-desktop" id="fc-desktop-nav" style="display:flex; gap:19px; font-size:14.5px; letter-spacing:0.01em; color:#4A4136; justify-content:center; white-space:nowrap; min-width:0;">
       <a href="./About.dc.html" style="color:#4A4136">회사소개</a>
       <a href="./Service.dc.html" style="color:#4A4136">시공 서비스</a>
       <a href="./Packages.dc.html" style="color:#4A4136">패키지</a>
@@ -144,38 +144,21 @@
 </header>
 <script>
 (function() {
-  var raf = null;
-
-  function adjust() {
-    var header = document.querySelector('header');
-    var nav = document.querySelector('.fc-nav-desktop');
-    var right = document.querySelector('.fc-header-right');
-    var logo = document.querySelector('.fc-logo-text');
-    var toggle = document.querySelector('.fc-nav-toggle');
-    if (!header || !nav || !right || !logo || !toggle) return;
-
-    var headerW = header.offsetWidth;
-    var needed = 1300;
-
-    if (needed >= headerW) {
+  function applyNav() {
+    var w = document.documentElement.clientWidth;
+    var toggle = document.getElementById('fc-toggle');
+    var nav = document.getElementById('fc-desktop-nav');
+    if (!toggle || !nav) return;
+    if (w < 1300) {
       nav.style.display = 'none';
       toggle.style.display = 'flex';
-    } else if (needed < headerW - 40) {
+    } else if (w >= 1340) {
       nav.style.display = '';
       toggle.style.display = '';
     }
   }
-
-  function onResize() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(adjust);
-  }
-
-  var ro = new ResizeObserver(onResize);
-  ro.observe(document.documentElement);
-
-  document.addEventListener('DOMContentLoaded', adjust);
-  adjust();
+  applyNav();
+  window.addEventListener('resize', applyNav);
 })();
 </script>
 
