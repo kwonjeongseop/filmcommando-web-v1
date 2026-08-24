@@ -68,16 +68,10 @@
 
   <section class="fc-res-files-wrap" style="padding:56px 56px; border-bottom:1px solid #DCD4C6; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; padding-top:6px">내려받기</div>
-    <div class="fc-res-files" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px">
-      <sc-for list="{{ files }}" as="f" hint-placeholder-count="6">
-        <a href="#" style="display:grid; grid-template-columns:minmax(0,1fr) 110px; gap:20px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:center" style-hover="background:#EFEADF">
-          <div>
-            <div style="font-size:16px; color:#1F1B16; margin-bottom:7px">{{ f.title }}</div>
-            <div style="font-size:13px; color:#8C8071; line-height:1.7">{{ f.body }}</div>
-          </div>
-          <div style="font-size:13px; color:#A2543A; text-align:right">{{ f.meta }}</div>
-        </a>
-      </sc-for>
+    <div>
+      <div id="resource-list" class="fc-res-files" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 60px"></div>
+      <div id="resource-empty" style="display:none; font-size:14px; color:#9A8F80; padding:22px 0">등록된 자료가 없습니다.</div>
+      <div id="resource-admin-panel" style="display:none; margin-top:40px; padding-top:32px; border-top:1px solid #1F1B16"></div>
     </div>
   </section>
 
@@ -137,19 +131,195 @@
   <dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
 </div>
 
+<script type="module">
+import { db } from './firebase-config.js';
+import { initAuthObserver } from './auth.js';
+import {
+  collection, query, orderBy, onSnapshot, addDoc, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const GITHUB_PREFIX = 'https://github.com/';
+const FORM_INPUT_STYLE = 'border:1px solid #C9C0B0; background:#F4F1EA; padding:10px 12px; font-size:14px; font-family:inherit; color:#1F1B16';
+
+function col(...path) { return collection(db, ...path); }
+
+function todayIso() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+}
+
+let latestResources = [];
+
+const listEl       = document.getElementById('resource-list');
+const emptyEl       = document.getElementById('resource-empty');
+const adminPanelEl = document.getElementById('resource-admin-panel');
+
+// ── 자료 목록 — Firestore 실시간 연동 ─────────────
+const resourcesQuery = query(col('resources'), orderBy('no', 'desc'));
+onSnapshot(resourcesQuery, (snap) => {
+  latestResources = [];
+  listEl.textContent = '';
+  if (snap.empty) {
+    emptyEl.textContent = '등록된 자료가 없습니다.';
+    emptyEl.style.display = '';
+  } else {
+    emptyEl.style.display = 'none';
+    snap.forEach((docSnap) => {
+      const data = docSnap.data();
+      latestResources.push(data);
+      listEl.appendChild(buildResourceItem(data));
+    });
+  }
+}, () => {
+  emptyEl.textContent = '자료 목록을 불러오지 못했습니다.';
+  emptyEl.style.display = '';
+});
+
+function buildResourceItem(data) {
+  const row = document.createElement('div');
+  row.style.cssText = 'display:grid; grid-template-columns:minmax(0,1fr) 110px; gap:20px; padding:22px 0; border-bottom:1px solid #DCD4C6; align-items:center; cursor:pointer';
+  row.addEventListener('mouseenter', () => { row.style.background = '#EFEADF'; });
+  row.addEventListener('mouseleave', () => { row.style.background = ''; });
+
+  const left = document.createElement('div');
+  const title = document.createElement('div');
+  title.style.cssText = 'font-size:16px; color:#1F1B16; margin-bottom:7px';
+  title.textContent = data.title || '';
+  const body = document.createElement('div');
+  body.style.cssText = 'font-size:13px; color:#8C8071; line-height:1.7';
+  body.textContent = [data.cat, data.date].filter(Boolean).join(' · ');
+  left.appendChild(title);
+  left.appendChild(body);
+
+  const meta = document.createElement('div');
+  meta.style.cssText = 'font-size:13px; color:#A2543A; text-align:right';
+  meta.textContent = data.fileSize || '';
+
+  row.appendChild(left);
+  row.appendChild(meta);
+
+  row.addEventListener('click', () => {
+    const url = data.downloadUrl || '';
+    if (!url.startsWith(GITHUB_PREFIX)) {
+      alert('유효한 다운로드 링크가 등록되지 않았습니다.');
+      return;
+    }
+    window.open(url, '_blank', 'noopener');
+  });
+
+  return row;
+}
+
+// ── 관리자 파일 등록 UI ────────────────────────────
+initAuthObserver(({ isAdmin }) => {
+  adminPanelEl.style.display = isAdmin ? '' : 'none';
+  if (isAdmin && !adminPanelEl.dataset.built) {
+    adminPanelEl.appendChild(buildAdminForm());
+    adminPanelEl.dataset.built = '1';
+  }
+});
+
+function buildAdminForm() {
+  const wrap = document.createElement('div');
+
+  const label = document.createElement('div');
+  label.style.cssText = 'font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:18px';
+  label.textContent = '자료 등록 (관리자)';
+  wrap.appendChild(label);
+
+  const fieldWrap = document.createElement('div');
+  fieldWrap.style.cssText = 'display:flex; flex-direction:column; gap:10px; max-width:480px';
+
+  const titleInput = document.createElement('input');
+  titleInput.type = 'text';
+  titleInput.placeholder = '제목';
+  titleInput.style.cssText = FORM_INPUT_STYLE;
+
+  const catInput = document.createElement('input');
+  catInput.type = 'text';
+  catInput.placeholder = '카테고리';
+  catInput.style.cssText = FORM_INPUT_STYLE;
+
+  const sizeInput = document.createElement('input');
+  sizeInput.type = 'text';
+  sizeInput.placeholder = '파일 크기 (예: 2.4MB)';
+  sizeInput.style.cssText = FORM_INPUT_STYLE;
+
+  const urlInput = document.createElement('input');
+  urlInput.type = 'text';
+  urlInput.placeholder = 'https://github.com/ 로 시작하는 다운로드 URL';
+  urlInput.style.cssText = FORM_INPUT_STYLE;
+
+  const msgEl = document.createElement('div');
+  msgEl.style.cssText = 'font-size:12px; color:#A2543A; min-height:16px';
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'button';
+  submitBtn.textContent = '자료 등록';
+  submitBtn.style.cssText = 'align-self:flex-start; border:1px solid #1F1B16; background:none; color:#1F1B16; font-size:13px; padding:9px 20px; cursor:pointer; font-family:inherit';
+
+  submitBtn.addEventListener('click', () => {
+    handleResourceSubmit({ titleInput, catInput, sizeInput, urlInput, msgEl, submitBtn });
+  });
+
+  fieldWrap.appendChild(titleInput);
+  fieldWrap.appendChild(catInput);
+  fieldWrap.appendChild(sizeInput);
+  fieldWrap.appendChild(urlInput);
+  fieldWrap.appendChild(msgEl);
+  fieldWrap.appendChild(submitBtn);
+  wrap.appendChild(fieldWrap);
+
+  return wrap;
+}
+
+async function handleResourceSubmit({ titleInput, catInput, sizeInput, urlInput, msgEl, submitBtn }) {
+  msgEl.textContent = '';
+
+  const title = titleInput.value.trim();
+  const cat = catInput.value.trim();
+  const fileSize = sizeInput.value.trim();
+  const downloadUrl = urlInput.value.trim();
+
+  if (!title || !cat || !fileSize || !downloadUrl) {
+    msgEl.textContent = '모든 항목을 입력해 주십시오.';
+    return;
+  }
+  if (!downloadUrl.startsWith(GITHUB_PREFIX)) {
+    msgEl.textContent = 'https://github.com/ 로 시작하는 URL만 등록할 수 있습니다.';
+    return;
+  }
+
+  const maxNo = latestResources.reduce((m, r) => Math.max(m, r.no || 0), 0);
+
+  submitBtn.disabled = true;
+  try {
+    await addDoc(col('resources'), {
+      no: maxNo + 1,
+      cat,
+      title,
+      date: todayIso(),
+      downloadUrl,
+      fileSize,
+      createdAt: serverTimestamp(),
+    });
+    titleInput.value = '';
+    catInput.value = '';
+    sizeInput.value = '';
+    urlInput.value = '';
+  } catch (e) {
+    msgEl.textContent = '자료 등록에 실패했습니다.';
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+</script>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
   renderVals() {
     return {
-      files: [
-        { title: "리모델링 사전 점검 체크리스트", body: "계약 전 확인 항목 32개 · 인쇄용 A4 2장", meta: "PDF · 0.4MB" },
-        { title: "견적서 비교표 서식", body: "업체별 공정 · 단가 · 포함 여부를 나란히 적는 표", meta: "XLSX · 0.1MB" },
-        { title: "관리사무소 공사 신고 서식 예시", body: "동의서 · 공사 계획서 · 예치금 안내 예시", meta: "PDF · 0.3MB" },
-        { title: "5주 공정 일정표 (빈 서식)", body: "주차별 공정과 방문 일정을 적는 표", meta: "PDF · 0.2MB" },
-        { title: "준공 검수 체크리스트", body: "공정별 검수 항목과 하자 기록란", meta: "PDF · 0.3MB" },
-        { title: "자재 선택 기록표", body: "부위별 제품명 · 색상 · 수량을 남기는 표", meta: "XLSX · 0.1MB" },
-      ],
       lists: [
         { n: "체크리스트 01", title: "계약 전", body: "여기서 걸러지지 않는 문제는 대부분 시공 중에 비용으로 돌아옵니다.", items: [
           "공정별 수량과 단가가 적힌 견적서를 받았는가",
