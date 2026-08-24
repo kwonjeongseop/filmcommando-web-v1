@@ -1234,9 +1234,12 @@
 (function() {
   if (window.omelette && window.omelette.writeFile) return;
   function hideSlot(el) {
-    if (el && el.style) el.style.display = 'none';
+    if (!el) return;
+    el.setAttribute('hidden', '');
+    el.style.cssText =
+      'display:none!important;visibility:hidden;' +
+      'width:0;height:0;overflow:hidden;';
   }
-  // 이미 존재하는 요소 즉시 숨김
   function hideAll() {
     document.querySelectorAll('image-slot')
       .forEach(hideSlot);
@@ -1246,21 +1249,20 @@
   } else {
     hideAll();
   }
-  // 동적으로 추가되는 요소 감지
   var mo = new MutationObserver(function(mutations) {
     mutations.forEach(function(m) {
       m.addedNodes.forEach(function(node) {
-        if (node.nodeType !== 1) return;
-        if (node.nodeName.toLowerCase() === 'image-slot') {
-          hideSlot(node);
-        }
-        if (node.querySelectorAll) {
+        if (!node || node.nodeType !== 1) return;
+        if (node.nodeName.toLowerCase() ===
+            'image-slot') hideSlot(node);
+        if (node.querySelectorAll)
           node.querySelectorAll('image-slot')
             .forEach(hideSlot);
-        }
       });
     });
   });
-  var target = document.body || document.documentElement;
-  mo.observe(target, { childList: true, subtree: true });
+  mo.observe(
+    document.body || document.documentElement,
+    { childList: true, subtree: true }
+  );
 })();
