@@ -19,7 +19,8 @@
 //   - 이 두 가지를 하지 않으면 Firestore 전체에 대한
 //     관리자 권한 자격증명이 로컬 디스크에 그대로 남는다.
 
-const admin = require('firebase-admin');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 const path = require('path');
 
 const keyPath = path.join(__dirname, 'serviceAccountKey.json');
@@ -33,11 +34,11 @@ try {
   process.exit(1);
 }
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+initializeApp({
+  credential: cert(serviceAccount),
 });
 
-const db = admin.firestore();
+const db = getFirestore();
 
 // 기존 Notice.dc.html 정적 posts[] 원본 (마이그레이션 전 값)
 // date는 원본 "YYYY.MM.DD" 표기를 스키마 명시값인
@@ -67,7 +68,7 @@ async function migrate() {
       title: p.title,
       content: '(내용 없음)',
       date: toIsoDate(p.date),
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     });
   }
   await batch.commit();
