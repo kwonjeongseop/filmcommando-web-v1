@@ -70,6 +70,61 @@
     font-size: 13px;
   }
   .back-link:hover { color: #A2543A; }
+
+  @media (max-width:768px) {
+    .admin-header { padding: 20px 24px; }
+    .admin-body { padding: 24px; }
+    .booking-table { font-size: 13px; }
+  }
+
+  @media (max-width:480px) {
+    .admin-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 16px 20px;
+    }
+    .admin-body { padding: 16px; }
+    .admin-title { font-size: 20px; margin-bottom: 16px; }
+
+    .booking-table thead { display: none; }
+    .booking-table, .booking-table tbody,
+    .booking-table tr, .booking-table td {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .booking-table tr {
+      margin-bottom: 14px;
+      border: 1px solid #DCD4C6;
+      border-radius: 4px;
+      padding: 10px 14px;
+      background: #F4F1EA;
+    }
+    .booking-table td {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: none;
+    }
+    .booking-table td:not(:last-child) {
+      border-bottom: 1px solid #EDE7DC;
+    }
+    .booking-table td::before {
+      color: #8C8071;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .booking-table td:nth-child(1)::before { content: "이름"; }
+    .booking-table td:nth-child(2)::before { content: "연락처"; }
+    .booking-table td:nth-child(3)::before { content: "주소"; }
+    .booking-table td:nth-child(4)::before { content: "평형·연식"; }
+    .booking-table td:nth-child(5)::before { content: "상담방식"; }
+    .booking-table td:nth-child(6)::before { content: "일시"; }
+    .booking-table td:nth-child(7)::before { content: "메모"; }
+  }
 </style>
 </head>
 <body>
