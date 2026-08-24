@@ -18,6 +18,17 @@
   a { color:#1F1B16; text-decoration:none; }
   a:hover { color:#A2543A; }
   ::selection { background:#1F1B16; color:#F4F1EA; }
+
+  @media (max-width:480px) {
+    section:first-of-type {
+      grid-template-columns: minmax(0,1fr) !important;
+      padding: 40px 20px 32px !important;
+      gap: 12px !important;
+    }
+    section:first-of-type h1 {
+      font-size: 30px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
