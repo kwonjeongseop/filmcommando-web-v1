@@ -155,15 +155,12 @@
     if (!header || !nav || !right || !logo || !toggle) return;
 
     var headerW = header.offsetWidth;
-    var logoW = logo.offsetWidth;
-    var navW = Math.max(nav.scrollWidth, 700);
-    var rightW = right.scrollWidth;
-    var needed = logoW + 26 + navW + 26 + rightW + 80;
+    var needed = 1300;
 
     if (needed >= headerW) {
       nav.style.display = 'none';
       toggle.style.display = 'flex';
-    } else if (needed < headerW - 20) {
+    } else if (needed < headerW - 40) {
       nav.style.display = '';
       toggle.style.display = '';
     }
