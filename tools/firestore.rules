@@ -123,7 +123,7 @@ service cloud.firestore {
           (request.auth == null
             && request.resource.data.keys().hasOnly(
                 ['nickname','fileName','mimeType',
-                 'base64','createdAt'])
+                 'base64','createdAt','noticeId'])
             && request.resource.data.mimeType in [
                 'image/jpeg','image/png',
                 'image/gif','image/webp']
@@ -139,7 +139,7 @@ service cloud.firestore {
           (request.auth != null
             && request.resource.data.keys().hasOnly(
                 ['nickname','fileName','mimeType',
-                 'base64','createdAt','uid'])
+                 'base64','createdAt','uid','noticeId'])
             && request.resource.data.uid == request.auth.uid
             && request.resource.data.mimeType in [
                 'image/jpeg','image/png',
