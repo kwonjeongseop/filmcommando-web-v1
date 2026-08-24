@@ -285,8 +285,9 @@
           <thead>
             <tr>
               <th>UID</th>
-              <th>이메일</th>
               <th>이름</th>
+              <th>연락처</th>
+              <th>권한</th>
               <th>가입일</th>
             </tr>
           </thead>
@@ -601,7 +602,8 @@ let usersLoaded = false;
 function buildUserRow(uid, data) {
   const tr = document.createElement('tr');
   const created = (data.createdAt && data.createdAt.toDate) ? formatDate(data.createdAt.toDate()) : '';
-  [uid, data.email, data.displayName, created].forEach((v) => {
+  const shortUid = uid.slice(0, 8) + '...';
+  [shortUid, data.name, data.phone, data.role, created].forEach((v) => {
     const td = document.createElement('td');
     td.textContent = v || '';
     tr.appendChild(td);
