@@ -60,7 +60,7 @@
     border-bottom: none;
   }
 
-  @media (max-width: 1400px) {
+  @media (max-width: 900px) {
     .fc-top-bar { display: none !important; }
     .fc-nav-toggle { display: flex !important; }
     .fc-nav-desktop { display: none !important; }
@@ -83,7 +83,42 @@
     }
     .fc-logo-sub { display: none !important; }
   }
-  html { min-width: 680px; }
+  @media (min-width:1301px) and (max-width:1400px) {
+    .fc-nav-desktop > a:nth-child(8) {
+      display:none !important;
+    }
+  }
+  @media (min-width:1201px) and (max-width:1300px) {
+    .fc-nav-desktop > a:nth-child(7),
+    .fc-nav-desktop > a:nth-child(8) {
+      display:none !important;
+    }
+  }
+  @media (min-width:1101px) and (max-width:1200px) {
+    .fc-nav-desktop > a:nth-child(6),
+    .fc-nav-desktop > a:nth-child(7),
+    .fc-nav-desktop > a:nth-child(8) {
+      display:none !important;
+    }
+  }
+  @media (min-width:1001px) and (max-width:1100px) {
+    .fc-nav-desktop > a:nth-child(5),
+    .fc-nav-desktop > a:nth-child(6),
+    .fc-nav-desktop > a:nth-child(7),
+    .fc-nav-desktop > a:nth-child(8) {
+      display:none !important;
+    }
+  }
+  @media (min-width:901px) and (max-width:1000px) {
+    .fc-nav-desktop > a:nth-child(4),
+    .fc-nav-desktop > a:nth-child(5),
+    .fc-nav-desktop > a:nth-child(6),
+    .fc-nav-desktop > a:nth-child(7),
+    .fc-nav-desktop > a:nth-child(8) {
+      display:none !important;
+    }
+  }
+  html { min-width: 560px; }
 </style>
 </helmet>
 <header style="font-family:'Gowun Dodum',sans-serif; background:#F4F1EA; color:#1F1B16">
