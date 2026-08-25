@@ -100,11 +100,15 @@
       height:180px !important;
     }
   }
+  .fc-home-hero { min-width:1200px; }
+  @media (max-width:1400px) {
+    .fc-home-hero { min-width:0 !important; }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
 
-<div class="fc-home-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA; overflow-x:hidden">
+<div class="fc-home-wrap" style="font-family:'Gowun Dodum',sans-serif; color:#1F1B16; background:#F4F1EA">
   <dc-import name="SiteHeader" hint-size="100%,113px"></dc-import>
 
   <section class="fc-home-hero" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
