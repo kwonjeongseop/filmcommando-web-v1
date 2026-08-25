@@ -4,7 +4,7 @@
     "CaseDetail", "Materials", "Review", "Booking",
     "Quote", "Notice", "Faq", "Resources", "Partner",
     "Login", "Admin"];
-  var DUR = 500;
+  var DUR = 600;
   var EASE = "cubic-bezier(.22,.61,.36,1)";
   var DIR_KEY = "pt-dir";
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -25,10 +25,10 @@
     } catch (readErr) {}
 
     if (dir === "forward" || dir === "back") {
-      var startX = dir === "forward" ? "30%" : "-30%";
+      var startX = dir === "forward" ? "50%" : "-50%";
       document.body.style.transition = "none";
       document.body.style.transform = "translateX(" + startX + ")";
-      document.body.style.opacity = "0.6";
+      document.body.style.opacity = "0.3";
 
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
@@ -71,11 +71,11 @@
 
     document.body.style.transition =
       "transform " + DUR + "ms " + EASE + ", opacity " + DUR + "ms " + EASE;
-    document.body.style.transform = "translateX(" + (direction === "forward" ? "-30%" : "30%") + ")";
-    document.body.style.opacity = "0.6";
+    document.body.style.transform = "translateX(" + (direction === "forward" ? "-50%" : "50%") + ")";
+    document.body.style.opacity = "0.3";
 
     setTimeout(function () {
       window.location.href = href;
-    }, DUR - 50);
+    }, DUR - 80);
   }, true);
 })();
