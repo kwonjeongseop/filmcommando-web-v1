@@ -82,6 +82,8 @@
     }
     .fc-logo-sub { display: none !important; }
   }
+  .fc-nav-hidden { display:none !important; }
+  .fc-nav-visible { display:flex !important; }
 </style>
 </helmet>
 <header style="font-family:'Gowun Dodum',sans-serif; background:#F4F1EA; color:#1F1B16">
@@ -170,11 +172,11 @@ class Component extends DCLogic {
     var nav = document.getElementById('fc-desktop-nav');
     if (!toggle || !nav) return;
     if (w < 1300) {
-      nav.style.display = 'none';
-      toggle.style.display = 'flex';
+      nav.classList.add('fc-nav-hidden');
+      toggle.classList.add('fc-nav-visible');
     } else if (w >= 1340) {
-      nav.style.display = '';
-      toggle.style.display = '';
+      nav.classList.remove('fc-nav-hidden');
+      toggle.classList.remove('fc-nav-visible');
     }
   }
   componentWillUnmount() {
