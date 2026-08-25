@@ -103,6 +103,43 @@
       display: none !important;
     }
   }
+  .ab-slider{position:relative;width:100%;height:100%;
+    overflow:hidden}
+  .ab-track{display:flex;height:100%;
+    transition:transform .5s cubic-bezier(.4,0,.2,1)}
+  .ab-slide{flex:none;width:100%;height:100%;
+    background:#E6DFD2;display:flex;
+    align-items:center;justify-content:center;
+    position:relative}
+  .ab-slide img{position:absolute;inset:0;
+    width:100%;height:100%;object-fit:cover}
+  .ab-ph{font-size:13px;color:#9A8F80;
+    letter-spacing:0.1em;z-index:1}
+  .ab-btn{position:absolute;top:50%;
+    transform:translateY(-50%);z-index:10;
+    background:rgba(244,241,234,.5);
+    border:1px solid rgba(220,212,198,.7);
+    width:40px;height:40px;
+    display:flex;align-items:center;
+    justify-content:center;font-size:16px;
+    color:#1F1B16;cursor:pointer;
+    opacity:.45;
+    transition:opacity .2s, background .2s}
+  .ab-slider:hover .ab-btn{opacity:1}
+  .ab-btn:hover{background:rgba(244,241,234,.92)}
+  .ab-prev{left:14px}
+  .ab-next{right:14px}
+  .ab-dots{position:absolute;bottom:16px;
+    left:50%;transform:translateX(-50%);
+    display:flex;gap:7px;z-index:10}
+  .ab-dot{width:7px;height:7px;border-radius:50%;
+    background:rgba(31,27,22,.25);cursor:pointer;
+    transition:background .2s}
+  .ab-dot.active{background:#1F1B16}
+  .ab-tag{position:absolute;bottom:16px;right:16px;
+    z-index:10;background:rgba(244,241,234,.82);
+    padding:6px 12px;font-size:12px;
+    letter-spacing:0.1em;color:#A2543A}
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
@@ -123,7 +160,27 @@
       <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0; text-wrap:pretty">자재는 국내 정품 인테리어 필름만 사용하며 견적서에 제품명과 부위별 수량을 적습니다. 시공 후 2년간 들뜸 · 박리 · 이음선 벌어짐은 무상으로 보수합니다.</p>
     </div>
     <div style="position:relative; min-height:520px; border-left:1px solid #DCD4C6">
-      <image-slot id="ab-1" shape="rect" fit="cover" placeholder="시공 현장 사진 — 목공 또는 타일 작업"></image-slot>
+      <div class="ab-slider" id="ab-slider">
+        <div class="ab-track" id="ab-track">
+          <div class="ab-slide">
+            <span class="ab-ph">시공 현장 — 목공 작업</span>
+            <div class="ab-tag">목공</div>
+          </div>
+          <div class="ab-slide">
+            <span class="ab-ph">시공 현장 — 타일 작업</span>
+            <div class="ab-tag">타일</div>
+          </div>
+          <div class="ab-slide">
+            <span class="ab-ph">시공 현장 — 필름 작업</span>
+            <div class="ab-tag">필름</div>
+          </div>
+        </div>
+        <button class="ab-btn ab-prev"
+          id="ab-prev" aria-label="이전">◀</button>
+        <button class="ab-btn ab-next"
+          id="ab-next" aria-label="다음">▶</button>
+        <div class="ab-dots" id="ab-dots"></div>
+      </div>
     </div>
   </section>
 
@@ -196,6 +253,45 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
+  componentDidMount() {
+    const track = document.getElementById('ab-track');
+    if (!track) return;
+    const slides = Array.from(
+      track.querySelectorAll('.ab-slide'));
+    if (!slides.length) return;
+    const dotsW = document.getElementById('ab-dots');
+    const prev  = document.getElementById('ab-prev');
+    const next  = document.getElementById('ab-next');
+    let cur = 0, timer;
+    dotsW.innerHTML = '';
+    slides.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'ab-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => go(i));
+      dotsW.appendChild(d);
+    });
+    function setDot(n) {
+      dotsW.querySelectorAll('.ab-dot')
+        .forEach((d, i) =>
+          d.classList.toggle('active', i === n));
+    }
+    function go(n) {
+      cur = (n + slides.length) % slides.length;
+      track.style.transform =
+        'translateX(-' + cur + '00%)';
+      setDot(cur);
+      resetTimer();
+    }
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => go(cur + 1), 5000);
+    }
+    if (prev) prev.addEventListener('click',
+      () => go(cur - 1));
+    if (next) next.addEventListener('click',
+      () => go(cur + 1));
+    resetTimer();
+  }
   renderVals() {
     return {
       stats: [
