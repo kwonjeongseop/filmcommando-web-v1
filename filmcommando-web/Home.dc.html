@@ -100,6 +100,13 @@
       height:180px !important;
     }
   }
+  @media (min-width:769px) and (max-width:900px) {
+    .fc-home-hero-bottom {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 20px !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
@@ -118,10 +125,10 @@
           철거 · 창호 · 설비 · 목공 · 타일 · 필름 · 도배 · 바닥 · 가구까지 열두 공정을 자사 팀이 직접 시공합니다. 공정을 쪼개 넘기지 않기 때문에 일정과 책임이 한 곳에 남습니다.
         </p>
       </div>
-      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; margin-top:60px">
+      <div class="fc-home-hero-bottom" style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; margin-top:60px">
         <div style="display:flex; gap:12px">
           <a href="./Quote.dc.html" style="background:#1F1B16; color:#F4F1EA; font-size:15px; padding:19px 32px; letter-spacing:0.02em; white-space:nowrap" style-hover="background:#A2543A">무료 방문실측 신청</a>
-          <a href="./Estimator.dc.html" style="border:1px solid #C9C0B0; font-size:15px; padding:19px 28px" style-hover="border-color:#1F1B16">견적 계산기</a>
+          <a href="./Estimator.dc.html" style="border:1px solid #C9C0B0; font-size:15px; padding:19px 28px; white-space:nowrap" style-hover="border-color:#1F1B16">견적 계산기</a>
         </div>
         <div style="text-align:right">
           <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:7px">전예 · 부분 · 상가</div>
