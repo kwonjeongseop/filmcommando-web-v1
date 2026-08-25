@@ -60,7 +60,7 @@
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1400px) {
     .fc-top-bar { display: none !important; }
     .fc-nav-toggle { display: flex !important; }
     .fc-nav-desktop { display: none !important; }
@@ -82,8 +82,6 @@
     }
     .fc-logo-sub { display: none !important; }
   }
-  .fc-nav-hidden { display:none !important; }
-  .fc-nav-visible { display:flex !important; }
 </style>
 </helmet>
 <header style="font-family:'Gowun Dodum',sans-serif; background:#F4F1EA; color:#1F1B16">
@@ -162,25 +160,6 @@ class Component extends DCLogic {
         mobileNav.classList.toggle('open');
       });
     }
-    this.applyNav();
-    this._onResize = () => this.applyNav();
-    window.addEventListener('resize', this._onResize);
-  }
-  applyNav() {
-    var w = document.documentElement.clientWidth;
-    var toggle = document.getElementById('fc-toggle');
-    var nav = document.getElementById('fc-desktop-nav');
-    if (!toggle || !nav) return;
-    if (w < 1300) {
-      nav.classList.add('fc-nav-hidden');
-      toggle.classList.add('fc-nav-visible');
-    } else if (w >= 1340) {
-      nav.classList.remove('fc-nav-hidden');
-      toggle.classList.remove('fc-nav-visible');
-    }
-  }
-  componentWillUnmount() {
-    if (this._onResize) window.removeEventListener('resize', this._onResize);
   }
   handleLogout(e) {
     if (e && e.preventDefault) e.preventDefault();
