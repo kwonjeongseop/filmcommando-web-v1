@@ -32,8 +32,9 @@
   var current = nameOf(location.pathname);
 
   /* ── iframe 오버레이 관리 (단일 인스턴스) ── */
-  var preloadFrame = null;
-  var preloadHref  = null;
+  var preloadFrame     = null;
+  var preloadHref      = null;
+  var isTransitioning  = false;
 
   function ensureOverlayStyle() {
     if (document.getElementById("pt-style")) return;
@@ -55,6 +56,7 @@
   }
 
   function getOrCreateIframe(href) {
+    if (isTransitioning) return preloadFrame;
     if (preloadFrame && preloadHref === href) return preloadFrame;
     if (preloadFrame && preloadFrame.parentNode) {
       preloadFrame.parentNode.removeChild(preloadFrame);
@@ -72,6 +74,9 @@
       "transform:translateX(100%);",
       "background:#F4F1EA;",
     ].join("");
+    f.addEventListener("load", function() {
+      f.dataset.loaded = "1";
+    });
     document.body.appendChild(f);
     preloadFrame = f;
     preloadHref  = href;
@@ -90,6 +95,7 @@
 
   /* ── 전환 실행 ── */
   function runTransition(href, direction) {
+    isTransitioning = true;
     var frame = getOrCreateIframe(href);
 
     var startX = direction === "forward"
@@ -193,10 +199,20 @@
       location.href = href;
       return;
     }
-    runTransition(href, direction);
+    var frame = getOrCreateIframe(href);
+    if (frame && !frame.dataset.loaded) {
+      frame.addEventListener("load", function onLoad() {
+        frame.removeEventListener("load", onLoad);
+        frame.dataset.loaded = "1";
+        runTransition(href, direction);
+      });
+    } else {
+      runTransition(href, direction);
+    }
   }, true);
 
   document.addEventListener("mouseover", function (e) {
+    if (isTransitioning) return;
     var a = e.target.closest("a[href]");
     if (!a) return;
     onLinkEnter({ currentTarget: a });
