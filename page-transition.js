@@ -125,12 +125,29 @@
         ? "translateX(-30%)" : "translateX(30%)";
       document.body.style.opacity    = "0.4";
 
-      setTimeout(function () {
+      /* transitionend 감지 후 네비게이션
+         안전망: DUR+400ms 폴백 */
+      var navigated = false;
+      function doNavigate() {
+        if (navigated) return;
+        navigated = true;
         try {
           sessionStorage.setItem(DIR_KEY, direction);
         } catch (e) {}
         location.href = href;
-      }, DUR + 250);
+      }
+      document.body.addEventListener(
+        'transitionend',
+        function onTransEnd(e) {
+          if (e.target !== document.body) return;
+          if (e.propertyName !== 'opacity' &&
+              e.propertyName !== 'transform') return;
+          document.body.removeEventListener(
+            'transitionend', onTransEnd);
+          doNavigate();
+        }
+      );
+      setTimeout(doNavigate, DUR + 400);
     });
   }
 
