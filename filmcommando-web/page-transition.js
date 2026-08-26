@@ -182,6 +182,7 @@
       var user = null;
       try { user = localStorage.getItem("fc_user"); } catch(_) {}
       if (!user) {
+        e.preventDefault();
         location.href = "./Login.dc.html";
         return;
       }
