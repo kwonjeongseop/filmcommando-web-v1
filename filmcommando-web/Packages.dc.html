@@ -62,6 +62,25 @@
       grid-template-columns:1fr !important;
     }
   }
+
+  @media (min-width:769px) and (max-width:1100px) {
+    .fc-pkg-hero {
+      grid-template-columns: minmax(0,1fr) !important;
+      gap: 24px !important;
+    }
+    .fc-pkg-hero > div:first-child {
+      display: none !important;
+    }
+  }
+  @media (min-width:1101px) and (max-width:1300px) {
+    .fc-pkg-hero {
+      grid-template-columns: minmax(0,1fr) minmax(0,320px) !important;
+      gap: 40px !important;
+    }
+    .fc-pkg-hero > div:first-child {
+      display: none !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
