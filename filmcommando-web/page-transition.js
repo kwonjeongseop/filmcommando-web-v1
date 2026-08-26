@@ -24,26 +24,25 @@
       sessionStorage.removeItem(DIR_KEY);
     } catch (readErr) {}
 
-    if (dir === "forward" || dir === "back") {
+    if (dir && !reduced) {
+      var b = document.body;
       var startX = dir === "forward" ? "50%" : "-50%";
-      document.body.style.transition = "none";
-      document.body.style.transform = "translateX(" + startX + ")";
-      document.body.style.opacity = "0.3";
-
+      b.style.willChange = "transform";
+      b.style.transform = "translateX(" + startX + ")";
+      b.style.opacity = "0.3";
       requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          document.body.style.transition =
-            "transform " + DUR + "ms " + EASE + ", opacity " + DUR + "ms " + EASE;
-          document.body.style.transform = "translateX(0)";
-          document.body.style.opacity = "1";
-        });
+        b.style.transition =
+          "transform " + DUR + "ms " + EASE +
+          ", opacity " + Math.round(DUR * 0.7) + "ms linear";
+        b.style.transform = "translateX(0)";
+        b.style.opacity = "1";
+        setTimeout(function () {
+          b.style.transition = "";
+          b.style.transform = "";
+          b.style.opacity = "";
+          b.style.willChange = "";
+        }, DUR + 300);
       });
-
-      setTimeout(function () {
-        document.body.style.transition = "";
-        document.body.style.transform = "";
-        document.body.style.opacity = "";
-      }, DUR + 60);
     }
   }
 
