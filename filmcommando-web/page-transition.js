@@ -142,6 +142,20 @@
       sessionStorage.removeItem(DIR_KEY);
     } catch (e) {}
 
+    (function() {
+      var s = document.getElementById('pt-slide-kill');
+      if (!s) {
+        s = document.createElement('style');
+        s.id = 'pt-slide-kill';
+        s.textContent =
+          '.fc-slide-in{' +
+            'animation:none!important;' +
+            'opacity:1!important;' +
+          '}';
+        document.head.appendChild(s);
+      }
+    })();
+
     if (dir && !reduced) {
       var b = document.body;
       var startX = dir === "forward"
