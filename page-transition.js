@@ -130,7 +130,7 @@
           sessionStorage.setItem(DIR_KEY, direction);
         } catch (e) {}
         location.href = href;
-      }, DUR + 80);
+      }, DUR + 250);
     });
   }
 
@@ -147,9 +147,10 @@
       var startX = dir === "forward"
         ? "translateX(30%)" : "translateX(-30%)";
       b.style.willChange = "transform";
+      b.style.opacity    = "0";
       b.style.transform  = startX;
-      b.style.opacity    = "0.4";
       requestAnimationFrame(function () {
+        b.style.opacity  = "0.4";
         b.style.transition =
           "transform " + DUR + "ms " + EASE +
           ", opacity " + Math.round(DUR*0.8) + "ms " + EASE;
@@ -179,7 +180,10 @@
       if (u.origin !== location.origin) return;
       var to = nameOf(u.pathname);
       if (ORDER.indexOf(to) < 0) return;
-      if (u.pathname === location.pathname) return;
+      if (u.pathname === location.pathname) {
+        e.preventDefault();
+        return;
+      }
     } catch (_) { return; }
 
     var direction = dirOf(current, to);
