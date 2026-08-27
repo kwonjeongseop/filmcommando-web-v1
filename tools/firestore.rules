@@ -89,7 +89,13 @@ service cloud.firestore {
         && request.resource.data.content.size() <= 2000
         && request.resource.data.createdAt == request.time
         && request.resource.data.answer == null
-        && request.resource.data.answeredAt == null;
+        && request.resource.data.answeredAt == null
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() >= 2
+        && request.resource.data.nickname.size() <= 20
+        && !(request.resource.data.nickname in [
+             '관리자','admin','운영자','필름특공대',
+             'ADMIN','Administrator']);
 
       // 본인 글 수정: title/content/updatedAt만
       // 관리자 답변: answer/answeredAt/answeredBy만

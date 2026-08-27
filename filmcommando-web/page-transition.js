@@ -6,7 +6,7 @@
     "Home","About","Service","Packages","Cost",
     "Schedule","Cases","CaseDetail","Materials",
     "Review","Booking","Quote","Estimator","Process",
-    "Notice","Faq","Resources","Partner",
+    "Board","Notice","Faq","Resources","Partner",
     "Login","Admin"
   ];
   var DUR     = 500;
