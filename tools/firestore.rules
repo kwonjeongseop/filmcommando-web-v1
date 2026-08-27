@@ -54,13 +54,30 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // 시공 사례 — 누구나 읽기,
-    //              관리자만 쓰기
+    // 시공 사례 — 전체 읽기, 관리자만 쓰기
     match /cases/{docId} {
       allow read: if true;
-      allow write:
-        if request.auth != null
-        && request.auth.token.admin == true;
+
+      // 사례 등록: 관리자 + 필수 필드 검증
+      allow create: if isAdmin()
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 100
+        && request.resource.data.scope is string
+        && request.resource.data.visible is bool
+        && request.resource.data.createdAt == request.time;
+
+      // 사례 수정: 관리자만
+      allow update: if isAdmin();
+
+      // 사례 삭제: 관리자만
+      allow delete: if isAdmin();
+    }
+
+    // 통계 문서 — 관리자만 읽기/쓰기
+    match /stats/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     // 패키지 — 누구나 읽기,
