@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>필름특공대 — 인테리어 Q&amp;A</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@800&display=swap">
+  <style>
+  @media (max-width:768px) {
+    .bd-row { grid-template-columns:70px 1fr 80px !important; }
+    .bd-date { display:none !important; }
+    .bd-wrap { padding:32px 16px 60px !important; }
+  }
+  @media (max-width:480px) {
+    .bd-hero h1 { font-size:28px !important; }
+    .bd-row { grid-template-columns:60px 1fr !important; }
+    .bd-nick { display:none !important; }
+  }
+  </style>
+  <script src="./page-transition.js"></script>
+</helmet>
+
+<div style="font-family:'Gowun Dodum',sans-serif;
+  color:#1F1B16; background:#F4F1EA; min-width:580px">
+  <dc-import name="SiteHeader" hint-size="100%,113px">
+  </dc-import>
+
+  <div class="bd-wrap" style="max-width:900px;
+    margin:0 auto; padding:56px 24px 80px">
+
+    <!-- 히어로 -->
+    <div class="bd-hero" style="padding:56px 0 40px;
+      border-bottom:1px solid #DCD4C6; margin-bottom:40px">
+      <div style="font-size:12px; letter-spacing:0.2em;
+        color:#9A8F80; margin-bottom:16px">인테리어 Q&amp;A</div>
+      <h1 class="bd-hero" style="font-family:'Nanum Myeongjo',serif;
+        font-weight:800; font-size:40px; line-height:1.3">
+        궁금한 점을<br>물어보세요</h1>
+      <p style="font-size:15px; color:#5D5346;
+        margin-top:16px; line-height:1.8">
+        인테리어·리모델링에 관한 질문을 남겨주시면<br>
+        전문가가 직접 답변드립니다.</p>
+    </div>
+
+    <!-- 목록 뷰 -->
+    <div id="bd-list-wrap">
+      <div style="display:flex; justify-content:flex-end;
+        margin-bottom:16px">
+        <button id="bd-write-btn" style="display:none;
+          background:#1F1B16; color:#F4F1EA; border:none;
+          padding:10px 20px; font-size:14px; cursor:pointer;
+          font-family:inherit">글쓰기</button>
+      </div>
+      <div id="bd-list" style="border-top:1px solid #DCD4C6">
+      </div>
+    </div>
+
+    <!-- 상세 뷰 -->
+    <div id="bd-detail" style="display:none"></div>
+
+    <!-- 글쓰기/수정 뷰 -->
+    <div id="bd-write" style="display:none"></div>
+  </div>
+
+  <dc-import name="SiteFooter"></dc-import>
+</div>
+
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+
+<script type="module">
+import { getCachedUser } from './auth.js';
+import { db } from './firebase-config.js';
+import {
+  collection, addDoc, updateDoc, deleteDoc,
+  doc, query, orderBy, limit,
+  onSnapshot, serverTimestamp, getDoc
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+/* ── 상수 ── */
+const COL        = 'board';
+const PAGE_SIZE  = 20;
+const MAX_TITLE  = 100;
+const MAX_CONT   = 2000;
+const MAX_NICK   = 20;
+const MIN_NICK   = 2;
+const BANNED     = ['관리자','admin','운영자',
+                    '필름특공대','ADMIN','Administrator'];
+
+/* ── 상태 ── */
+let curPost   = null;
+let unsub     = null;
+
+/* ── 유틸 ── */
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+function fmtDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('ko-KR',
+    {year:'numeric',month:'2-digit',day:'2-digit'});
+}
+function isAdmin() {
+  try {
+    return localStorage.getItem('fc_admin') === 'true';
+  } catch(e) { return false; }
+}
+function toggleView(v) {
+  ['bd-list-wrap','bd-detail','bd-write'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const map = {
+    list:'bd-list-wrap', detail:'bd-detail',
+    write:'bd-write',    edit:'bd-write'
+  };
+  const el = document.getElementById(map[v]);
+  if (el) el.style.display = '';
+}
+
+/* ── 목록 렌더링 ── */
+function renderList(posts) {
+  const wrap = document.getElementById('bd-list');
+  if (!wrap) return;
+  if (!posts.length) {
+    wrap.innerHTML =
+      '<p style="color:#9A8F80;font-size:14px;' +
+      'padding:40px 0;text-align:center">' +
+      '등록된 글이 없습니다.</p>';
+    return;
+  }
+  let html = '';
+  posts.forEach(p => {
+    html +=
+      '<div class="bd-row" data-id="' + esc(p.id) + '"' +
+      ' style="display:grid;grid-template-columns:80px 1fr 100px 90px;' +
+      'gap:12px;align-items:center;padding:14px 0;' +
+      'border-bottom:1px solid #ECDDD0;cursor:pointer">' +
+      '<span style="font-size:11px;padding:2px 8px;' +
+      'border-radius:2px;text-align:center;' +
+      (p.answer
+        ? 'background:#E8F4EC;color:#2e7d52'
+        : 'background:#F4EAE0;color:#9A5C3A') + '">' +
+      (p.answer ? '답변완료' : '답변대기') + '</span>' +
+      '<span style="font-size:14px;overflow:hidden;' +
+      'text-overflow:ellipsis;white-space:nowrap">' +
+      esc(p.title) + '</span>' +
+      '<span class="bd-nick" style="font-size:13px;' +
+      'color:#7A6F64">' + esc(p.nickname) + '</span>' +
+      '<span class="bd-date" style="font-size:12px;' +
+      'color:#A29589">' + fmtDate(p.createdAt) + '</span>' +
+      '</div>';
+  });
+  wrap.innerHTML = html;
+  wrap.querySelectorAll('.bd-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const p = posts.find(x => x.id === row.dataset.id);
+      if (p) showDetail(p);
+    });
+  });
+}
+
+/* ── 상세 렌더링 ── */
+function showDetail(post) {
+  curPost = post;
+  const user   = getCachedUser();
+  const isOwn  = user && user.uid === post.uid;
+  const admin  = isAdmin();
+  const el     = document.getElementById('bd-detail');
+  if (!el) return;
+
+  let html =
+    '<button id="bd-back" style="background:none;border:none;' +
+    'color:#9A8F80;cursor:pointer;font-size:13px;' +
+    'padding:0 0 20px;font-family:inherit">← 목록으로</button>' +
+    '<div style="background:#fff;border:1px solid #DCD4C6;' +
+    'padding:32px;margin-bottom:24px">' +
+    '<div style="display:flex;align-items:center;gap:8px;' +
+    'font-size:13px;color:#7A6F64;border-bottom:1px solid #EEE8E0;' +
+    'padding-bottom:12px;margin-bottom:16px">' +
+    '<span>' + esc(post.nickname) + '</span>' +
+    '<span>' + fmtDate(post.createdAt) + '</span>';
+  if (isOwn) {
+    html +=
+      '<button id="bd-edit-btn" style="background:transparent;' +
+      'border:1px solid #C9C0B0;padding:4px 10px;font-size:12px;' +
+      'cursor:pointer;font-family:inherit;margin-left:8px">수정</button>' +
+      '<button id="bd-del-btn" style="background:transparent;' +
+      'border:1px solid #c0392b;color:#c0392b;padding:4px 10px;' +
+      'font-size:12px;cursor:pointer;font-family:inherit;' +
+      'margin-left:4px">삭제</button>';
+  }
+  html +=
+    '</div>' +
+    '<h2 style="font-size:22px;font-weight:700;margin-bottom:20px">' +
+    esc(post.title) + '</h2>' +
+    '<div style="font-size:15px;line-height:1.9;' +
+    'white-space:pre-wrap;word-break:break-word">' +
+    esc(post.content) + '</div></div>';
+
+  if (post.answer) {
+    html +=
+      '<div style="background:#F4F1EA;border:1px solid #DCD4C6;' +
+      'border-left:3px solid #1F1B16;padding:24px;margin-bottom:24px">' +
+      '<div style="font-size:12px;letter-spacing:0.15em;' +
+      'color:#9A8F80;margin-bottom:12px">관리자 답변</div>' +
+      '<div style="font-size:15px;line-height:1.9;' +
+      'white-space:pre-wrap">' + esc(post.answer) + '</div>' +
+      '<div style="font-size:12px;color:#A29589;margin-top:8px">' +
+      fmtDate(post.answeredAt) + '</div></div>';
+  } else if (admin) {
+    html +=
+      '<div>' +
+      '<textarea id="bd-ans-input"' +
+      ' style="width:100%;border:1px solid #DCD4C6;' +
+      'padding:10px 14px;font-size:14px;font-family:inherit;' +
+      'background:#fff;min-height:120px;resize:vertical;' +
+      'margin-bottom:8px" placeholder="답변 입력 (최대 2000자)"' +
+      ' maxlength="2000"></textarea>' +
+      '<button id="bd-ans-btn"' +
+      ' style="background:#1F1B16;color:#F4F1EA;border:none;' +
+      'padding:10px 20px;font-size:14px;cursor:pointer;' +
+      'font-family:inherit">답변 등록</button></div>';
+  } else {
+    html +=
+      '<p style="color:#9A8F80;font-size:14px">' +
+      '아직 답변이 없습니다.</p>';
+  }
+
+  el.innerHTML = html;
+  toggleView('detail');
+
+  document.getElementById('bd-back')
+    ?.addEventListener('click', showList);
+  document.getElementById('bd-edit-btn')
+    ?.addEventListener('click', () => showWrite(post));
+  document.getElementById('bd-del-btn')
+    ?.addEventListener('click', () => delPost(post.id));
+  document.getElementById('bd-ans-btn')
+    ?.addEventListener('click', () => submitAns(post.id));
+}
+
+/* ── 목록 표시 ── */
+function showList() {
+  curPost = null;
+  toggleView('list');
+}
+
+/* ── 글쓰기/수정 폼 ── */
+function showWrite(post) {
+  const el = document.getElementById('bd-write');
+  if (!el) return;
+  let html =
+    '<button id="bd-wr-back"' +
+    ' style="background:none;border:none;color:#9A8F80;' +
+    'cursor:pointer;font-size:13px;padding:0 0 20px;' +
+    'font-family:inherit">← 목록으로</button>' +
+    '<h2 style="font-size:20px;font-weight:700;margin-bottom:20px">' +
+    (post ? '글 수정' : '글쓰기') + '</h2>';
+  if (!post) {
+    html +=
+      '<input id="bd-nick" style="width:100%;border:1px solid #DCD4C6;' +
+      'padding:10px 14px;font-size:14px;font-family:inherit;' +
+      'background:#fff;margin-bottom:12px" ' +
+      'placeholder="닉네임 (2~20자, 특수문자 제외)" maxlength="20">';
+  }
+  html +=
+    '<input id="bd-title" style="width:100%;border:1px solid #DCD4C6;' +
+    'padding:10px 14px;font-size:14px;font-family:inherit;' +
+    'background:#fff;margin-bottom:12px" ' +
+    'placeholder="제목 (최대 100자)" maxlength="100"' +
+    ' value="' + (post ? esc(post.title) : '') + '">' +
+    '<textarea id="bd-cont"' +
+    ' style="width:100%;border:1px solid #DCD4C6;' +
+    'padding:10px 14px;font-size:14px;font-family:inherit;' +
+    'background:#fff;min-height:160px;resize:vertical;' +
+    'margin-bottom:12px" placeholder="내용 (최대 2000자)"' +
+    ' maxlength="2000">' + (post ? esc(post.content) : '') + '</textarea>' +
+    '<div id="bd-err" style="color:#c0392b;font-size:13px;' +
+    'margin-bottom:8px"></div>' +
+    '<button id="bd-submit"' +
+    ' style="background:#1F1B16;color:#F4F1EA;border:none;' +
+    'padding:10px 20px;font-size:14px;cursor:pointer;' +
+    'font-family:inherit">' + (post ? '수정 완료' : '등록') + '</button>';
+  el.innerHTML = html;
+  toggleView('write');
+
+  document.getElementById('bd-wr-back')
+    ?.addEventListener('click', post ? () => showDetail(curPost) : showList);
+  document.getElementById('bd-submit')
+    ?.addEventListener('click', () => submitPost(post));
+}
+
+/* ── 글 등록/수정 ── */
+async function submitPost(existing) {
+  const user = getCachedUser();
+  if (!user) { alert('로그인이 필요합니다.'); return; }
+  const err   = document.getElementById('bd-err');
+  const title = document.getElementById('bd-title')?.value.trim();
+  const cont  = document.getElementById('bd-cont')?.value.trim();
+  if (!title || !cont) {
+    if (err) err.textContent = '제목과 내용을 입력해 주세요.';
+    return;
+  }
+  if (title.length > MAX_TITLE) {
+    if (err) err.textContent = '제목은 100자 이하입니다.'; return;
+  }
+  if (cont.length > MAX_CONT) {
+    if (err) err.textContent = '내용은 2000자 이하입니다.'; return;
+  }
+  try {
+    if (existing) {
+      await updateDoc(doc(db, COL, existing.id),
+        { title, content:cont, updatedAt:serverTimestamp() });
+      showList();
+    } else {
+      const nick = document.getElementById('bd-nick')?.value.trim();
+      if (!nick || nick.length < MIN_NICK || nick.length > MAX_NICK) {
+        if (err) err.textContent =
+          '닉네임은 ' + MIN_NICK + '~' + MAX_NICK + '자입니다.';
+        return;
+      }
+      if (BANNED.includes(nick)) {
+        if (err) err.textContent = '사용할 수 없는 닉네임입니다.';
+        return;
+      }
+      await addDoc(collection(db, COL), {
+        uid:user.uid, nickname:nick,
+        title, content:cont,
+        createdAt:serverTimestamp(),
+        answer:null, answeredAt:null, answeredBy:null,
+      });
+      showList();
+    }
+  } catch(e) {
+    if (err) err.textContent = '오류: ' + e.message;
+  }
+}
+
+/* ── 삭제 ── */
+async function delPost(id) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  try {
+    await deleteDoc(doc(db, COL, id));
+    showList();
+  } catch(e) { alert('삭제 실패: ' + e.message); }
+}
+
+/* ── 관리자 답변 ── */
+async function submitAns(postId) {
+  const user = getCachedUser();
+  if (!isAdmin(user)) return;
+  const ans = document.getElementById('bd-ans-input')?.value.trim();
+  if (!ans) { alert('답변을 입력해 주세요.'); return; }
+  if (ans.length > 2000) {
+    alert('답변은 2000자 이하입니다.'); return;
+  }
+  try {
+    await updateDoc(doc(db, COL, postId), {
+      answer:ans,
+      answeredAt:serverTimestamp(),
+      answeredBy:user.uid,
+    });
+    const snap = await getDoc(doc(db, COL, postId));
+    if (snap.exists()) showDetail({id:snap.id,...snap.data()});
+  } catch(e) { alert('답변 실패: ' + e.message); }
+}
+
+/* ── 실시간 목록 구독 ── */
+function subscribePosts() {
+  if (unsub) unsub();
+  const q = query(
+    collection(db, COL),
+    orderBy('createdAt','desc'),
+    limit(PAGE_SIZE)
+  );
+  unsub = onSnapshot(q, snap => {
+    const posts = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderList(posts);
+  });
+}
+
+/* ── 초기화 ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const user = getCachedUser();
+  const btn  = document.getElementById('bd-write-btn');
+  if (btn) {
+    btn.style.display = user ? '' : 'none';
+    btn.addEventListener('click', () => showWrite(null));
+  }
+  subscribePosts();
+  showList();
+});
+</script>
+
+</x-dc>
+</body>
+</html>
