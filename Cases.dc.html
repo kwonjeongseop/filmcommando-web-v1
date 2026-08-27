@@ -59,6 +59,25 @@
       height:180px !important;
     }
   }
+
+  @media (min-width:769px) and (max-width:1100px) {
+    .fc-cases-hero {
+      grid-template-columns: minmax(0,1fr) !important;
+      gap: 24px !important;
+    }
+    .fc-cases-hero > div:first-child {
+      display: none !important;
+    }
+  }
+  @media (min-width:1101px) and (max-width:1300px) {
+    .fc-cases-hero {
+      grid-template-columns: minmax(0,1fr) minmax(0,320px) !important;
+      gap: 40px !important;
+    }
+    .fc-cases-hero > div:first-child {
+      display: none !important;
+    }
+  }
 </style>
 <script src="./page-transition.js"></script>
 </helmet>
