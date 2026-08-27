@@ -2,6 +2,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.admin == true;
+    }
+
     // 예약 — 로그인 사용자 작성,
     //         관리자만 전체 읽기
     match /bookings/{docId} {
@@ -24,9 +29,29 @@ service cloud.firestore {
     //              관리자만 쓰기
     match /reviews/{docId} {
       allow read: if true;
-      allow write:
-        if request.auth != null
-        && request.auth.token.admin == true;
+
+      // 로그인 사용자 후기 작성
+      // - approved 반드시 false (관리자 승인 전 비공개)
+      // - uid는 본인 uid와 일치
+      // - 내용 길이 제한 (XSS 방어)
+      allow create: if request.auth != null
+        && request.resource.data.uid
+           == request.auth.uid
+        && request.resource.data.approved == false
+        && request.resource.data.content is string
+        && request.resource.data.content.size() >= 1
+        && request.resource.data.content.size() <= 1000
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.createdAt == request.time;
+
+      // 관리자: approved 토글만 허용 (내용 수정 불가)
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data)
+           .affectedKeys().hasOnly(["approved"]);
+
+      allow delete: if isAdmin();
     }
 
     // 시공 사례 — 누구나 읽기,
@@ -48,6 +73,49 @@ service cloud.firestore {
     }
 
     // 사용자 — 본인 또는 관리자 읽기, 쓰기는 본인만
+    // ── 게시판 ─────────────────────────────────
+    match /board/{postId} {
+      allow read: if true;
+
+      // 글 작성: 로그인 사용자 + 필드 검증
+      allow create: if request.auth != null
+        && request.resource.data.uid
+           == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 1
+        && request.resource.data.title.size() <= 100
+        && request.resource.data.content is string
+        && request.resource.data.content.size() >= 1
+        && request.resource.data.content.size() <= 2000
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.answer == null
+        && request.resource.data.answeredAt == null;
+
+      // 본인 글 수정: title/content/updatedAt만
+      // 관리자 답변: answer/answeredAt/answeredBy만
+      allow update: if (
+          request.auth != null
+          && request.auth.uid == resource.data.uid
+          && request.resource.data.diff(resource.data)
+             .affectedKeys()
+             .hasOnly(["title","content","updatedAt"])
+          && request.resource.data.title.size() <= 100
+          && request.resource.data.content.size() <= 2000
+        ) || (
+          isAdmin()
+          && request.resource.data.diff(resource.data)
+             .affectedKeys()
+             .hasOnly(["answer","answeredAt","answeredBy"])
+          && request.resource.data.answer is string
+          && request.resource.data.answer.size() <= 2000
+        );
+
+      // 삭제: 본인 또는 관리자
+      allow delete: if request.auth != null
+        && (request.auth.uid == resource.data.uid
+            || isAdmin());
+    }
+
     match /users/{userId} {
       allow read:
         if request.auth != null
