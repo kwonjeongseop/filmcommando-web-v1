@@ -124,33 +124,60 @@
       </div>
     </div>
     <div>
-      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="6">
-        <div class="fc-review-card" style="display:grid; grid-template-columns:minmax(0,1fr) 200px; gap:48px; align-items:start; padding:38px 0; border-top:1px solid #DCD4C6">
-          <div>
-            <p style="font-family:'Nanum Myeongjo',serif; font-size:20px; line-height:1.9; letter-spacing:-0.02em; margin:0 0 18px; text-wrap:pretty">{{ r.body }}</p>
-            <div style="display:flex; gap:8px; flex-wrap:wrap">
-              <sc-for list="{{ r.tags }}" as="t" hint-placeholder-count="2">
-                <span style="border:1px solid #DCD4C6; color:#8C8071; font-size:12px; padding:6px 11px">{{ t }}</span>
-              </sc-for>
-            </div>
-          </div>
-          <div style="font-size:13px; color:#9A8F80; line-height:1.9; text-align:right">
-            <div style="color:#A2543A; letter-spacing:0.1em; margin-bottom:9px">{{ r.stars }}</div>
-            <div>{{ r.who }}</div>
-            <div>{{ r.date }}</div>
-          </div>
+      <div id="rv-list"></div>
+      <p id="rv-empty" style="display:none;
+        color:#9A8F80; font-size:15px;
+        padding:60px 0; text-align:center">
+        아직 등록된 후기가 없습니다.</p>
+
+      <!-- 후기 작성 폼 (로그인 사용자만) -->
+      <div id="rv-form-wrap" style="display:none;
+        margin-top:48px; padding-top:40px;
+        border-top:2px solid #1F1B16">
+        <h3 style="font-family:'Nanum Myeongjo',serif;
+          font-size:20px; font-weight:700;
+          margin:0 0 24px">후기 작성</h3>
+        <input id="rv-who"
+          style="width:100%; border:1px solid #DCD4C6;
+          padding:10px 14px; font-size:14px;
+          font-family:inherit; background:#fff;
+          margin-bottom:12px"
+          placeholder="지역 · 평형 (예: 강동구 32평)"
+          maxlength="50">
+        <div style="display:flex; gap:8px;
+          margin-bottom:12px; align-items:center">
+          <span style="font-size:14px; color:#5D5346">
+            평점</span>
+          <select id="rv-rating"
+            style="border:1px solid #DCD4C6;
+            padding:8px 12px; font-size:14px;
+            font-family:inherit; background:#fff">
+            <option value="5">★★★★★ 5점</option>
+            <option value="4">★★★★ 4점</option>
+            <option value="3">★★★ 3점</option>
+            <option value="2">★★ 2점</option>
+            <option value="1">★ 1점</option>
+          </select>
         </div>
-      </sc-for>
-      <div style="border-top:1px solid #1F1B16"></div>
-      <div style="padding:44px 0 0; display:flex; justify-content:center; gap:26px; align-items:center">
-        <span style="font-size:14px; color:#B0A595">이전</span>
-        <div style="display:flex; gap:18px; font-size:14px">
-          <span style="color:#1F1B16; border-bottom:1px solid #1F1B16; padding-bottom:3px">1</span>
-          <a href="#" style="color:#8C8071">2</a>
-          <a href="#" style="color:#8C8071">3</a>
-          <a href="#" style="color:#8C8071">4</a>
-        </div>
-        <a href="#" style="font-size:14px; color:#1F1B16">다음</a>
+        <textarea id="rv-content"
+          style="width:100%; border:1px solid #DCD4C6;
+          padding:10px 14px; font-size:14px;
+          font-family:inherit; background:#fff;
+          min-height:120px; resize:vertical;
+          margin-bottom:12px"
+          placeholder="시공 후기를 남겨주세요 (최대 1000자)"
+          maxlength="1000"></textarea>
+        <div id="rv-err"
+          style="color:#c0392b; font-size:13px;
+          margin-bottom:8px"></div>
+        <button id="rv-submit"
+          style="background:#1F1B16; color:#F4F1EA;
+          border:none; padding:10px 24px;
+          font-size:14px; cursor:pointer;
+          font-family:inherit">후기 등록</button>
+        <p style="font-size:12px; color:#9A8F80;
+          margin-top:12px">
+          등록된 후기는 검토 후 게시됩니다.</p>
       </div>
     </div>
   </section>
@@ -177,30 +204,144 @@ class Component extends DCLogic {
   renderVals() {
     return {
       dist: [
-        { k: "5점", w: "89%", v: "278" },
-        { k: "4점", w: "8%", v: "25" },
-        { k: "3점", w: "2%", v: "6" },
-        { k: "2점", w: "1%", v: "2" },
-        { k: "1점", w: "0.4%", v: "1" },
+        { k: "★★★★★", w: "78%", v: "78%" },
+        { k: "★★★★",  w: "14%", v: "14%" },
+        { k: "★★★",   w: "6%",  v: "6%"  },
+        { k: "★★",    w: "1%",  v: "1%"  },
+        { k: "★",     w: "1%",  v: "1%"  },
       ],
       scores: [
-        { v: "4.9", k: "마감 품질" },
-        { v: "4.9", k: "일정 준수" },
-        { v: "4.8", k: "현장 정리" },
+        { k: "일정 준수", v: "4.9" },
+        { k: "소통·친절", v: "4.9" },
+        { k: "마감 품질", v: "4.8" },
       ],
-      filters: ["전체", "전예 리모델링", "부분 시공", "필름 단독", "상가 · 사무실"],
-      reviews: [
-        { body: "도배를 다시 할지 고민했는데 필름으로 하고 훨씬 만족합니다. 아이가 낙서해도 물걸레로 닦입니다.", who: "송파구 아파트 33평", date: "2026.07.18", stars: "★★★★★", tags: ["전예 리모델링", "12공정"] },
-        { body: "실측 오셔서 필요한 부위만 정확히 짚어주셨습니다. 견적도 처음 말씀한 금액 그대로였습니다.", who: "부천 연립 21평", date: "2026.07.09", stars: "★★★★★", tags: ["현관문", "방문"] },
-        { body: "현관문 하나 바꾸는 걸로 집 입구 분위기가 달라졌습니다. 하루 만에 끝났습니다.", who: "일산 아파트 25평", date: "2026.06.28", stars: "★★★★★", tags: ["현관문"] },
-        { body: "주방 상하부장을 교체하려다 필름으로 했습니다. 상판만 그대로 두고도 어색하지 않게 맞춰주셨습니다.", who: "광명 아파트 30평", date: "2026.06.11", stars: "★★★★★", tags: ["주방"] },
-        { body: "아이 둘이 있어서 집을 비울 수 없었는데, 방 하나씩 나눠서 해주셔서 생활에 큰 불편이 없었습니다.", who: "성남 아파트 41평", date: "2026.05.30", stars: "★★★★★", tags: ["벽면", "붙박이장"] },
-        { body: "샷시 얼룩이 계속 신경 쓰였는데 깔끔해졌습니다. 다만 예정보다 반나절 늦어져 4점을 드렸습니다.", who: "인천 다세대 15평", date: "2026.05.12", stars: "★★★★", tags: ["샷시"] },
-      ],
+      filters: ["전체", "전예 리모델링",
+        "부분 시공", "필름 단독", "상가 · 사무실"],
     };
   }
 }
+</script>
 
+<script type="module">
+import { getCachedUser } from './auth.js';
+import { db } from './firebase-config.js';
+import {
+  collection, addDoc, query, where, orderBy,
+  onSnapshot, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || ''; return d.innerHTML;
+}
+function toStars(n) {
+  const num = Math.min(5, Math.max(1, n || 5));
+  return '★'.repeat(num) + '☆'.repeat(5 - num);
+}
+function fmtDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('ko-KR',
+    { year:'numeric', month:'2-digit', day:'2-digit' });
+}
+
+function renderReviews(reviews) {
+  const list  = document.getElementById('rv-list');
+  const empty = document.getElementById('rv-empty');
+  if (!list) return;
+  if (!reviews.length) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = reviews.map(r => {
+    const tags = Array.isArray(r.tags) && r.tags.length
+      ? '<div style="display:flex;gap:8px;' +
+        'flex-wrap:wrap;margin-top:16px">' +
+        r.tags.map(t =>
+          '<span style="border:1px solid #DCD4C6;' +
+          'font-size:12px;padding:4px 10px;' +
+          'color:#8C8071">' + esc(t) + '</span>'
+        ).join('') + '</div>'
+      : '';
+    return '<div class="fc-review-card"' +
+      ' style="display:grid;' +
+      'grid-template-columns:minmax(0,1fr) 200px;' +
+      'gap:48px;align-items:start;' +
+      'padding:38px 0;border-top:1px solid #DCD4C6">' +
+      '<div>' +
+      '<p style="font-size:15px;line-height:1.95;' +
+      'color:#3A3530;margin:0;text-wrap:pretty">' +
+      esc(r.content) + '</p>' +
+      tags + '</div>' +
+      '<div style="font-size:13px;color:#9A8F80;' +
+      'line-height:1.9;text-align:right">' +
+      '<div style="color:#A2543A;font-size:16px;' +
+      'letter-spacing:2px">' +
+      esc(toStars(r.rating)) + '</div>' +
+      '<div>' + esc(r.who || '') + '</div>' +
+      '<div>' + fmtDate(r.createdAt) + '</div>' +
+      '</div></div>';
+  }).join('');
+}
+
+function initForm() {
+  const user = getCachedUser();
+  const wrap = document.getElementById('rv-form-wrap');
+  if (wrap) wrap.style.display = user ? '' : 'none';
+  const btn = document.getElementById('rv-submit');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const u = getCachedUser();
+    if (!u) { alert('로그인이 필요합니다.'); return; }
+    const who     = document.getElementById('rv-who')
+      ?.value.trim();
+    const rating  = parseInt(
+      document.getElementById('rv-rating')?.value || '5');
+    const content = document.getElementById('rv-content')
+      ?.value.trim();
+    const err     = document.getElementById('rv-err');
+    if (!content) {
+      if (err) err.textContent = '후기 내용을 입력해 주세요.';
+      return;
+    }
+    if (content.length > 1000) {
+      if (err) err.textContent = '후기는 1000자 이하입니다.';
+      return;
+    }
+    try {
+      await addDoc(collection(db, 'reviews'), {
+        uid:       u.uid,
+        who:       who || '',
+        content,
+        rating,
+        tags:      [],
+        approved:  false,
+        createdAt: serverTimestamp(),
+      });
+      document.getElementById('rv-who').value     = '';
+      document.getElementById('rv-content').value = '';
+      if (err) err.textContent = '';
+      alert('후기가 등록됐습니다. 검토 후 게시됩니다.');
+    } catch(e) {
+      if (err) err.textContent = '오류: ' + e.message;
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initForm();
+  const q = query(
+    collection(db, 'reviews'),
+    where('approved', '==', true),
+    orderBy('createdAt', 'desc')
+  );
+  onSnapshot(q, snap => {
+    renderReviews(
+      snap.docs.map(d => ({ id:d.id, ...d.data() })));
+  });
+});
 </script>
 </body>
 </html>
