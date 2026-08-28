@@ -358,6 +358,12 @@ window.__cdInitPage = function initPage() {
     renderCase(snap.data());
   });
 };
+/* 양방향 핸드셰이크:
+   모듈 로딩 완료 시점에 마운트 여부 확인 */
+window.__cdModuleDone = true;
+if (window.__cdMountDone) {
+  window.__cdInitPage();
+}
 </script>
 
 </x-dc>
@@ -365,7 +371,8 @@ window.__cdInitPage = function initPage() {
 class Component extends DCLogic {
   renderVals() { return {}; }
   componentDidMount() {
-    if (typeof window.__cdInitPage === 'function') {
+    window.__cdMountDone = true;
+    if (window.__cdModuleDone) {
       window.__cdInitPage();
     }
   }
