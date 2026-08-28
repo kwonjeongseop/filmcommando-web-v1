@@ -234,6 +234,7 @@
       <button type="button" class="admin-tab-btn" data-tab="notices">공지관리</button>
       <button type="button" class="admin-tab-btn" data-tab="resources">자료관리</button>
       <button type="button" class="admin-tab-btn" data-tab="users">회원조회</button>
+      <button type="button" class="admin-tab-btn" data-tab="cases">사례관리</button>
       <button type="button" class="admin-tab-btn" data-tab="backup">백업</button>
     </div>
 
@@ -297,6 +298,126 @@
       </div>
     </div>
 
+    <div class="admin-panel" id="panel-cases">
+      <div class="admin-title">사례 관리</div>
+
+      <!-- 통계 수정 -->
+      <div class="admin-form" style="margin-bottom:24px;
+        padding:20px; background:#F4F1EA;
+        border:1px solid #DCD4C6">
+        <div style="font-size:13px; color:#9A8F80;
+          margin-bottom:12px; letter-spacing:0.1em">
+          통계 수정 (stats/cases)</div>
+        <div style="display:grid;
+          grid-template-columns:repeat(4,1fr); gap:8px;
+          margin-bottom:12px">
+          <input class="admin-input" id="stat-total"
+            placeholder="누적 시공 (예: 4,800세대)">
+          <input class="admin-input" id="stat-avgdays"
+            placeholder="평균 기간 (예: 36일)">
+          <input class="admin-input" id="stat-ontime"
+            placeholder="준공일 준수율 (예: 94%)">
+          <input class="admin-input" id="stat-rating"
+            placeholder="후기 평점 (예: 4.9)">
+        </div>
+        <button class="admin-btn" id="stat-save-btn">
+          통계 저장</button>
+        <span id="stat-msg" style="font-size:13px;
+          color:#2e7d52; margin-left:12px"></span>
+      </div>
+
+      <!-- 사례 등록 폼 -->
+      <div class="admin-form">
+        <div style="font-size:13px; color:#9A8F80;
+          margin-bottom:12px; letter-spacing:0.1em"
+          id="case-form-label">새 사례 등록</div>
+        <input type="hidden" id="case-edit-id">
+        <div style="display:grid;
+          grid-template-columns:1fr 1fr; gap:8px;
+          margin-bottom:8px">
+          <input class="admin-input" id="case-title"
+            placeholder="제목 (예: 강동구 아파트 32평)">
+          <input class="admin-input" id="case-scope"
+            placeholder="범위 (예: 전예 리모델링)">
+          <input class="admin-input" id="case-region"
+            placeholder="지역 (예: 서울 강동·송파)">
+          <input class="admin-input" id="case-date"
+            placeholder="날짜 (예: 2026.07)">
+          <input class="admin-input" id="case-tag"
+            placeholder="태그 (예: 12공정 · 37일)">
+          <input class="admin-input" id="case-meta"
+            placeholder="비용 (예: 5,100만원 · 스탠다드)">
+        </div>
+        <textarea class="admin-input" id="case-body"
+          rows="3" style="width:100%; resize:vertical;
+          margin-bottom:8px"
+          placeholder="본문 요약"></textarea>
+        <div style="display:grid;
+          grid-template-columns:80px 1fr; gap:8px;
+          margin-bottom:8px; align-items:center">
+          <input class="admin-input" id="case-order"
+            type="number" placeholder="순서" value="0">
+          <label style="font-size:14px; cursor:pointer">
+            <input type="checkbox" id="case-visible">
+            공개 (visible)</label>
+        </div>
+        <div style="display:grid;
+          grid-template-columns:1fr 1fr; gap:8px;
+          margin-bottom:12px">
+          <div>
+            <div style="font-size:12px; color:#9A8F80;
+              margin-bottom:4px">시공 전 사진</div>
+            <input type="file" id="case-photo-before"
+              accept="image/*"
+              style="font-size:13px; width:100%">
+            <img id="case-photo-before-preview"
+              style="display:none; width:100%;
+              height:120px; object-fit:cover;
+              margin-top:4px">
+          </div>
+          <div>
+            <div style="font-size:12px; color:#9A8F80;
+              margin-bottom:4px">시공 후 사진</div>
+            <input type="file" id="case-photo-after"
+              accept="image/*"
+              style="font-size:13px; width:100%">
+            <img id="case-photo-after-preview"
+              style="display:none; width:100%;
+              height:120px; object-fit:cover;
+              margin-top:4px">
+          </div>
+        </div>
+        <div style="display:flex; gap:8px">
+          <button class="admin-btn" id="case-save-btn">
+            등록</button>
+          <button class="admin-btn" id="case-cancel-btn"
+            style="display:none; background:#9A8F80">
+            취소</button>
+        </div>
+        <span id="case-form-msg"
+          style="font-size:13px; color:#2e7d52;
+          margin-left:12px"></span>
+      </div>
+
+      <!-- 사례 목록 -->
+      <div id="cases-status"
+        class="loading-msg">불러오는 중...</div>
+      <table class="booking-table" id="cases-table"
+        style="display:none">
+        <thead>
+          <tr>
+            <th>순서</th>
+            <th>제목</th>
+            <th>범위</th>
+            <th>날짜</th>
+            <th>공개</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody id="cases-tbody"></tbody>
+      </table>
+    </div>
+
     <div class="admin-panel" id="panel-backup">
       <div class="admin-title">백업</div>
       <p style="font-size:14px; line-height:1.9; color:#5D5346; max-width:560px; margin:0 0 20px">Firestore 데이터 백업 및 재해복구는 Firebase 콘솔에서 관리합니다. 아래 링크에서 자동 백업 일정 설정과 시점별 복원(Point-in-time recovery)을 확인할 수 있습니다.</p>
@@ -306,7 +427,10 @@
 </div>
 
 <script type="module">
-import { db } from './firebase-config.js';
+import { db, storage } from './firebase-config.js';
+import {
+  ref, uploadBytes, getDownloadURL
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
 import { initAuthObserver } from './auth.js';
 import {
   collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, getDocs, serverTimestamp
@@ -630,6 +754,273 @@ async function loadUsers() {
   }
 }
 
+// ── 사례 관리 ──────────────────────────────────────
+let editingCaseId = null;
+let casePhotoBefore = null;
+let casePhotoAfter  = null;
+
+async function uploadPhoto(file, path) {
+  if (!file) return null;
+  const r = ref(storage, path);
+  await uploadBytes(r, file);
+  return getDownloadURL(r);
+}
+
+function resetCaseForm() {
+  editingCaseId = null;
+  casePhotoBefore = null;
+  casePhotoAfter  = null;
+  ['case-title','case-scope','case-region',
+   'case-date','case-tag','case-meta',
+   'case-body','case-edit-id'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const orderEl = document.getElementById('case-order');
+  if (orderEl) orderEl.value = '0';
+  const visEl = document.getElementById('case-visible');
+  if (visEl) visEl.checked = false;
+  ['case-photo-before','case-photo-after'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['case-photo-before-preview',
+   'case-photo-after-preview'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const label = document.getElementById('case-form-label');
+  if (label) label.textContent = '새 사례 등록';
+  const saveBtn = document.getElementById('case-save-btn');
+  if (saveBtn) saveBtn.textContent = '등록';
+  const cancelBtn = document.getElementById('case-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = 'none';
+  const msg = document.getElementById('case-form-msg');
+  if (msg) msg.textContent = '';
+}
+
+function fillCaseForm(data, id) {
+  editingCaseId = id;
+  document.getElementById('case-edit-id').value = id;
+  document.getElementById('case-title').value =
+    data.title || '';
+  document.getElementById('case-scope').value =
+    data.scope || '';
+  document.getElementById('case-region').value =
+    data.region || '';
+  document.getElementById('case-date').value =
+    data.date || '';
+  document.getElementById('case-tag').value =
+    data.tag || '';
+  document.getElementById('case-meta').value =
+    data.meta || '';
+  document.getElementById('case-body').value =
+    data.body || '';
+  document.getElementById('case-order').value =
+    data.order ?? 0;
+  document.getElementById('case-visible').checked =
+    !!data.visible;
+  if (data.photoBefore) {
+    const img = document.getElementById(
+      'case-photo-before-preview');
+    if (img) { img.src = data.photoBefore;
+      img.style.display = ''; }
+  }
+  if (data.photoAfter) {
+    const img = document.getElementById(
+      'case-photo-after-preview');
+    if (img) { img.src = data.photoAfter;
+      img.style.display = ''; }
+  }
+  const label = document.getElementById('case-form-label');
+  if (label) label.textContent = '사례 수정';
+  const saveBtn = document.getElementById('case-save-btn');
+  if (saveBtn) saveBtn.textContent = '수정 저장';
+  const cancelBtn = document.getElementById('case-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = '';
+}
+
+function buildCaseRow(id, data) {
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td>' + (data.order ?? '-') + '</td>' +
+    '<td>' + (data.title || '') + '</td>' +
+    '<td>' + (data.scope || '') + '</td>' +
+    '<td>' + (data.date  || '') + '</td>' +
+    '<td>' + (data.visible ? '✅' : '❌') + '</td>' +
+    '<td>' +
+    '<button class="admin-btn" style="font-size:12px;' +
+    'padding:4px 10px;margin-right:4px"' +
+    ' data-edit-id="' + id + '">수정</button>' +
+    '<button class="admin-btn" style="font-size:12px;' +
+    'padding:4px 10px;background:#c0392b"' +
+    ' data-del-id="' + id + '">삭제</button>' +
+    '</td>';
+  tr.querySelector('[data-edit-id]')
+    ?.addEventListener('click', () => {
+      fillCaseForm(data, id);
+      document.getElementById('panel-cases')
+        ?.scrollIntoView({ behavior:'smooth' });
+    });
+  tr.querySelector('[data-del-id]')
+    ?.addEventListener('click', async () => {
+      if (!confirm('삭제하시겠습니까?')) return;
+      try {
+        await deleteDoc(doc(db, 'cases', id));
+      } catch(e) { alert('삭제 실패: ' + e.message); }
+    });
+  return tr;
+}
+
+async function saveCaseForm() {
+  const msg = document.getElementById('case-form-msg');
+  const title = document.getElementById('case-title')
+    ?.value.trim();
+  if (!title) {
+    if (msg) msg.textContent = '제목을 입력해 주세요.';
+    return;
+  }
+  const data = {
+    title,
+    scope:   document.getElementById('case-scope')
+      ?.value.trim() || '',
+    region:  document.getElementById('case-region')
+      ?.value.trim() || '',
+    date:    document.getElementById('case-date')
+      ?.value.trim() || '',
+    tag:     document.getElementById('case-tag')
+      ?.value.trim() || '',
+    meta:    document.getElementById('case-meta')
+      ?.value.trim() || '',
+    body:    document.getElementById('case-body')
+      ?.value.trim() || '',
+    order:   parseInt(document.getElementById('case-order')
+      ?.value || '0'),
+    visible: document.getElementById('case-visible')
+      ?.checked || false,
+  };
+  if (msg) msg.textContent = '저장 중...';
+  try {
+    const beforeFile = document.getElementById(
+      'case-photo-before')?.files[0];
+    const afterFile  = document.getElementById(
+      'case-photo-after')?.files[0];
+    if (editingCaseId) {
+      if (beforeFile) {
+        data.photoBefore = await uploadPhoto(
+          beforeFile,
+          'cases/' + editingCaseId + '/before_' +
+          Date.now());
+      }
+      if (afterFile) {
+        data.photoAfter = await uploadPhoto(
+          afterFile,
+          'cases/' + editingCaseId + '/after_' +
+          Date.now());
+      }
+      data.updatedAt = serverTimestamp();
+      await updateDoc(doc(db,'cases',editingCaseId), data);
+      if (msg) msg.textContent = '수정됐습니다.';
+    } else {
+      data.createdAt = serverTimestamp();
+      data.updatedAt = serverTimestamp();
+      const docRef = await addDoc(
+        collection(db,'cases'), data);
+      if (beforeFile) {
+        data.photoBefore = await uploadPhoto(
+          beforeFile,
+          'cases/' + docRef.id + '/before_' + Date.now());
+        await updateDoc(docRef, {
+          photoBefore: data.photoBefore });
+      }
+      if (afterFile) {
+        data.photoAfter = await uploadPhoto(
+          afterFile,
+          'cases/' + docRef.id + '/after_' + Date.now());
+        await updateDoc(docRef, {
+          photoAfter: data.photoAfter });
+      }
+      if (msg) msg.textContent = '등록됐습니다.';
+    }
+    resetCaseForm();
+    setTimeout(() => {
+      if (msg) msg.textContent = '';
+    }, 3000);
+  } catch(e) {
+    if (msg) msg.textContent = '오류: ' + e.message;
+  }
+}
+
+async function saveStats() {
+  const msg = document.getElementById('stat-msg');
+  const data = {
+    total:   document.getElementById('stat-total')
+      ?.value.trim() || '',
+    avgDays: document.getElementById('stat-avgdays')
+      ?.value.trim() || '',
+    onTime:  document.getElementById('stat-ontime')
+      ?.value.trim() || '',
+    rating:  document.getElementById('stat-rating')
+      ?.value.trim() || '',
+  };
+  try {
+    await updateDoc(doc(db,'stats','cases'), data);
+    if (msg) msg.textContent = '저장됐습니다.';
+    setTimeout(() => {
+      if (msg) msg.textContent = '';
+    }, 3000);
+  } catch(e) {
+    if (msg) msg.textContent = '오류: ' + e.message;
+  }
+}
+
+function loadCases() {
+  const statusEl = document.getElementById('cases-status');
+  const tableEl  = document.getElementById('cases-table');
+  const tbodyEl  = document.getElementById('cases-tbody');
+  if (!tbodyEl) return;
+  const q = query(
+    collection(db,'cases'),
+    orderBy('order','asc')
+  );
+  onSnapshot(q, snap => {
+    tbodyEl.textContent = '';
+    if (snap.empty) {
+      if (statusEl) statusEl.textContent =
+        '등록된 사례가 없습니다.';
+      if (tableEl) tableEl.style.display = 'none';
+      return;
+    }
+    if (statusEl) statusEl.style.display = 'none';
+    if (tableEl) tableEl.style.display = '';
+    snap.forEach(d =>
+      tbodyEl.appendChild(buildCaseRow(d.id, d.data())));
+  });
+
+  /* 이벤트 바인딩 */
+  document.getElementById('case-save-btn')
+    ?.addEventListener('click', saveCaseForm);
+  document.getElementById('case-cancel-btn')
+    ?.addEventListener('click', resetCaseForm);
+  document.getElementById('stat-save-btn')
+    ?.addEventListener('click', saveStats);
+
+  /* 사진 미리보기 */
+  [['case-photo-before','case-photo-before-preview'],
+   ['case-photo-after', 'case-photo-after-preview']]
+  .forEach(([inputId, previewId]) => {
+    document.getElementById(inputId)
+      ?.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const img = document.getElementById(previewId);
+        if (!img) return;
+        img.src = URL.createObjectURL(file);
+        img.style.display = '';
+      });
+  });
+}
+
 // ── 관리자 인증 게이트 ─────────────────────────────
 initAuthObserver(({ user, isAdmin }) => {
   if (!user || !isAdmin) {
@@ -641,6 +1032,7 @@ initAuthObserver(({ user, isAdmin }) => {
   loadBookings();
   loadNotices();
   loadResources();
+  loadCases();
 });
 </script>
 </x-dc>
