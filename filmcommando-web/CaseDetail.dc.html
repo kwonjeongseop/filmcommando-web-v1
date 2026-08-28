@@ -349,7 +349,7 @@ function showNotFound() {
     '사례를 찾을 수 없습니다.';
 }
 
-function initPage() {
+window.__cdInitPage = function initPage() {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
   if (!id) { showNotFound(); return; }
@@ -357,19 +357,18 @@ function initPage() {
     if (!snap.exists()) { showNotFound(); return; }
     renderCase(snap.data());
   });
-}
-if (document.readyState === 'loading') {
-  document.addEventListener(
-    'DOMContentLoaded', initPage);
-} else {
-  initPage();
-}
+};
 </script>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
   renderVals() { return {}; }
+  componentDidMount() {
+    if (typeof window.__cdInitPage === 'function') {
+      window.__cdInitPage();
+    }
+  }
 }
 
 </script>
