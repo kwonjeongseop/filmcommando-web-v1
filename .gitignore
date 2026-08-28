@@ -11,5 +11,5 @@ tools/.env
 tools/certs/
 tools/gabia_dns_filmcommando.xls
 tools/node_modules/
-tools/package*.json
+# tools/package*.json  ← DOM verify CI 실행을 위해 추적 허용
 tools/serviceAccountKey.json
