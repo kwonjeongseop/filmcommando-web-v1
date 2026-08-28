@@ -352,6 +352,26 @@
           rows="3" style="width:100%; resize:vertical;
           margin-bottom:8px"
           placeholder="본문 요약"></textarea>
+        <textarea class="admin-input" id="case-body-detail"
+          rows="3" style="width:100%; resize:vertical;
+          margin-bottom:8px"
+          placeholder="의뢰내용 설명 (2단락, 줄바꿈으로 구분)"></textarea>
+        <div style="display:grid;
+          grid-template-columns:1fr 1fr 80px; gap:8px;
+          margin-bottom:8px">
+          <textarea class="admin-input" id="case-review-body"
+            rows="3" style="resize:vertical"
+            placeholder="고객 후기 본문"></textarea>
+          <input class="admin-input" id="case-review-meta"
+            placeholder="후기 메타 (예: 강동구 32평 · 전예 리모델링)">
+          <select class="admin-input" id="case-review-stars">
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★</option>
+            <option value="3">★★★</option>
+            <option value="2">★★</option>
+            <option value="1">★</option>
+          </select>
+        </div>
         <div style="display:grid;
           grid-template-columns:80px 1fr; gap:8px;
           margin-bottom:8px; align-items:center">
@@ -772,7 +792,9 @@ function resetCaseForm() {
   casePhotoAfter  = null;
   ['case-title','case-scope','case-region',
    'case-date','case-tag','case-meta',
-   'case-body','case-edit-id'].forEach(id => {
+   'case-body','case-body-detail',
+   'case-review-body','case-review-meta',
+   'case-edit-id'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -820,6 +842,19 @@ function fillCaseForm(data, id) {
     data.order ?? 0;
   document.getElementById('case-visible').checked =
     !!data.visible;
+  const bdEl = document.getElementById(
+    'case-body-detail');
+  if (bdEl) bdEl.value = data.bodyDetail || '';
+  const rvbEl = document.getElementById(
+    'case-review-body');
+  if (rvbEl) rvbEl.value = data.reviewBody || '';
+  const rvmEl = document.getElementById(
+    'case-review-meta');
+  if (rvmEl) rvmEl.value = data.reviewMeta || '';
+  const rvsEl = document.getElementById(
+    'case-review-stars');
+  if (rvsEl) rvsEl.value =
+    String(data.reviewStars || 5);
   if (data.photoBefore) {
     const img = document.getElementById(
       'case-photo-before-preview');
@@ -894,6 +929,15 @@ async function saveCaseForm() {
       ?.value.trim() || '',
     body:    document.getElementById('case-body')
       ?.value.trim() || '',
+    bodyDetail:   document.getElementById('case-body-detail')
+      ?.value.trim() || '',
+    reviewBody:   document.getElementById('case-review-body')
+      ?.value.trim() || '',
+    reviewMeta:   document.getElementById('case-review-meta')
+      ?.value.trim() || '',
+    reviewStars:  parseInt(
+      document.getElementById('case-review-stars')
+        ?.value || '5'),
     order:   parseInt(document.getElementById('case-order')
       ?.value || '0'),
     visible: document.getElementById('case-visible')

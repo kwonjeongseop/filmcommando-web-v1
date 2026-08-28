@@ -248,7 +248,20 @@ function renderCase(data) {
   const quoteEl = document.getElementById('cd-body-quote');
   if (quoteEl) quoteEl.textContent = data.body || '';
   const detailEl = document.getElementById('cd-body-detail');
-  if (detailEl) detailEl.textContent = '';
+  if (detailEl) {
+    (data.bodyDetail || '').split('\n')
+      .filter(s => s.trim())
+      .forEach((para, i) => {
+        const p = document.createElement('p');
+        p.style.cssText =
+          'font-size:15.5px;line-height:2;' +
+          'color:#5D5346;margin:' +
+          (i === 0 ? '0 0 18px' : '0') +
+          ';text-wrap:pretty';
+        p.textContent = para.trim();
+        detailEl.appendChild(p);
+      });
+  }
 
   /* rooms */
   const roomsEl = document.getElementById('cd-rooms');
@@ -331,10 +344,15 @@ function renderCase(data) {
 
   /* 고객 후기 */
   const rvBody = document.getElementById('cd-review-body');
-  if (rvBody) rvBody.textContent = '';
+  if (rvBody) rvBody.textContent = data.reviewBody || '';
   const rvMeta = document.getElementById('cd-review-meta');
   if (rvMeta) {
+    const stars = '★'.repeat(
+      Math.min(5, Math.max(1, data.reviewStars || 5)));
     rvMeta.innerHTML =
+      '<div style="color:#A2543A;letter-spacing:0.1em;' +
+      'margin-bottom:10px">' + stars + '</div>' +
+      esc(data.reviewMeta || '') +
       '<a href="./Review.dc.html"' +
       ' style="display:block;margin-top:18px;' +
       'font-size:14px;border-bottom:1px solid #C9C0B0;' +
