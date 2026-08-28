@@ -1084,6 +1084,9 @@ async function saveCaseForm() {
       data.updatedAt = serverTimestamp();
       await updateDoc(doc(db,'cases',editingCaseId), data);
       if (msg) msg.textContent = '수정됐습니다.';
+      await new Promise(r => setTimeout(r, 3000));
+      resetCaseForm();
+      return;
     } else {
       data.createdAt = serverTimestamp();
       data.updatedAt = serverTimestamp();
@@ -1104,11 +1107,10 @@ async function saveCaseForm() {
           photoAfter: data.photoAfter });
       }
       if (msg) msg.textContent = '등록됐습니다.';
+      await new Promise(r => setTimeout(r, 3000));
+      resetCaseForm();
+      return;
     }
-    resetCaseForm();
-    setTimeout(() => {
-      if (msg) msg.textContent = '';
-    }, 3000);
   } catch(e) {
     if (msg) msg.textContent = '오류: ' + e.message;
   }

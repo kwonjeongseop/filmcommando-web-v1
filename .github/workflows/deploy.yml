@@ -56,3 +56,13 @@ jobs:
           else
             echo "정상: 200 OK 확인"
           fi
+
+      - name: Install tools dependencies
+        run: npm install --prefix tools
+
+      - name: Run verify.ps1 (post-deploy)
+        shell: pwsh
+        run: |
+          pwsh -ExecutionPolicy Bypass \
+            -File tools/verify.ps1
+        continue-on-error: true

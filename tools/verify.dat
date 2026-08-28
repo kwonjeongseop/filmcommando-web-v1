@@ -40,4 +40,9 @@ PAGE|https://filmcommando.com/Main-B.dc.html|200
 PAGE|https://filmcommando.com/Main-B_v2.dc.html|200
 PAGE|https://filmcommando.com/Main-C.dc.html|200
 API|https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAPYrNtF0hTbsBJ2DEtKqYCSXfG9vg8X-U|403
-FILE|C:\claude\filmcommando-web-v1\filmcommando-web|36
+FILE|filmcommando-web|36
+DOM|cases-fs-verify.js|0
+DOM|casedetail-fs-verify.js|0
+DOM|board-verify.js|0
+DOM|review-fs-verify.js|0
+DOM|admin-cases-crud-verify.js|0

@@ -3,7 +3,15 @@
 
 $ErrorActionPreference = 'SilentlyContinue'
 $datFile  = Join-Path $PSScriptRoot 'verify.dat'
-$logFile  = 'C:\claude\test-results\logs\verify.log'
+$logFile  = if ($env:CI) {
+  Join-Path $PSScriptRoot '..' 'test-results' 'logs' 'verify.log'
+} else {
+  'C:\claude\test-results\logs\verify.log'
+}
+$logDir = Split-Path $logFile
+if (-not (Test-Path $logDir)) {
+  New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+}
 $ts       = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
 $pass = 0; $fail = 0
 
@@ -61,6 +69,15 @@ foreach ($line in $lines) {
       $msg   = "FILE 수량: $count 개 " +
                "(기대 >=$expect) -> " +
                $(if ($ok){'PASS'}else{'FAIL'})
+    }
+
+    'DOM' {
+      $script = Join-Path $PSScriptRoot $target
+      $result = node $script 2>&1
+      $exitCode = $LASTEXITCODE
+      $ok  = ($exitCode -eq 0)
+      $msg = "DOM $target : exit $exitCode -> " +
+             $(if ($ok){'PASS'}else{'FAIL'})
     }
   }
 
