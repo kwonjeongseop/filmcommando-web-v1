@@ -249,6 +249,7 @@ function renderCase(data) {
   if (quoteEl) quoteEl.textContent = data.body || '';
   const detailEl = document.getElementById('cd-body-detail');
   if (detailEl) {
+    detailEl.innerHTML = '';
     (data.bodyDetail || '').split('\n')
       .filter(s => s.trim())
       .forEach((para, i) => {
