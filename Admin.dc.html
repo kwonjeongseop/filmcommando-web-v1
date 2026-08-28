@@ -407,6 +407,54 @@
               margin-top:4px">
           </div>
         </div>
+        <!-- facts 입력 -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;color:#9A8F80;
+            margin-bottom:6px;letter-spacing:0.1em">
+            스펙 (위치/면적/연식 등 k:v 쌍)</div>
+          <div id="facts-rows"></div>
+          <button type="button" id="facts-add-btn"
+            style="font-size:12px;background:transparent;
+            border:1px solid #DCD4C6;padding:4px 10px;
+            cursor:pointer;font-family:inherit;
+            margin-top:4px">+ 행 추가</button>
+        </div>
+        <!-- rooms 입력 -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;color:#9A8F80;
+            margin-bottom:6px;letter-spacing:0.1em">
+            공간별 변화 (거실/주방/욕실 등)</div>
+          <div id="rooms-rows"></div>
+          <button type="button" id="rooms-add-btn"
+            style="font-size:12px;background:transparent;
+            border:1px solid #DCD4C6;padding:4px 10px;
+            cursor:pointer;font-family:inherit;
+            margin-top:4px">+ 공간 추가</button>
+        </div>
+        <!-- log 입력 -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;color:#9A8F80;
+            margin-bottom:6px;letter-spacing:0.1em">
+            공정 기록 (주차별)</div>
+          <div id="log-rows"></div>
+          <button type="button" id="log-add-btn"
+            style="font-size:12px;background:transparent;
+            border:1px solid #DCD4C6;padding:4px 10px;
+            cursor:pointer;font-family:inherit;
+            margin-top:4px">+ 주차 추가</button>
+        </div>
+        <!-- materials 입력 -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;color:#9A8F80;
+            margin-bottom:6px;letter-spacing:0.1em">
+            사용 자재 (바닥/벽지/필름 등 k:v 쌍)</div>
+          <div id="materials-rows"></div>
+          <button type="button" id="materials-add-btn"
+            style="font-size:12px;background:transparent;
+            border:1px solid #DCD4C6;padding:4px 10px;
+            cursor:pointer;font-family:inherit;
+            margin-top:4px">+ 자재 추가</button>
+        </div>
         <div style="display:flex; gap:8px">
           <button class="admin-btn" id="case-save-btn">
             등록</button>
@@ -819,6 +867,18 @@ function resetCaseForm() {
   if (cancelBtn) cancelBtn.style.display = 'none';
   const msg = document.getElementById('case-form-msg');
   if (msg) msg.textContent = '';
+  const rvsEl2 = document.getElementById(
+    'case-review-stars');
+  if (rvsEl2) rvsEl2.value = '5';
+  ['facts-rows','rooms-rows',
+   'log-rows','materials-rows'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+  });
+  addFactsRow();
+  addRoomsRow();
+  addLogRow();
+  addMaterialsRow();
 }
 
 function fillCaseForm(data, id) {
@@ -855,6 +915,25 @@ function fillCaseForm(data, id) {
     'case-review-stars');
   if (rvsEl) rvsEl.value =
     String(data.reviewStars || 5);
+  /* 배열 초기화 후 채우기 */
+  ['facts-rows','rooms-rows',
+   'log-rows','materials-rows'].forEach(rid => {
+    const el = document.getElementById(rid);
+    if (el) el.innerHTML = '';
+  });
+  (data.facts||[]).forEach(f => addFactsRow(f));
+  if (!(data.facts&&data.facts.length))
+    addFactsRow();
+  (data.rooms||[]).forEach(r => addRoomsRow(r));
+  if (!(data.rooms&&data.rooms.length))
+    addRoomsRow();
+  (data.log||[]).forEach(l => addLogRow(l));
+  if (!(data.log&&data.log.length))
+    addLogRow();
+  (data.materials||[]).forEach(
+    m => addMaterialsRow(m));
+  if (!(data.materials&&data.materials.length))
+    addMaterialsRow();
   if (data.photoBefore) {
     const img = document.getElementById(
       'case-photo-before-preview');
@@ -935,13 +1014,53 @@ async function saveCaseForm() {
       ?.value.trim() || '',
     reviewMeta:   document.getElementById('case-review-meta')
       ?.value.trim() || '',
-    reviewStars:  parseInt(
+    reviewStars: parseInt(
       document.getElementById('case-review-stars')
         ?.value || '5'),
     order:   parseInt(document.getElementById('case-order')
       ?.value || '0'),
     visible: document.getElementById('case-visible')
       ?.checked || false,
+    facts: Array.from(
+      document.querySelectorAll(
+        '#facts-rows .fact-row')).map(row => ({
+      k: row.querySelector('.fact-k')
+        ?.value.trim()||'',
+      v: row.querySelector('.fact-v')
+        ?.value.trim()||'',
+    })).filter(f => f.k || f.v),
+    rooms: Array.from(
+      document.querySelectorAll(
+        '#rooms-rows .room-row')).map(row => ({
+      title:  row.querySelector('.room-title')
+        ?.value.trim()||'',
+      trades: row.querySelector('.room-trades')
+        ?.value.trim()||'',
+      body:   row.querySelector('.room-body')
+        ?.value.trim()||'',
+      photoBefore: row.querySelector(
+        '.room-photo-before-url')?.value||'',
+      photoAfter:  row.querySelector(
+        '.room-photo-after-url')?.value||'',
+    })).filter(r => r.title),
+    log: Array.from(
+      document.querySelectorAll(
+        '#log-rows .log-row')).map(row => ({
+      week: row.querySelector('.log-week')
+        ?.value.trim()||'',
+      body: row.querySelector('.log-body')
+        ?.value.trim()||'',
+      days: row.querySelector('.log-days')
+        ?.value.trim()||'',
+    })).filter(l => l.week || l.body),
+    materials: Array.from(
+      document.querySelectorAll(
+        '#materials-rows .mat-row')).map(row => ({
+      k: row.querySelector('.mat-k')
+        ?.value.trim()||'',
+      v: row.querySelector('.mat-v')
+        ?.value.trim()||'',
+    })).filter(m => m.k || m.v),
   };
   if (msg) msg.textContent = '저장 중...';
   try {
@@ -1018,6 +1137,177 @@ async function saveStats() {
   }
 }
 
+/* ── 배열 행 헬퍼 ── */
+function makeDelBtn(row) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = '✕';
+  btn.style.cssText =
+    'background:transparent;border:none;' +
+    'color:#c0392b;cursor:pointer;' +
+    'font-size:14px;padding:0 6px;flex:none';
+  btn.addEventListener('click', () => row.remove());
+  return btn;
+}
+function addFactsRow(data) {
+  const wrap = document.getElementById('facts-rows');
+  if (!wrap) return;
+  const row = document.createElement('div');
+  row.className = 'fact-row';
+  row.style.cssText =
+    'display:grid;' +
+    'grid-template-columns:1fr 2fr 24px;' +
+    'gap:4px;margin-bottom:4px';
+  const kIn = document.createElement('input');
+  kIn.className = 'admin-input fact-k';
+  kIn.placeholder = '항목 (예: 위치)';
+  kIn.value = data?.k || '';
+  const vIn = document.createElement('input');
+  vIn.className = 'admin-input fact-v';
+  vIn.placeholder = '내용 (예: 서울 강동구)';
+  vIn.value = data?.v || '';
+  row.appendChild(kIn);
+  row.appendChild(vIn);
+  row.appendChild(makeDelBtn(row));
+  wrap.appendChild(row);
+}
+function addRoomsRow(data) {
+  const wrap = document.getElementById('rooms-rows');
+  if (!wrap) return;
+  const row = document.createElement('div');
+  row.className = 'room-row';
+  row.style.cssText =
+    'border:1px solid #DCD4C6;padding:10px;' +
+    'margin-bottom:8px';
+  row.innerHTML =
+    '<div style="display:grid;' +
+    'grid-template-columns:1fr 2fr;gap:4px;' +
+    'margin-bottom:6px">' +
+    '<input class="admin-input room-title"' +
+    ' placeholder="공간명 (예: 거실)"' +
+    ' value="' + (data?.title||'') + '">' +
+    '<input class="admin-input room-trades"' +
+    ' placeholder="공정 (예: 철거·목공·도배)"' +
+    ' value="' + (data?.trades||'') + '">' +
+    '</div>' +
+    '<textarea class="admin-input room-body"' +
+    ' rows="2"' +
+    ' style="width:100%;resize:vertical;' +
+    'margin-bottom:6px"' +
+    ' placeholder="설명">' +
+    (data?.body||'') + '</textarea>' +
+    '<div style="display:grid;' +
+    'grid-template-columns:1fr 1fr;gap:4px">' +
+    '<div>' +
+    '<div style="font-size:11px;color:#9A8F80;' +
+    'margin-bottom:2px">시공 전 사진</div>' +
+    '<input type="file"' +
+    ' class="room-photo-before-file"' +
+    ' accept="image/*"' +
+    ' style="font-size:12px;width:100%">' +
+    '<input type="hidden"' +
+    ' class="room-photo-before-url"' +
+    ' value="' + (data?.photoBefore||'') + '">' +
+    (data?.photoBefore
+      ? '<img src="' + data.photoBefore + '"' +
+        ' style="width:100%;height:80px;' +
+        'object-fit:cover;margin-top:4px">'
+      : '') +
+    '</div>' +
+    '<div>' +
+    '<div style="font-size:11px;color:#9A8F80;' +
+    'margin-bottom:2px">시공 후 사진</div>' +
+    '<input type="file"' +
+    ' class="room-photo-after-file"' +
+    ' accept="image/*"' +
+    ' style="font-size:12px;width:100%">' +
+    '<input type="hidden"' +
+    ' class="room-photo-after-url"' +
+    ' value="' + (data?.photoAfter||'') + '">' +
+    (data?.photoAfter
+      ? '<img src="' + data.photoAfter + '"' +
+        ' style="width:100%;height:80px;' +
+        'object-fit:cover;margin-top:4px">'
+      : '') +
+    '</div></div>';
+  const delBtn = makeDelBtn(row);
+  delBtn.style.cssText +=
+    ';display:block;margin-top:6px';
+  row.appendChild(delBtn);
+  row.querySelector('.room-photo-before-file')
+    ?.addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r2 = ref(storage,
+        'cases/rooms/tmp_' + Date.now() + '_before');
+      await uploadBytes(r2, file);
+      const url = await getDownloadURL(r2);
+      row.querySelector('.room-photo-before-url')
+        .value = url;
+    });
+  row.querySelector('.room-photo-after-file')
+    ?.addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r2 = ref(storage,
+        'cases/rooms/tmp_' + Date.now() + '_after');
+      await uploadBytes(r2, file);
+      const url = await getDownloadURL(r2);
+      row.querySelector('.room-photo-after-url')
+        .value = url;
+    });
+  wrap.appendChild(row);
+}
+function addLogRow(data) {
+  const wrap = document.getElementById('log-rows');
+  if (!wrap) return;
+  const row = document.createElement('div');
+  row.className = 'log-row';
+  row.style.cssText =
+    'display:grid;' +
+    'grid-template-columns:80px 1fr 80px 24px;' +
+    'gap:4px;margin-bottom:4px';
+  const wIn = document.createElement('input');
+  wIn.className = 'admin-input log-week';
+  wIn.placeholder = '주차 (예: 1주차)';
+  wIn.value = data?.week || '';
+  const bIn = document.createElement('input');
+  bIn.className = 'admin-input log-body';
+  bIn.placeholder = '작업 내용';
+  bIn.value = data?.body || '';
+  const dIn = document.createElement('input');
+  dIn.className = 'admin-input log-days';
+  dIn.placeholder = '일수 (예: 7일)';
+  dIn.value = data?.days || '';
+  row.appendChild(wIn);
+  row.appendChild(bIn);
+  row.appendChild(dIn);
+  row.appendChild(makeDelBtn(row));
+  wrap.appendChild(row);
+}
+function addMaterialsRow(data) {
+  const wrap = document.getElementById('materials-rows');
+  if (!wrap) return;
+  const row = document.createElement('div');
+  row.className = 'mat-row';
+  row.style.cssText =
+    'display:grid;' +
+    'grid-template-columns:1fr 2fr 24px;' +
+    'gap:4px;margin-bottom:4px';
+  const kIn = document.createElement('input');
+  kIn.className = 'admin-input mat-k';
+  kIn.placeholder = '자재명 (예: 바닥)';
+  kIn.value = data?.k || '';
+  const vIn = document.createElement('input');
+  vIn.className = 'admin-input mat-v';
+  vIn.placeholder = '스펙 (예: 강마루 7.5mm)';
+  vIn.value = data?.v || '';
+  row.appendChild(kIn);
+  row.appendChild(vIn);
+  row.appendChild(makeDelBtn(row));
+  wrap.appendChild(row);
+}
+
 function loadCases() {
   const statusEl = document.getElementById('cases-status');
   const tableEl  = document.getElementById('cases-table');
@@ -1044,6 +1334,15 @@ function loadCases() {
   /* 이벤트 바인딩 */
   document.getElementById('case-save-btn')
     ?.addEventListener('click', saveCaseForm);
+  document.getElementById('facts-add-btn')
+    ?.addEventListener('click', () => addFactsRow());
+  document.getElementById('rooms-add-btn')
+    ?.addEventListener('click', () => addRoomsRow());
+  document.getElementById('log-add-btn')
+    ?.addEventListener('click', () => addLogRow());
+  document.getElementById('materials-add-btn')
+    ?.addEventListener('click',
+      () => addMaterialsRow());
   document.getElementById('case-cancel-btn')
     ?.addEventListener('click', resetCaseForm);
   document.getElementById('stat-save-btn')
