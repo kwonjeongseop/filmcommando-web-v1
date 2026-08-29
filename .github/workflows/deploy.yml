@@ -63,6 +63,5 @@ jobs:
       - name: Run verify.ps1 (post-deploy)
         shell: pwsh
         run: |
-          pwsh -ExecutionPolicy Bypass \
-            -File tools/verify.ps1
+          pwsh -ExecutionPolicy Bypass -File tools/verify.ps1
         continue-on-error: true
