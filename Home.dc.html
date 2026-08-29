@@ -153,12 +153,10 @@
   <section class="fc-home-hero" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
     <div style="padding:96px 56px 84px; display:flex; flex-direction:column; justify-content:space-between">
       <div>
-        <div style="font-size:12px; letter-spacing:0.26em; color:#A2543A; margin-bottom:44px">철거부터 입주까지 · 전공정 직접 시공</div>
-        <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:58px; line-height:1.27; letter-spacing:-0.04em; margin:0 0 34px">
-          집 하나를<br>한 팀이<br>끝까지 맡습니다
-        </h1>
+        <div style="font-size:12px; letter-spacing:0.26em; color:#A2543A; margin-bottom:44px">{{ heroTag }}</div>
+        <h1 style="font-family:'Nanum Myeongjo',serif; font-weight:800; font-size:58px; line-height:1.27; letter-spacing:-0.04em; margin:0 0 34px; white-space:pre-line">{{ heroTitle }}</h1>
         <p style="font-size:16px; line-height:2.05; color:#5D5346; margin:0; max-width:430px; text-wrap:pretty">
-          철거 · 창호 · 설비 · 목공 · 타일 · 필름 · 도배 · 바닥 · 가구까지 열두 공정을 자사 팀이 직접 시공합니다. 공정을 쪼개 넘기지 않기 때문에 일정과 책임이 한 곳에 남습니다.
+          {{ heroBody }}
         </p>
       </div>
       <div class="fc-home-hero-bottom" style="display:flex; align-items:flex-end; justify-content:space-between; gap:30px; margin-top:60px">
@@ -168,7 +166,7 @@
         </div>
         <div style="text-align:right">
           <div style="font-size:12px; letter-spacing:0.14em; color:#9A8F80; margin-bottom:7px">전예 · 부분 · 상가</div>
-          <div style="font-family:'Nanum Myeongjo',serif; font-size:15px">누적 4,800세대 시공</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:15px">누적 {{ statTotal }} 시공</div>
         </div>
       </div>
     </div>
@@ -319,8 +317,8 @@
   <section class="fc-home-review-wrap" style="padding:84px 56px; display:grid; grid-template-columns:190px minmax(0,1fr); gap:56px">
     <div style="padding-top:6px">
       <div style="font-size:12px; letter-spacing:0.2em; color:#9A8F80; margin-bottom:26px">고객 후기</div>
-      <div style="font-family:'Nanum Myeongjo',serif; font-size:44px; font-weight:800; letter-spacing:-0.04em; line-height:1">4.9</div>
-      <div style="font-size:13px; color:#9A8F80; margin-top:10px; line-height:1.7">5.0 만점<br>후기 312건</div>
+      <div style="font-family:'Nanum Myeongjo',serif; font-size:44px; font-weight:800; letter-spacing:-0.04em; line-height:1">{{ statRating }}</div>
+      <div style="font-size:13px; color:#9A8F80; margin-top:10px; line-height:1.7">5.0 만점<br>후기 {{ reviewCount }}</div>
       <a href="./Review.dc.html" style="display:inline-block; margin-top:26px; font-size:14px; border-bottom:1px solid #C9C0B0; padding-bottom:4px">후기 전체 보기</a>
     </div>
     <div>
@@ -342,11 +340,11 @@
         <div style="display:flex; gap:44px; border-top:1px solid #3A342C; padding-top:28px">
           <div>
             <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:8px">전화 상담</div>
-            <div style="font-family:'Nanum Myeongjo',serif; font-size:26px; color:#F7F3EA; letter-spacing:0.02em">0000 - 0000</div>
+            <div style="font-family:'Nanum Myeongjo',serif; font-size:26px; color:#F7F3EA; letter-spacing:0.02em">{{ ctaPhone }}</div>
           </div>
           <div>
             <div style="font-size:12px; letter-spacing:0.16em; color:#8F8272; margin-bottom:8px">상담 시간</div>
-            <div style="font-size:16px; color:#EDE7DC; padding-top:6px">평일 · 주말 09:00 – 19:00</div>
+            <div style="font-size:16px; color:#EDE7DC; padding-top:6px">{{ ctaHours }}</div>
           </div>
         </div>
       </div>
@@ -408,9 +406,68 @@ class Component extends DCLogic {
     if (next) next.addEventListener('click',
       () => go(cur + 1));
     resetTimer();
+
+    import('./firebase-config.js').then(({ db }) => {
+      import('https://www.gstatic.com/firebasejs/' +
+        '10.12.2/firebase-firestore.js').then(({
+        doc, getDoc, collection, query,
+        where, getDocs
+      }) => {
+        getDoc(doc(db, 'stats', 'cases'))
+          .then(snap => {
+            if (!snap.exists()) return;
+            const d = snap.data();
+            this.setState({
+              statTotal:   d.total   || '',
+              statAvgDays: d.avgDays || '',
+              statOnTime:  d.onTime  || '',
+              statRating:  d.rating  || '',
+            });
+          });
+        getDoc(doc(db, 'home', 'content'))
+          .then(snap => {
+            if (!snap.exists()) return;
+            const d = snap.data();
+            this.setState({
+              heroTag:   d.heroTag   || '',
+              heroTitle: d.heroTitle || '',
+              heroBody:  d.heroBody  || '',
+              ctaPhone:  d.ctaPhone  || '',
+              ctaHours:  d.ctaHours  || '',
+              pkg1name:  d.pkg1name  || '',
+              pkg1price: d.pkg1price || '',
+              pkg1body:  d.pkg1body  || '',
+              pkg2name:  d.pkg2name  || '',
+              pkg2price: d.pkg2price || '',
+              pkg2body:  d.pkg2body  || '',
+              pkg3name:  d.pkg3name  || '',
+              pkg3price: d.pkg3price || '',
+              pkg3body:  d.pkg3body  || '',
+            });
+          });
+        getDocs(query(
+          collection(db, 'reviews'),
+          where('approved', '==', true)
+        )).then(snap => {
+          this.setState({ reviewCount: snap.size });
+        });
+      });
+    });
   }
   renderVals() {
+    const s = this.state || {};
     return {
+      statTotal:   s.statTotal   || '4,800세대',
+      statAvgDays: s.statAvgDays || '36일',
+      statOnTime:  s.statOnTime  || '94%',
+      statRating:  s.statRating  || '4.9',
+      reviewCount: s.reviewCount != null
+        ? s.reviewCount + '건' : '312건',
+      heroTag:   s.heroTag   || '철거부터 입주까지 · 전공정 직접 시공',
+      heroTitle: s.heroTitle || '집 하나를\n한 팀이\n끝까지 맡습니다',
+      heroBody:  s.heroBody  || '철거 · 창호 · 설비 · 목공 · 타일 · 필름 · 도배 · 바닥 · 가구까지 열두 공정을 자사 팀이 직접 시공합니다. 공정을 쪼개 넘기지 않기 때문에 일정과 책임이 한 곳에 남습니다.',
+      ctaPhone:  s.ctaPhone  || '0000 - 0000',
+      ctaHours:  s.ctaHours  || '평일 · 주말 09:00 – 19:00',
       bar: [
         { w: "1주차", body: "철거 / 창호 / 설비 & 전기 1차" },
         { w: "2주차", body: "목공 / 타일 & 방수" },
@@ -438,9 +495,9 @@ class Component extends DCLogic {
         { n: "12", title: "가구 · 위생도기", meta: "주방 · 붙박이 · 도기" },
       ],
       packages: [
-        { name: "필름 단독", tag: "반일 ~ 3일", price: "180만원", unit: "부터 · 24평 기준", body: "문 · 문틀 · 몰딩 · 창틀 · 주방 가구 도어를 필름으로 마감합니다. 거주 중 진행 가능합니다.", includes: "포함: 실측 · 자재 · 시공 · 폐기물 · 2년 보증" },
-        { name: "부분 시공", tag: "1 ~ 2주", price: "680만원", unit: "부터 · 주방 또는 욕실", body: "주방 또는 욕실 단위로 철거부터 마감까지 진행합니다. 배관 교체와 방수를 포함합니다.", includes: "포함: 철거 · 방수 · 타일 · 설비 · 가구 또는 도기" },
-        { name: "전예 리모델링", tag: "5주 표준", price: "3,900만원", unit: "부터 · 24평 기준", body: "철거부터 입주 청소까지 열두 공정 전체를 진행합니다. 세대별 도면과 일정표를 제공합니다.", includes: "포함: 12공정 · 설계 · 관리사무소 신고 · 준공 청소" },
+        { name: s.pkg1name || "필름 단독", tag: "반일 ~ 3일", price: s.pkg1price || "180만원", unit: "부터 · 24평 기준", body: s.pkg1body || "문 · 문틀 · 몰딩 · 창틀 · 주방 가구 도어를 필름으로 마감합니다. 거주 중 진행 가능합니다.", includes: "포함: 실측 · 자재 · 시공 · 폐기물 · 2년 보증" },
+        { name: s.pkg2name || "부분 시공", tag: "1 ~ 2주", price: s.pkg2price || "680만원", unit: "부터 · 주방 또는 욕실", body: s.pkg2body || "주방 또는 욕실 단위로 철거부터 마감까지 진행합니다. 배관 교체와 방수를 포함합니다.", includes: "포함: 철거 · 방수 · 타일 · 설비 · 가구 또는 도기" },
+        { name: s.pkg3name || "전예 리모델링", tag: "5주 표준", price: s.pkg3price || "3,900만원", unit: "부터 · 24평 기준", body: s.pkg3body || "철거부터 입주 청소까지 열두 공정 전체를 진행합니다. 세대별 도면과 일정표를 제공합니다.", includes: "포함: 12공정 · 설계 · 관리사무소 신고 · 준공 청소" },
       ],
       cases: [
         { slot: "home-case2", no: "사례 02 · 부분 시공", title: "성북구 연립 18평", tag: "욕실 · 주방 · 2주", ph: "욕실 시공 사진", body: "배관을 새로 잡고 타일과 도기를 교체했습니다." },
