@@ -87,10 +87,10 @@
     <div class="fc-review-score" style="padding:56px; display:grid; grid-template-columns:minmax(0,280px) minmax(0,1fr) minmax(0,1fr); gap:56px; align-items:center">
       <div>
         <div style="display:flex; align-items:flex-end; gap:14px">
-          <div style="font-family:'Nanum Myeongjo',serif; font-size:64px; font-weight:800; letter-spacing:-0.05em; line-height:1">4.9</div>
+          <div style="font-family:'Nanum Myeongjo',serif; font-size:64px; font-weight:800; letter-spacing:-0.05em; line-height:1">{{ avgRating }}</div>
           <div style="font-size:14px; color:#9A8F80; padding-bottom:8px">/ 5.0</div>
         </div>
-        <div style="font-size:14px; color:#8C8071; margin-top:14px; line-height:1.7">후기 312건<br>최근 6개월 기준</div>
+        <div style="font-size:14px; color:#8C8071; margin-top:14px; line-height:1.7">후기 {{ totalCount }}건<br>{{ recentLabel }}</div>
       </div>
       <div>
         <sc-for list="{{ dist }}" as="d" hint-placeholder-count="5">
@@ -201,20 +201,82 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
+  componentDidMount() {
+    import('./firebase-config.js').then(({ db }) => {
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')
+        .then(({ collection, query, where, getDocs }) => {
+        const q = query(
+          collection(db, 'reviews'),
+          where('approved', '==', true)
+        );
+        getDocs(q).then(snap => {
+          if (snap.empty) return;
+          const reviews = [];
+          snap.forEach(d => reviews.push(d.data()));
+          const total = reviews.length;
+          const avg = reviews.reduce(
+            (s, r) => s + (r.rating || 0), 0) / total;
+          const starCounts = [0,0,0,0,0];
+          reviews.forEach(r => {
+            const s = Math.min(5,
+              Math.max(1, Math.round(r.rating||0)));
+            starCounts[5-s]++;
+          });
+          const labels = ["★★★★★","★★★★","★★★","★★","★"];
+          const dist = starCounts.map((c,i) => ({
+            k: labels[i],
+            w: Math.round(c/total*100) + '%',
+            v: Math.round(c/total*100) + '%',
+          }));
+          const tagMap = {
+            '일정 준수': [],
+            '소통·친절': [],
+            '마감 품질': []
+          };
+          reviews.forEach(r => {
+            if (!Array.isArray(r.tags)) return;
+            r.tags.forEach(t => {
+              if (tagMap[t] !== undefined)
+                tagMap[t].push(r.rating || 0);
+            });
+          });
+          const scores = Object.entries(tagMap).map(
+            ([k, vals]) => ({
+              k,
+              v: String(vals.length
+                ? Math.round(
+                    vals.reduce((s,v)=>s+v,0)
+                    / vals.length * 10) / 10
+                : 0)
+            })
+          );
+          this.setState({
+            avgRating: String(Math.round(avg * 10) / 10),
+            totalCount: total,
+            dist,
+            scores
+          });
+        });
+      });
+    });
+  }
   renderVals() {
     return {
-      dist: [
-        { k: "★★★★★", w: "78%", v: "78%" },
-        { k: "★★★★",  w: "14%", v: "14%" },
-        { k: "★★★",   w: "6%",  v: "6%"  },
-        { k: "★★",    w: "1%",  v: "1%"  },
-        { k: "★",     w: "1%",  v: "1%"  },
+      dist: (this.state && this.state.dist) || [
+        { k: "★★★★★", w: "0%", v: "0%" },
+        { k: "★★★★",  w: "0%", v: "0%" },
+        { k: "★★★",   w: "0%", v: "0%" },
+        { k: "★★",    w: "0%", v: "0%" },
+        { k: "★",     w: "0%", v: "0%" },
       ],
-      scores: [
-        { k: "일정 준수", v: "4.9" },
-        { k: "소통·친절", v: "4.9" },
-        { k: "마감 품질", v: "4.8" },
+      scores: (this.state && this.state.scores) || [
+        { k: "일정 준수", v: "0" },
+        { k: "소통·친절", v: "0" },
+        { k: "마감 품질", v: "0" },
       ],
+      avgRating: (this.state && this.state.avgRating) || "0",
+      totalCount: (this.state && this.state.totalCount) || 0,
+      recentLabel: '승인된 후기 기준',
       filters: ["전체", "전예 리모델링",
         "부분 시공", "필름 단독", "상가 · 사무실"],
     };

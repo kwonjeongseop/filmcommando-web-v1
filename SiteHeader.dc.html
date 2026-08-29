@@ -304,6 +304,10 @@
       </sc-if>
       <sc-if value="{{ loggedIn }}">
         <span class="fc-login-email" style="font-size:13px; color:#6E6357; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-shrink:1">{{ userEmail }}</span>
+        <sc-if value="{{ isAdmin }}">
+          <span style="font-size:11px; background:#A2543A; color:#F7F3EA; padding:3px 8px; letter-spacing:0.08em; flex-shrink:0">관리자</span>
+          <a href="./Admin.dc.html" style="font-size:13px; color:#A2543A; border:1px solid #A2543A; padding:8px 12px; flex-shrink:0" style-hover="background:#A2543A; color:#F7F3EA">Admin</a>
+        </sc-if>
         <a href="#" class="fc-logout" onclick="{{ onLogout }}" style="font-size:14px; border:1px solid #C9C0B0; padding:10px 16px" style-hover="border-color:#1F1B16">로그아웃</a>
       </sc-if>
       <sc-if value="{{ loggedOut }}">
@@ -332,7 +336,10 @@ class Component extends DCLogic {
   componentDidMount() {
     import('./auth.js').then((mod) => {
       mod.initAuthObserver((state) => {
-        this.setState({ email: state.user ? state.user.email : null });
+        this.setState({
+          email: state.user ? state.user.email : null,
+          isAdmin: !!state.isAdmin,
+        });
       });
     });
     const toggle = document.getElementById('fc-toggle');
@@ -352,9 +359,11 @@ class Component extends DCLogic {
   }
   renderVals() {
     const email = (this.state && this.state.email) || null;
+    const isAdmin = !!(this.state && this.state.isAdmin);
     return {
       loggedIn: !!email,
       loggedOut: !email,
+      isAdmin,
       userEmail: email ? email.split('@')[0] : '',
       onLogout: (e) => this.handleLogout(e),
     };
