@@ -60,6 +60,9 @@ jobs:
       - name: Install tools dependencies
         run: npm install --prefix tools
 
+      - name: Install Playwright browsers
+        run: npx --prefix tools playwright install --with-deps chromium
+
       - name: Run verify.ps1 (post-deploy)
         shell: pwsh
         run: |

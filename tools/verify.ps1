@@ -78,6 +78,9 @@ foreach ($line in $lines) {
       $ok  = ($exitCode -eq 0)
       $msg = "DOM $target : exit $exitCode -> " +
              $(if ($ok){'PASS'}else{'FAIL'})
+      if (-not $ok) {
+        Add-Content -Encoding utf8 $logFile "[ERR] $result"
+      }
     }
   }
 
