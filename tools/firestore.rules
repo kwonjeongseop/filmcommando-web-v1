@@ -80,6 +80,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // 홈 콘텐츠 — 공개 읽기, 관리자 쓰기
+    match /home/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // 패키지 — 누구나 읽기,
     //           관리자만 쓰기
     match /packages/{docId} {

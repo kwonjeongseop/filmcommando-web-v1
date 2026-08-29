@@ -236,6 +236,7 @@
       <button type="button" class="admin-tab-btn" data-tab="users">회원조회</button>
       <button type="button" class="admin-tab-btn" data-tab="cases">사례관리</button>
       <button type="button" class="admin-tab-btn" data-tab="reviews">후기관리</button>
+      <button type="button" class="admin-tab-btn" data-tab="home">홈편집</button>
       <button type="button" class="admin-tab-btn" data-tab="backup">백업</button>
     </div>
 
@@ -503,6 +504,164 @@
       <div id="reviews-approved-list"></div>
     </div>
 
+    <div class="admin-panel" id="panel-home">
+      <div class="admin-title">홈 편집</div>
+
+      <!-- 통계 수치 -->
+      <div class="admin-form" style="padding:20px;
+        background:#F4F1EA; border:1px solid #DCD4C6;
+        margin-bottom:24px">
+        <div style="font-size:13px; color:#9A8F80;
+          margin-bottom:12px; letter-spacing:0.1em">
+          홈 통계 수치 (stats/cases)</div>
+        <div style="display:grid;
+          grid-template-columns:repeat(4,1fr); gap:8px;
+          margin-bottom:12px">
+          <input class="admin-input" id="home-stat-total"
+            placeholder="누적 시공 (예: 4,800세대)">
+          <input class="admin-input" id="home-stat-avgdays"
+            placeholder="평균 기간 (예: 36일)">
+          <input class="admin-input" id="home-stat-ontime"
+            placeholder="준공일 준수율 (예: 94%)">
+          <input class="admin-input" id="home-stat-rating"
+            placeholder="후기 평점 (예: 4.9)">
+        </div>
+        <div style="display:flex; align-items:center;
+          gap:12px">
+          <button class="admin-btn" id="home-stat-save-btn">
+            저장</button>
+          <span id="home-stat-msg"
+            style="font-size:13px; color:#2e7d52"></span>
+        </div>
+      </div>
+
+      <!-- 텍스트 콘텐츠 편집 -->
+      <div class="admin-form" style="padding:20px;
+        background:#F4F1EA; border:1px solid #DCD4C6;
+        margin-bottom:24px; max-width:100%">
+        <div style="font-size:13px; color:#9A8F80;
+          margin-bottom:12px; letter-spacing:0.1em">
+          홈 텍스트 콘텐츠 (home/content)</div>
+
+        <div style="font-size:12px; color:#9A8F80;
+          margin:8px 0 4px">히어로 태그라인</div>
+        <input class="admin-input" id="hc-hero-tag"
+          style="width:100%"
+          placeholder="예: 철거부터 입주까지 · 전공정 직접 시공">
+
+        <div style="font-size:12px; color:#9A8F80;
+          margin:8px 0 4px">
+          메인 슬로건 (줄바꿈은 \n 입력)</div>
+        <textarea class="admin-input" id="hc-hero-title"
+          rows="3" style="width:100%; resize:vertical"
+          placeholder="예: 집 하나를\n한 팀이\n끝까지 맡습니다"></textarea>
+
+        <div style="font-size:12px; color:#9A8F80;
+          margin:8px 0 4px">히어로 본문</div>
+        <textarea class="admin-input" id="hc-hero-body"
+          rows="3" style="width:100%; resize:vertical"
+          placeholder="히어로 섹션 본문 텍스트"></textarea>
+
+        <div style="font-size:12px; color:#9A8F80;
+          margin:8px 0 4px">전화번호</div>
+        <input class="admin-input" id="hc-cta-phone"
+          style="width:100%"
+          placeholder="예: 0000-0000">
+
+        <div style="font-size:12px; color:#9A8F80;
+          margin:8px 0 4px">상담시간</div>
+        <input class="admin-input" id="hc-cta-hours"
+          style="width:100%"
+          placeholder="예: 평일 09:00 – 18:00">
+
+        <div style="font-size:12px; color:#9A8F80;
+          margin:12px 0 6px; letter-spacing:0.08em">
+          패키지</div>
+        <div style="display:grid;
+          grid-template-columns:repeat(3,1fr);
+          gap:8px; margin-bottom:8px">
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지1 이름</div>
+            <input class="admin-input" id="hc-pkg1-name"
+              style="width:100%"
+              placeholder="예: 에센셜">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지1 가격</div>
+            <input class="admin-input" id="hc-pkg1-price"
+              style="width:100%"
+              placeholder="예: 180만원~">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지1 설명</div>
+            <input class="admin-input" id="hc-pkg1-body"
+              style="width:100%"
+              placeholder="간략 설명">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지2 이름</div>
+            <input class="admin-input" id="hc-pkg2-name"
+              style="width:100%"
+              placeholder="예: 스탠다드">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지2 가격</div>
+            <input class="admin-input" id="hc-pkg2-price"
+              style="width:100%"
+              placeholder="예: 280만원~">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지2 설명</div>
+            <input class="admin-input" id="hc-pkg2-body"
+              style="width:100%"
+              placeholder="간략 설명">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지3 이름</div>
+            <input class="admin-input" id="hc-pkg3-name"
+              style="width:100%"
+              placeholder="예: 프리미엄">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지3 가격</div>
+            <input class="admin-input" id="hc-pkg3-price"
+              style="width:100%"
+              placeholder="예: 420만원~">
+          </div>
+          <div>
+            <div style="font-size:11px;color:#9A8F80;
+              margin-bottom:3px">패키지3 설명</div>
+            <input class="admin-input" id="hc-pkg3-body"
+              style="width:100%"
+              placeholder="간략 설명">
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center;
+          gap:12px; margin-top:12px">
+          <button class="admin-btn"
+            id="home-content-save-btn">저장</button>
+          <span id="home-content-msg"
+            style="font-size:13px;
+            color:#2e7d52"></span>
+        </div>
+      </div>
+
+      <div style="font-size:13px; color:#9A8F80;
+        line-height:1.9; max-width:560px">
+        저장된 수치는 홈페이지 히어로 통계와
+        후기 평점에 즉시 반영됩니다.
+      </div>
+    </div>
+
     <div class="admin-panel" id="panel-backup">
       <div class="admin-title">백업</div>
       <p style="font-size:14px; line-height:1.9; color:#5D5346; max-width:560px; margin:0 0 20px">Firestore 데이터 백업 및 재해복구는 Firebase 콘솔에서 관리합니다. 아래 링크에서 자동 백업 일정 설정과 시점별 복원(Point-in-time recovery)을 확인할 수 있습니다.</p>
@@ -518,7 +677,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
 import { initAuthObserver } from './auth.js';
 import {
-  collection, query, orderBy, where, onSnapshot, addDoc, updateDoc, deleteDoc, doc, getDocs, serverTimestamp
+  collection, query, orderBy, where, onSnapshot, addDoc, updateDoc, deleteDoc, doc, getDoc, getDocs, serverTimestamp, setDoc
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const GITHUB_PREFIX = 'https://github.com/';
@@ -538,6 +697,7 @@ tabBtns.forEach((btn) => {
     panels.forEach((p) => p.classList.toggle('active', p.id === 'panel-' + tab));
     if (tab === 'users') loadUsers();
     if (tab === 'reviews') loadReviews();
+    if (tab === 'home') loadHomeStats();
   });
 });
 
@@ -1513,6 +1673,136 @@ function loadReviews() {
           buildReviewRow(d.id, d.data(), false)));
     }
   );
+}
+
+// ── (7) 홈편집 ────────────────────────────────────
+let homeStatsLoaded = false;
+function loadHomeStats() {
+  if (homeStatsLoaded) return;
+  homeStatsLoaded = true;
+  const saveBtn =
+    document.getElementById('home-stat-save-btn');
+  const msg =
+    document.getElementById('home-stat-msg');
+
+  /* 현재 stats/cases 값 불러오기 */
+  getDoc(doc(db, 'stats', 'cases')).then(snap => {
+    if (!snap.exists()) return;
+    const d = snap.data();
+    const f = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && val !== undefined) el.value = val;
+    };
+    f('home-stat-total',   d.total);
+    f('home-stat-avgdays', d.avgDays);
+    f('home-stat-ontime',  d.onTime);
+    f('home-stat-rating',  d.rating);
+  });
+
+  /* home/content 텍스트 */
+  getDoc(doc(db, 'home', 'content'))
+    .then(snap => {
+      if (!snap.exists()) return;
+      const d = snap.data();
+      const f = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined) el.value = val;
+      };
+      f('hc-hero-tag',   d.heroTag);
+      f('hc-hero-title', d.heroTitle);
+      f('hc-hero-body',  d.heroBody);
+      f('hc-cta-phone',  d.ctaPhone);
+      f('hc-cta-hours',  d.ctaHours);
+      f('hc-pkg1-name',  d.pkg1name);
+      f('hc-pkg1-price', d.pkg1price);
+      f('hc-pkg1-body',  d.pkg1body);
+      f('hc-pkg2-name',  d.pkg2name);
+      f('hc-pkg2-price', d.pkg2price);
+      f('hc-pkg2-body',  d.pkg2body);
+      f('hc-pkg3-name',  d.pkg3name);
+      f('hc-pkg3-price', d.pkg3price);
+      f('hc-pkg3-body',  d.pkg3body);
+    });
+
+  /* home/content 저장 버튼 */
+  const contentSaveBtn = document.getElementById(
+    'home-content-save-btn');
+  const contentMsg = document.getElementById(
+    'home-content-msg');
+  if (contentSaveBtn) {
+    contentSaveBtn.addEventListener(
+      'click', async () => {
+        if (contentMsg)
+          contentMsg.textContent = '저장 중...';
+        contentSaveBtn.disabled = true;
+        const g = id =>
+          document.getElementById(id)
+            ?.value.trim() || '';
+        const data = {
+          heroTag:   g('hc-hero-tag'),
+          heroTitle: g('hc-hero-title'),
+          heroBody:  g('hc-hero-body'),
+          ctaPhone:  g('hc-cta-phone'),
+          ctaHours:  g('hc-cta-hours'),
+          pkg1name:  g('hc-pkg1-name'),
+          pkg1price: g('hc-pkg1-price'),
+          pkg1body:  g('hc-pkg1-body'),
+          pkg2name:  g('hc-pkg2-name'),
+          pkg2price: g('hc-pkg2-price'),
+          pkg2body:  g('hc-pkg2-body'),
+          pkg3name:  g('hc-pkg3-name'),
+          pkg3price: g('hc-pkg3-price'),
+          pkg3body:  g('hc-pkg3-body'),
+        };
+        try {
+          await setDoc(
+            doc(db, 'home', 'content'),
+            data, { merge: true });
+          if (contentMsg)
+            contentMsg.textContent = '저장됐습니다.';
+          setTimeout(() => {
+            if (contentMsg)
+              contentMsg.textContent = '';
+          }, 3000);
+        } catch(e) {
+          if (contentMsg)
+            contentMsg.textContent =
+              '오류: ' + e.message;
+        } finally {
+          contentSaveBtn.disabled = false;
+        }
+      });
+  }
+
+  /* 저장 버튼 */
+  if (saveBtn) saveBtn.addEventListener(
+    'click', async () => {
+      if (msg) msg.textContent = '저장 중...';
+      saveBtn.disabled = true;
+      const data = {
+        total:   document.getElementById(
+          'home-stat-total')?.value.trim() || '',
+        avgDays: document.getElementById(
+          'home-stat-avgdays')?.value.trim() || '',
+        onTime:  document.getElementById(
+          'home-stat-ontime')?.value.trim() || '',
+        rating:  document.getElementById(
+          'home-stat-rating')?.value.trim() || '',
+      };
+      try {
+        await updateDoc(
+          doc(db, 'stats', 'cases'), data);
+        if (msg) msg.textContent = '저장됐습니다.';
+        setTimeout(() => {
+          if (msg) msg.textContent = '';
+        }, 3000);
+      } catch(e) {
+        if (msg) msg.textContent =
+          '오류: ' + e.message;
+      } finally {
+        saveBtn.disabled = false;
+      }
+    });
 }
 
 // ── 관리자 인증 게이트 ─────────────────────────────
