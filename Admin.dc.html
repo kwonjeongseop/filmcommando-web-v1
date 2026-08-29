@@ -16,7 +16,7 @@
     color: #1F1B16;
     min-height: 100vh;
   }
-  #admin-root { display: none; }
+  .admin-hidden { display: none !important; }
   .admin-header {
     display: flex;
     align-items: center;
@@ -220,7 +220,7 @@
 </head>
 <body>
 <x-dc>
-<div id="admin-root">
+<div id="admin-root" class="admin-hidden">
   <div class="admin-header">
     <div class="admin-logo">필름특공대 관리자</div>
     <div style="display:flex; align-items:center; gap:20px">
@@ -1812,7 +1812,7 @@ initAuthObserver(({ user, isAdmin }) => {
     return;
   }
   userLabel.textContent = user.email || '';
-  root.style.display = '';
+  root.classList.remove('admin-hidden');
   loadBookings();
   loadNotices();
   loadResources();
