@@ -1,0 +1,13 @@
+[{
+  "relation": [
+    "delegate_permission/common.handle_all_urls"
+  ],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.filmcommando.app",
+    "sha256_cert_fingerprints": [
+      "4C:A9:5E:C8:E1:A0:EB:E8:1A:F9:6F:F4:55:D4:49:62:CB:6B:A3:09:3E:2F:60:98:B3:75:3C:DD:17:66:39:67",
+      "8F:BC:25:3C:5B:50:78:46:B7:42:D4:F2:43:6B:98:40:DE:39:09:89:C6:86:34:0A:9B:94:E0:CD:C3:B4:AB:9E"
+    ]
+  }
+}]
