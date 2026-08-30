@@ -86,6 +86,14 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // FCM 토큰 등 앱 설정
+    // — 관리자만 읽기/쓰기
+    match /settings/{docId} {
+      allow read, write:
+        if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
     // 패키지 — 누구나 읽기,
     //           관리자만 쓰기
     match /packages/{docId} {
@@ -143,6 +151,15 @@ service cloud.firestore {
       allow delete: if request.auth != null
         && (request.auth.uid == resource.data.uid
             || isAdmin());
+    }
+
+    // 견적 문의 — 로그인 사용자 등록,
+    // 관리자 전체 관리
+    match /quotes/{docId} {
+      allow create: if request.auth != null;
+      allow read, update, delete:
+        if request.auth != null
+        && request.auth.token.admin == true;
     }
 
     match /users/{userId} {
